@@ -31,7 +31,7 @@ export function Nav(props: PropsWithChildren) {
 			<motion.nav
 				className={cn(
 					"fixed left-1/2 -translate-x-1/2 p-2 rounded-full overflow-hidden shadow-2xl",
-					"bg-muted/90 backdrop-blur-2xl z-30"
+					"bg-muted/90 backdrop-blur-2xl z-50"
 				)}
 				initial={{ bottom: -100, scale: 0.5 }}
 				animate={{ bottom: 16, scale: 1 }}
@@ -195,7 +195,7 @@ export function NavSearchPanel() {
 
 	return createPortal(
 		<motion.div
-			className="bg-neutral-700/70 backdrop-blur-2xl text-foreground z-20 fixed left-1/2 -translate-x-1/2 overflow-hidden shadow-2xl w-full h-auto"
+			className="bg-neutral-700/70 backdrop-blur-2xl text-foreground z-49 fixed left-1/2 -translate-x-1/2 overflow-hidden shadow-2xl w-full h-auto"
 			initial={{ opacity: 0, maxHeight: 48 }}
 			variants={{
 				hidden: {

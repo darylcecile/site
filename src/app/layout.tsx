@@ -4,6 +4,7 @@ import { NavSearch, NavSearchPanel } from '@/components/nav/index';
 import "./globals.css";
 import { ThemeProvider } from 'next-themes'
 import { Rays } from '@/components/header/rays';
+import Footer from '@/components/footer/index';
 
 export const metadata = {
 	title: 'Next.js',
@@ -19,6 +20,20 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning>
 			<body className='bg-background w-full min-h-screen'>
 				<Rays className="w-full min-w-7xl -top-1/2 bg-center h-screen fixed opacity-50 pointer-events-none" />
+				<div
+					className="w-full h-[100px] fixed pointer-events-none z-40"
+					style={{
+						mask: 'linear-gradient(black, black, transparent)',
+						backdropFilter: 'blur(4px) saturate(180%)',
+					}}
+				/>
+				<div
+					className="w-full h-[100px] bottom-0 fixed pointer-events-none z-40"
+					style={{
+						mask: 'linear-gradient(transparent, black, black)',
+						backdropFilter: 'blur(4px) saturate(180%)',
+					}}
+				/>
 				<ThemeProvider attribute={'class'}>
 					<Nav>
 						<NavItem label="Home" href="/">
@@ -35,6 +50,8 @@ export default function RootLayout({
 					</Nav>
 
 					{children}
+
+					<Footer />
 				</ThemeProvider>
 			</body>
 		</html>

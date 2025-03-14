@@ -1,4 +1,5 @@
 import { Header } from '@/components/header/index';
+import { NotesList } from '@/components/notes/NotesList';
 
 export default function Page() {
 	return (
@@ -25,6 +26,7 @@ export default function Page() {
 				/>
 			</div> */}
 			<Header />
+			<NotesList />
 		</div>
 	)
 }
