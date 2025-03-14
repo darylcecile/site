@@ -1,0 +1,55 @@
+"use client";
+
+import { useResize } from '@/lib/hooks/useResize';
+import { useMotionValueEvent, useScroll } from 'motion/react';
+import { useState } from 'react';
+import DotMatrixImage from '@/components/dotted/DotMatrixImage';
+
+export default function HeaderClient() {
+	const { scrollY } = useScroll();
+	const { windowHeight, windowWidth } = useResize();
+	const [dotSize, setDotSize] = useState(5);
+	const [dotSpacing, setDotSpacing] = useState(2);
+
+	useMotionValueEvent(scrollY, "change", (latest) => {
+		const SIZE_MIN = 1;
+		const SIZE_MAX = 5;
+		const SPACING_MIN = 1;
+		const SPACING_MAX = 5;
+
+		// as 'latest' increases, 'v' decreases from 5 to 1
+		const size_v = SIZE_MAX - (latest / windowHeight) * SIZE_MAX;
+		const size_r = Math.max(SIZE_MIN, Math.min(SIZE_MAX, size_v));
+
+		// as 'latest' increases, 'v' decreases from 5 to 1
+		const spacing_v = SPACING_MAX - (latest / windowHeight) * SPACING_MAX;
+		const spacing_r = Math.max(SPACING_MIN, Math.min(SPACING_MAX, spacing_v));
+
+		setDotSize(size_r);
+		setDotSpacing(spacing_r);
+	});
+
+	const containerWidth = Math.min(Math.max(windowWidth, 900), 896);
+
+	return (
+		<DotMatrixImage
+			src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_1601-9yuID5GpoyFr3s9DYcDfmHnjH7CGp3.jpeg"
+			width={Math.round(containerWidth / 5)}
+			height={Math.round(containerWidth / 5)}
+			dotSize={dotSize}
+			dotSpacing={dotSpacing}
+			samplingFactor={3}
+			backgroundColor={'transparent'} // Set to null for transparent background
+			hoverEffect={true}
+			hoverRadius={55}
+			hoverScale={1.6}
+			hoverBrightness={1}
+			hoverSaturation={1.3}
+			radialFade={true}
+			radialFadeStrength={1}
+			radialFadeRadius={0.7}
+			radialFadeCurve="exponential"
+			animationDuration={300} // Animation duration in milliseconds
+		/>
+	)
+}

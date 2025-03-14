@@ -1,0 +1,211 @@
+import { Github, ExternalLink } from "lucide-react"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
+import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
+import { cache, type PropsWithChildren } from "react"
+
+interface GitHubUserProps {
+	handle: string
+}
+
+interface GitHubProfile {
+	login: string
+	name: string
+	avatar_url: string
+	bio: string
+	followers: number
+	following: number
+	public_repos: number
+	html_url: string
+	site_admin: boolean
+	location?: string
+	created_at: string
+}
+
+const myGithubProfileFallback = {
+	"login": "darylcecile",
+	"id": 6310278,
+	"node_id": "MDQ6VXNlcjYzMTAyNzg=",
+	"avatar_url": "https://avatars.githubusercontent.com/u/6310278?v=4",
+	"gravatar_id": "",
+	"url": "https://api.github.com/users/darylcecile",
+	"html_url": "https://github.com/darylcecile",
+	"followers_url": "https://api.github.com/users/darylcecile/followers",
+	"following_url": "https://api.github.com/users/darylcecile/following{/other_user}",
+	"gists_url": "https://api.github.com/users/darylcecile/gists{/gist_id}",
+	"starred_url": "https://api.github.com/users/darylcecile/starred{/owner}{/repo}",
+	"subscriptions_url": "https://api.github.com/users/darylcecile/subscriptions",
+	"organizations_url": "https://api.github.com/users/darylcecile/orgs",
+	"repos_url": "https://api.github.com/users/darylcecile/repos",
+	"events_url": "https://api.github.com/users/darylcecile/events{/privacy}",
+	"received_events_url": "https://api.github.com/users/darylcecile/received_events",
+	"type": "User",
+	"user_view_type": "public",
+	"site_admin": true,
+	"name": "Daryl",
+	"company": null,
+	"blog": "https://darylcecile.net",
+	"location": null,
+	"email": null,
+	"hireable": null,
+	"bio": null,
+	"twitter_username": "darylcecile",
+	"public_repos": 70,
+	"public_gists": 1,
+	"followers": 8,
+	"following": 18,
+	"created_at": "2014-01-03T10:22:48Z",
+	"updated_at": "2025-03-11T21:36:36Z"
+}
+
+const getUser = cache(async (handle: string) => {
+	const response = await fetch(`https://api.github.com/users/${handle}`);
+
+	if (!response.ok) {
+		if (handle === "darylcecile") {
+			return myGithubProfileFallback as GitHubProfile
+		}
+
+		throw new Error(`Failed to fetch GitHub profile: ${response.statusText}`)
+	}
+
+	const profile = await response.json() as GitHubProfile
+
+	return profile;
+})
+
+export async function GitHubUser({ handle, children }: PropsWithChildren<GitHubUserProps>) {
+	const profile = await getUser(handle);
+
+	const joinDate = profile?.created_at
+		? new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" }).format(new Date(profile.created_at))
+		: null
+
+	return (
+		<HoverCard>
+			<HoverCardTrigger asChild >
+				{children}
+			</HoverCardTrigger>
+			<HoverCardContent
+				className="w-80 p-0 overflow-hidden border-none shadow-lg rounded-2xl"
+				align="start"
+				sideOffset={5}
+			>
+				<div className="overflow-hidden bg-white dark:bg-gray-950">
+					<div className="h-24 bg-[#327aff] dark:bg-[#0a1d3c] relative overflow-hidden">
+						<svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 100" preserveAspectRatio="none">
+							<path d="M0,50 C100,20 200,80 400,50 L400,100 L0,100 Z" fill="#1a2d4c" fillOpacity="0.4" />
+							<path d="M0,60 C150,30 250,90 400,60 L400,100 L0,100 Z" fill="#2a3d5c" fillOpacity="0.2" />
+						</svg>
+					</div>
+					<div className="px-6 pb-6">
+						<div className="flex flex-col items-center -mt-12 mb-4">
+							<img
+								src={profile.avatar_url || "/placeholder.svg"}
+								alt={`${profile.name || profile.login}'s GitHub avatar`}
+								className="w-24 h-24 rounded-full border-4 border-white dark:border-gray-950 shadow-2xl mb-3 contain-paint"
+							/>
+							<div className="text-center">
+								<h3 className="font-bold text-xl text-gray-900 dark:text-white mb-1">
+									{profile.name || profile.login}
+								</h3>
+								<p className="text-gray-500 dark:text-gray-400 text-sm mb-1 flex items-center gap-1">
+									<span className="">@{profile.login}</span>
+									{profile.site_admin && (
+										<Badge className="mt-0 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 text-gray-900 dark:text-gray-200 border-none uppercase text-[0.5rem] px-1 pb-0.25">
+											Staff
+										</Badge>
+									)}
+								</p>
+
+							</div>
+						</div>
+
+						{(profile.location || joinDate) && (
+							<div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
+								{joinDate && <span className="text-xs">Joined {joinDate}</span>}
+								{profile.location && joinDate && <span className="text-xs">•</span>}
+								{profile.location && <span className="text-xs">{profile.location}</span>}
+							</div>
+						)}
+
+						{profile.bio && (
+							<p className="text-sm text-center text-gray-600 dark:text-gray-300 mb-4">{profile.bio}</p>
+						)}
+
+						<div className="flex justify-center gap-6 text-sm">
+							<div className="text-center">
+								<div className="font-semibold text-gray-900 dark:text-white">
+									{profile.followers.toLocaleString()}
+								</div>
+								<div className="text-gray-500 dark:text-gray-400 text-xs">Followers</div>
+							</div>
+							<div className="text-center">
+								<div className="font-semibold text-gray-900 dark:text-white">
+									{profile.following.toLocaleString()}
+								</div>
+								<div className="text-gray-500 dark:text-gray-400 text-xs">Following</div>
+							</div>
+							<div className="text-center">
+								<div className="font-semibold text-gray-900 dark:text-white">
+									{profile.public_repos.toLocaleString()}
+								</div>
+								<div className="text-gray-500 dark:text-gray-400 text-xs">Repos</div>
+							</div>
+						</div>
+
+						<div className="mt-5 text-center">
+							<a
+								href={profile.html_url}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+							>
+								View on GitHub
+								<ExternalLink className="w-3 h-3 ml-0.5" />
+							</a>
+						</div>
+					</div>
+				</div>
+			</HoverCardContent>
+		</HoverCard>
+	)
+}
+
+
+export async function GitHubUserPill({ handle }: GitHubUserProps) {
+	const profile = await getUser(handle);
+
+	return (
+		<div
+			className="group inline-flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 rounded-full cursor-pointer transition-all duration-200 border border-gray-200 dark:border-gray-800 shadow-sm"
+		>
+			<div className="relative w-5 h-5 overflow-hidden">
+				<div
+					className={cn(
+						"absolute inset-0 transition-all duration-500 transform-3d opacity-100 rotate-y-0",
+						'group-hover:opacity-0 group-hover:rotate-y-180',
+					)}
+				>
+					<Github className="w-5 h-5" />
+				</div>
+				{profile && (
+					<div
+						className={cn(
+							"absolute inset-0 transition-all duration-500 rounded-full transform-3d opacity-0 rotate-y-180",
+							'group-hover:opacity-100 group-hover:rotate-y-0',
+						)}
+					>
+						<img
+							src={profile.avatar_url || "/placeholder.svg"}
+							alt={`${profile.name || profile.login}'s GitHub avatar`}
+							className="w-full h-full object-cover rounded-full"
+						/>
+					</div>
+				)}
+			</div>
+			<span className="font-medium text-sm">{`@${handle}`}</span>
+		</div>
+	)
+}
+
