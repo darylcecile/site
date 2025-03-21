@@ -10,7 +10,7 @@ type NotePageProps = {
 	params: Promise<{
 		slug: string;
 	}>;
-	searchParams?: Record<string, string>;
+	searchParams?: Promise<Record<string, string>>;
 };
 
 export async function generateViewport({
