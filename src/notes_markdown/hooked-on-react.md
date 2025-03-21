@@ -23,7 +23,8 @@ all types of applications, but for the most part they have been super useful for
 I use this hook to control data flow from async methods. This is usually from using third-party libraries, but can be 
 useful in other cases:
 
-```typescript jsx
+```tsx
+// @errors: 2686 2345 2304 2552 2365 2367 18004 1005 1110 1128 1161
 import {useCallback, useEffect, useState} from "react";
 
 export default function useAsync<T>(method: () => Promise<T>, dependencies:Array<any> = []) {
@@ -65,6 +66,7 @@ manually. React is good at managing rendering cycles in most cases, but in those
 third-parties like Monaco, this may come in handy:
 
 ```typescript jsx
+// @errors: 7006 2552
 import {useReducer} from "react";
 
 export default function useRender() {
@@ -80,6 +82,7 @@ While working on a previous side project, I found myself adding event listeners 
 ended up with the following:
 
 ```typescript jsx
+// @errors: 7006 2552
 import {useCallback, useEffect, useState} from "react";
 
 export default function useEvent(element?: EventTarget) {

@@ -6,7 +6,7 @@ snippet: For the past couple of years I have grown fond of prototyping as a way 
 
 For the past couple of years I have grown fond of prototyping as a way of getting my ideas across to other developers. As part of my role at CapitalOne (Software Engineer - Internal Tooling), I've had the opportunity to come up with innovative ways to improve the developer experience at the company in a creative and fun way; it allowed me to explore new technologies and paradigms, and inherit new ways to architect and design products. Prototyping is not a topic that comes up often in my sphere, and it is definately not something I bring up often in conversations, however a recent Twitter post surfaced made me think a lot about the perceived value of prototyping as an engineer: 
 
-<Tweet id="1670411055296544773"></Tweet>
+<TweetRenderer tweetId="1670411055296544773"></TweetRenderer>
 
 Working in a DevTools team, the customers I often created solutions for were other developers who were having a hard time; they were using tools that were slow, unstable, or sometime just plain unpleasant. Due to the size of the business, it meant that there was often a variety of pain-points that I could chose from to explore and solutionize. Some of my most recent successes include:
   - Designing and Implementing a Chrome Extension that summarizes CI/CD logs and surfaces solutions to those problems

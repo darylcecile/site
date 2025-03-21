@@ -68,7 +68,7 @@ export function Header() {
 			</div>
 			<div className={cn(GeistSans.className, "max-w-2xl mx-auto flex flex-col gap-4", 'text-foreground leading-6 tracking-wide text-lg text-center')}>
 				<p>
-					This portfolio showcases projects I've built for 🧠 learning purposes, some ideas I've 🔭 explored, and my creative journey through various proof-of-concept experiments ✨. My current side-project is <a href="https://knosh.app" target="_blank" rel="noreferrer" className='opacity-80 hover:opacity-100 focus-visible:opacity-100 text-orange-500 inline-flex items-center justify-center'>
+					This portfolio showcases projects I've built for 🧠 learning purposes, some ideas I've 🔭 explored, and my creative journey through various proof-of-concept experiments ✨. My current side-project is <a href="https://knosh.app" target="_blank" rel="noreferrer" className='opacity-80 hover:opacity-100 focus-visible:opacity-100 translate-y-[2px] text-orange-500 inline-flex items-center justify-center'>
 						<KnoshLogo height={'0.78em'} width={'auto'} />
 					</a>
 				</p>

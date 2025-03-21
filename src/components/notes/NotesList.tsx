@@ -8,6 +8,7 @@ import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { cn } from "@/lib/utils";
 import { GeistSans } from "geist/font/sans";
+import Link from "next/link";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -16,7 +17,11 @@ dayjs.extend(advancedFormat);
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
-export function NotesList() {
+type NotesListProps = {
+	maxItems?: number;
+}
+
+export function NotesList(props: NotesListProps) {
 	const currentDate = dayjs().tz("Europe/London");
 
 	const publicNotes = getAllNotesDataSorted(false).map(note => {
@@ -29,7 +34,7 @@ export function NotesList() {
 		}
 	}).filter((note) => {
 		return !note.hidden && note.publishDate.toDate() < currentDate.toDate();
-	});
+	}).slice(0, props.maxItems);
 
 	const rainbowColors = [
 		'text-red-500',
@@ -42,15 +47,15 @@ export function NotesList() {
 	];
 
 	return (
-		<div className={cn(GeistSans.className, 'max-w-2xl mx-auto gap-8 flex flex-col mb-8')}>
+		<div className={cn(GeistSans.className, 'max-w-2xl w-full mx-auto gap-8 flex flex-col mb-8')}>
 			{publicNotes.map((note, i) => (
 				<div key={note.slug}>
 					<h1 className="text-lg">{note.title}</h1>
 					<p className="text-sm opacity-75">{dayjs.tz(note.publishDate).format('ddd Do MMM[,] YYYY')} &middot; {note.readTime}</p>
-					<a
+					<Link
 						className={cn('text-foreground text-xs', rainbowColors[i % rainbowColors.length])}
 						href={`/notes/${note.slug}`}
-					>Read more</a>
+					>Read more</Link>
 				</div>
 			))}
 		</div>

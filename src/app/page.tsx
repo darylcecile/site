@@ -1,7 +1,10 @@
 import { Header } from '@/components/header/index';
 import { NotesList } from '@/components/notes/NotesList';
+import { getAllNotesDataSorted } from '@/lib/repo/notesRepo';
+import Link from 'next/link';
 
 export default function Page() {
+	const notesCount = getAllNotesDataSorted(false).length;
 	return (
 		<div>
 			{/* <div className="max-w-4xl mx-auto">
@@ -26,7 +29,14 @@ export default function Page() {
 				/>
 			</div> */}
 			<Header />
-			<NotesList />
+			<div className='px-8'>
+				<NotesList maxItems={7} />
+				<div className='max-w-2xl mx-auto w-full border-t border-border/50 mb-10 flex items-center justify-end'>
+					<p className='text-sm pt-4'>
+						Looking for more? <Link className='text-foreground/50 hover:underline underline-offset-2' href="/notes">View all {notesCount} notes</Link> →
+					</p>
+				</div>
+			</div>
 		</div>
 	)
 }

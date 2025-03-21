@@ -8,26 +8,26 @@ import DotMatrixImage from '@/components/dotted/DotMatrixImage';
 export default function HeaderClient() {
 	const { scrollY } = useScroll();
 	const { windowHeight, windowWidth } = useResize();
-	const [dotSize, setDotSize] = useState(5);
-	const [dotSpacing, setDotSpacing] = useState(2);
+	const [dotSize, setDotSize] = useState(1);
+	const [dotSpacing, setDotSpacing] = useState(1);
 
-	useMotionValueEvent(scrollY, "change", (latest) => {
-		const SIZE_MIN = 1;
-		const SIZE_MAX = 5;
-		const SPACING_MIN = 1;
-		const SPACING_MAX = 5;
+	// useMotionValueEvent(scrollY, "change", (latest) => {
+	// 	const SIZE_MIN = 1;
+	// 	const SIZE_MAX = 5;
+	// 	const SPACING_MIN = 1;
+	// 	const SPACING_MAX = 5;
 
-		// as 'latest' increases, 'v' decreases from 5 to 1
-		const size_v = SIZE_MAX - (latest / windowHeight) * SIZE_MAX;
-		const size_r = Math.max(SIZE_MIN, Math.min(SIZE_MAX, size_v));
+	// 	// as 'latest' increases, 'v' decreases from 5 to 1
+	// 	const size_v = SIZE_MAX - (latest / windowHeight) * SIZE_MAX;
+	// 	const size_r = Math.max(SIZE_MIN, Math.min(SIZE_MAX, size_v));
 
-		// as 'latest' increases, 'v' decreases from 5 to 1
-		const spacing_v = SPACING_MAX - (latest / windowHeight) * SPACING_MAX;
-		const spacing_r = Math.max(SPACING_MIN, Math.min(SPACING_MAX, spacing_v));
+	// 	// as 'latest' increases, 'v' decreases from 5 to 1
+	// 	const spacing_v = SPACING_MAX - (latest / windowHeight) * SPACING_MAX;
+	// 	const spacing_r = Math.max(SPACING_MIN, Math.min(SPACING_MAX, spacing_v));
 
-		setDotSize(size_r);
-		setDotSpacing(spacing_r);
-	});
+	// 	setDotSize(size_r);
+	// 	setDotSpacing(spacing_r);
+	// });
 
 	const containerWidth = Math.min(Math.max(windowWidth, 900), 896);
 
