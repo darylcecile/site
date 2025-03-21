@@ -1,5 +1,4 @@
 import { Tweet as ReactTweet } from "react-tweet";
-import s from "../styles/tweet.module.scss";
 
 type TweetRendererProps = {
 	tweetId: string;
