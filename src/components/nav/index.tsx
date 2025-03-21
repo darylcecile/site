@@ -31,7 +31,7 @@ export function Nav(props: PropsWithChildren) {
 			<motion.nav
 				className={cn(
 					"fixed left-1/2 -translate-x-1/2 p-2 rounded-full overflow-hidden shadow-2xl",
-					"bg-muted/90 backdrop-blur-2xl z-50"
+					"bg-neutral-100/70 dark:bg-muted/70 backdrop-blur-2xl backdrop-saturate-150 z-50"
 				)}
 				initial={{ bottom: -100, scale: 0.5 }}
 				animate={{ bottom: 16, scale: 1 }}
@@ -66,15 +66,18 @@ export function NavItem(props: NavItemProps) {
 		navContext.setIsSearchActive(false);
 	}, [navContext]);
 
+	const blurSearch = useCallback(() => {
+		navContext.setIsSearchActive(false);
+	}, [navContext]);
+
 	return (
 		<motion.li
 			ref={ref}
+			onFocus={blurSearch}
 			className={cn(
-				"rounded-full hover:bg-neutral-600  text-foreground overflow-hidden border border-transparent min-w-8",
-				{
-					"bg-transparent": !isActive,
-					"bg-background": isActive
-				}
+				"rounded-full min-w-8 max-h-8",
+				`${isActive ? 'bg-background' : 'bg-transparent'} hover:bg-neutral-600`,
+				"text-foreground hover:text-background dark:hover:text-foreground"
 			)}
 			variants={{
 				active: {
@@ -96,7 +99,11 @@ export function NavItem(props: NavItemProps) {
 		>
 			<Link
 				href={props.href}
-				className="px-2 py-1 gap-1 inline-flex flex-row items-center overflow-hidden"
+				className={cn(
+					`rounded-full py-1 ${isActive ? 'gap-1 px-3' : 'gap-0 px-1'} w-full justify-center inline-flex flex-row items-center overflow-hidden min-w-8 transition-all`,
+					// "focus-visible:outline-amber-300 outline-1 outline-transparent",
+					"focus-visible:outline-amber-300 outline-1 outline-transparent",
+				)}
 				onClick={clickHandler}
 			>
 				{props.children}
@@ -123,6 +130,7 @@ export function NavItem(props: NavItemProps) {
 
 export function NavSearch() {
 	const navContext = useNav();
+	const ref = useRef<HTMLInputElement>(null);
 
 	const focusHandler = useCallback(() => {
 		navContext.setIsSearchActive(true);
@@ -132,12 +140,22 @@ export function NavSearch() {
 		navContext.setIsSearchActive(false)
 	}, [navContext]);
 
+	const focusSearchHandler = useCallback(() => {
+		if (navContext.isSearchActive) return;
+		navContext.setIsSearchActive(true);
+		ref.current?.focus();
+	}, [navContext]);
+
 	const { windowWidth } = useResize();
 
 	return (
-		<div className="relative items-center inline-flex text-foreground cursor-pointer ">
+		<div className={cn("relative items-center inline-flex text-foreground", {
+			// "hover:bg-neutral-600 text-foreground hover:text-background rounded-full": !navContext.isSearchActive
+			"text-foreground hover:text-background dark:hover:text-foreground": !navContext.isSearchActive
+		})}>
 			<motion.button
 				onClick={blurHandler}
+				onFocus={focusSearchHandler}
 				variants={{
 					active: {
 						translateX: 0,
@@ -151,13 +169,21 @@ export function NavSearch() {
 					}
 				}}
 				animate={navContext.isSearchActive ? 'active' : 'inactive'}
-				className="overflow-hidden hover:bg-neutral-700 rounded-full cursor-pointer"
+				className={cn(
+					"overflow-hidden hover:bg-neutral-700 rounded-full cursor-pointer",
+					'bg-transparent hover:bg-neutral-600',
+					"text-foreground hover:text-background dark:hover:text-foreground",
+					"focus-visible:outline-amber-300 outline-1 outline-transparent outline-offset-1"
+				)}
 			>
 				<ArrowLeftIcon className="size-8 text-inherit p-2" />
 			</motion.button>
 			<motion.input
-				className={cn("w-full rounded-full h-full pl-8 border border-transparent focus-visible:border-foreground focus-visible:bg-neutral-600 placeholder:opacity-0 transition-opacity focus-visible:outline-0", {
-					"bg-neutral-600 placeholder:opacity-100": navContext.isSearchActive
+				ref={ref}
+				className={cn("w-full rounded-full h-full pl-8 border border-transparent focus-visible:border-amber-300 placeholder:opacity-0 transition-opacity focus-visible:outline-0", {
+					"bg-neutral-50 focus-visible:bg-neutral-100 dark:bg-neutral-700 placeholder:opacity-100": navContext.isSearchActive,
+					'bg-transparent hover:bg-neutral-600 cursor-pointer': !navContext.isSearchActive,
+					"text-foreground hover:text-background dark:hover:text-foreground": !navContext.isSearchActive
 				})}
 				whileFocus={{ width: 400 }}
 				initial={{ width: 32 }}
@@ -177,7 +203,7 @@ export function NavSearch() {
 				className={cn(
 					"size-8 text-inherit absolute pointer-events-none p-2 left-10",
 					{
-						"left-0": !navContext.isSearchActive
+						"left-0": !navContext.isSearchActive,
 					}
 				)}
 			/>
@@ -195,7 +221,7 @@ export function NavSearchPanel() {
 
 	return createPortal(
 		<motion.div
-			className="bg-neutral-700/70 backdrop-blur-2xl text-foreground z-49 fixed left-1/2 -translate-x-1/2 overflow-hidden shadow-2xl w-full h-auto"
+			className="bg-neutral-300/10 dark:bg-neutral-700/70 backdrop-blur-2xl backdrop-saturate-150 text-foreground z-49 fixed left-1/2 -translate-x-1/2 overflow-hidden shadow-2xl w-full h-auto"
 			initial={{ opacity: 0, maxHeight: 48 }}
 			variants={{
 				hidden: {
@@ -219,7 +245,7 @@ export function NavSearchPanel() {
 				},
 			}}
 			style={{
-				borderRadius: (48 + 12) / 2
+				borderRadius: (48 + 8) / 2
 			}}
 			animate={navContext.isSearchActive ? 'peeking' : 'hidden'}
 			transition={{ type: 'spring', bounce: 0.1 }}
