@@ -2,10 +2,11 @@
 title: I did a thing... PyroGist 👨🏽‍💻
 date: "2020-03-05"
 snippet: 'Spotlight: PyroGist - DEPRECATED'
+hidden: true
 ---
 
 <InfoBox type="warn">
-<strong>DEPRECATED:</strong> This Project is no longer being maintained and has now be deprecated
+	<strong>DEPRECATED:</strong> This Project is no longer being maintained and has now be deprecated
 </InfoBox>
 
 As some of you might have heard, ProjectFunction is partnering up with NTU to deliver a 2 weeks intensive course. As with other PF courses we have run in the past, this one will be open to those who are under-represented in the industry. As part of this programme, learners will have the opportunity to take part in workshops and attend talks related to working in tech. Additionally, they will have the opportunity to apply all the skills they gather and the knowledge they gain, to design and implement their own website.
@@ -50,23 +51,7 @@ PyroGist("#preview2",{
 
 Currently, the highlighting is done by the highlightjs library (which users have to link themselves if they want syntax highlighting). However, the default colors can be easily overridden using custom CSS.
 
-<script>
-PyroGist("#preview",{
-    name: "test.js",
-    theme: "normal",
-    autoFit: true,
-    highlight: true
-});
-    
-PyroGist("#preview2",{
-    name: "example",
-    theme: "normal",
-    autoFit: true,
-    highlight: true
-});
 
-console.log('Loaded PyroGist instances');
-</script>
 
 Even though this library has a long way to go, I feel fairly comfident that it has met my initial goals and can serve its original purpose. In the near future, I intend to make GitHub gists embeddable via url. Additionally, I may create an adapter or customElement to automatically load the previews directly from markup (something like `<pyro-gist url="/file/example.js"></pyro-gist>`).
 

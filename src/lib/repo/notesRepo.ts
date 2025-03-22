@@ -26,6 +26,7 @@ export const getAllNotesDataSorted_UnCached = (ignoreContent?: boolean) => {
 	const allPostsData: Note[] = [];
 
 	for (const fileName of fileNames) {
+		if (!fileName.endsWith('.md') && !fileName.endsWith('.mdx')) continue;
 		// Remove ".md" from file name to get id
 		const slug = fileName.replace(/\.(?:md|mdx)$/, "");
 
@@ -63,7 +64,10 @@ export const getAllNotesDataSorted = cache(getAllNotesDataSorted_UnCached);
 
 export const getAllNotesSlug_UnCached = () => {
 	const fileNames = fs.readdirSync(postsDirectory);
-	return fileNames.map((fileName) => {
+	return fileNames.filter(fileName => {
+		if (!fileName.endsWith('.md') && !fileName.endsWith('.mdx')) return false;
+		return true;
+	}).map((fileName) => {
 		return {
 			params: {
 				slug: fileName.replace(/\.(?:md|mdx)$/, ""),
