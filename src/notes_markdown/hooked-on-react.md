@@ -6,7 +6,7 @@ snippet: 'Spotlight: My go-to React Hooks'
 ---
 
 <InfoBox type="warn">
-<strong>WIP:</strong> This post is WIP. I plan to continue to update it as my React journey continues. 
+	**WIP:** This post is WIP. I plan to continue to update it as my React journey continues. 
 </InfoBox>
 
 Two years ago, there was a hype around React; and after a couple of months of trying to avoid 
@@ -24,7 +24,6 @@ I use this hook to control data flow from async methods. This is usually from us
 useful in other cases:
 
 ```tsx
-// @errors: 2686 2345 2304 2552 2365 2367 18004 1005 1110 1128 1161
 import {useCallback, useEffect, useState} from "react";
 
 export default function useAsync<T>(method: () => Promise<T>, dependencies:Array<any> = []) {
@@ -65,8 +64,7 @@ Occasionally, I find myself needing to interface with third-party libraries and 
 manually. React is good at managing rendering cycles in most cases, but in those rare situations like when you are using
 third-parties like Monaco, this may come in handy:
 
-```typescript jsx
-// @errors: 7006 2552
+```typescript twoslash
 import {useReducer} from "react";
 
 export default function useRender() {
@@ -81,14 +79,15 @@ export default function useRender() {
 While working on a previous side project, I found myself adding event listeners to dom events on a regular basis, so I
 ended up with the following:
 
-```typescript jsx
-// @errors: 7006 2552
+```typescript twoslash
 import {useCallback, useEffect, useState} from "react";
 
-export default function useEvent(element?: EventTarget) {
+type Handler = (ev: Event) => void;
+
+export default function useEvent(eventTarget?: EventTarget) {
 	const [eventListeners, setEventListeners] = useState<Record<string, ((ev: Event) => void)>>({});
 	
-	const addEventListener = useCallback((eventName:string, eventHandler)=>{
+	const addEventListener = useCallback((eventName:string, eventHandler:Handler)=>{
 		setEventListeners(prev => {
 			return {
 				...prev,
@@ -105,18 +104,18 @@ export default function useEvent(element?: EventTarget) {
 	}, [eventTarget]);
 
 	useEffect(() => {
-		const target = element ?? window;
+		const target = eventTarget ?? window;
 		const listeners = {...eventListeners};
 		
 		// addListeners
 		Object.entries(listeners).forEach(entry => {
-			eventTarget.addEventListener(entry[0], entry[1]);
+			eventTarget?.addEventListener(entry[0], entry[1]);
 		});
 		
 		// remove old listeners
 		return ()=> {
 			Object.entries(listeners).forEach(entry => {
-				eventTarget.removeEventListener(entry[0], entry[1]);
+				eventTarget?.removeEventListener(entry[0], entry[1]);
 			});
 		}
 	}, [eventListeners]);
@@ -132,7 +131,7 @@ export default function useEvent(element?: EventTarget) {
 
 For accessibility-related work, I ended up needing a way to disable scroll lock when a modal component is mounted.
 
-```typescript jsx
+```ts twoslash
 import {useLayoutEffect} from "react";
 
 export default function useLockScroll() {

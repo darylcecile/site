@@ -26,6 +26,32 @@
   --twoslash-tag-annotate-bg: #1ba67320;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --twoslash-border-color: #4444;
+    --twoslash-underline-color: currentColor;
+    --twoslash-highlighted-border: #c37d0d80;
+    --twoslash-highlighted-bg: #c37d0d40;
+    --twoslash-popup-bg: #2b2b2b;
+    --twoslash-popup-color: #f8f8f8;
+    --twoslash-popup-shadow: rgba(0, 0, 0, 0.5) 0px 1px 4px;
+    --twoslash-docs-color: #aaa;
+    --twoslash-matched-color: inherit;
+    --twoslash-unmatched-color: #666;
+    --twoslash-cursor-color: #6666;
+    --twoslash-error-color: #ff6b6b;
+    --twoslash-error-bg: #ff6b6b20;
+    --twoslash-warn-color: #ffb74d;
+    --twoslash-warn-bg: #ffb74d20;
+    --twoslash-tag-color: #64b5f6;
+    --twoslash-tag-bg: #64b5f620;
+    --twoslash-tag-warn-color: var(--twoslash-warn-color);
+    --twoslash-tag-warn-bg: var(--twoslash-warn-bg);
+    --twoslash-tag-annotate-color: #81c784;
+    --twoslash-tag-annotate-bg: #81c78420;
+  }
+}
+
 /* Respect people's wishes to not have animations */
 @media (prefers-reduced-motion: reduce) {
   .twoslash * {

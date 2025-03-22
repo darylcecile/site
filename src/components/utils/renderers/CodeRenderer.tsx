@@ -9,6 +9,7 @@ import './twoslash.css'
 type CodeRendererProps = {
 	lang: string;
 	children: string;
+	withIntellisense?: boolean;
 }
 
 export default async function CodeRenderer(props: CodeRendererProps) {
@@ -18,11 +19,11 @@ export default async function CodeRenderer(props: CodeRendererProps) {
 		transformers: [
 			transformerTwoslash({
 				renderer: rendererRich(),
-				filter(lang, code, options) {
-					return lang === 'ts' || lang === 'tsx';
-				},
+				filter: (lang, code, options) => {
+					return ["typescript", "ts", "tsx"].includes(lang) && props.withIntellisense
+				}
 			})
-		],
+		]
 	});
 
 	// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>

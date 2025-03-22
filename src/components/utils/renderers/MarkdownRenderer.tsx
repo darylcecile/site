@@ -1,4 +1,5 @@
 import { MDXRemote } from 'next-mdx-remote/rsc';
+import rehypeMdxCodeProps from 'rehype-mdx-code-props'
 import TweetRenderer from '@/components/utils/renderers/TweetRenderer';
 import InfoBox from '../InfoBox';
 import ResponsiveImgRenderer from '@/components/utils/renderers/ResponsiveImgRenderer';
@@ -10,7 +11,6 @@ type Props = {
 }
 
 export default function MarkdownRenderer(props: Props) {
-
 	return (
 		<MDXRemote
 			source={props.content}
@@ -31,11 +31,16 @@ export default function MarkdownRenderer(props: Props) {
 					if (props.children.type === 'code') {
 						const language = props.children.props.className.replace('language-', '');
 						const code = props.children.props.children;
-						return <CodeRenderer lang={language}>{code}</CodeRenderer>;
+						return <CodeRenderer lang={language} withIntellisense={props.twoslash}>{code}</CodeRenderer>;
 					}
 					return <pre {...props} />;
 				},
 				'Gallery': GalleryRenderer
+			}}
+			options={{
+				mdxOptions: {
+					rehypePlugins: [rehypeMdxCodeProps],
+				}
 			}}
 		/>
 	)
