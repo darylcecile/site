@@ -1,0 +1,71 @@
+{
+	"name": "Daryl Cecile",
+	"short_name": "Daryl",
+	"start_url": "/",
+	"icons": [
+		{
+			"src": "/images/core/profile.png",
+			"sizes": "1441x1441",
+			"type": "image/png"
+		},
+		{
+			"src": "/images/core/profile_180.png",
+			"sizes": "180x180",
+			"type": "image/png"
+		},
+		{
+			"src": "/images/core/profile_72.png",
+			"sizes": "72x72",
+			"type": "image/png"
+		},
+		{
+			"src": "/images/core/profile_48.png",
+			"sizes": "48x48",
+			"type": "image/png"
+		},
+		{
+			"src": "/images/core/profile_32.png",
+			"sizes": "32x32",
+			"type": "image/png"
+		},
+		{
+			"src": "/images/core/profile_16.png",
+			"sizes": "16x16",
+			"type": "image/png"
+		},
+
+		{
+			"src": "/images/core/profile.webp",
+			"sizes": "1441x1441",
+			"type": "image/webp"
+		},
+		{
+			"src": "/images/core/profile_180.webp",
+			"sizes": "180x180",
+			"type": "image/webp"
+		},
+		{
+			"src": "/images/core/profile_72.webp",
+			"sizes": "72x72",
+			"type": "image/webp"
+		},
+		{
+			"src": "/images/core/profile_48.webp",
+			"sizes": "48x48",
+			"type": "image/webp"
+		},
+		{
+			"src": "/images/core/profile_32.webp",
+			"sizes": "32x32",
+			"type": "image/webp"
+		},
+		{
+			"src": "/images/core/profile_16.webp",
+			"sizes": "16x16",
+			"type": "image/webp"
+		}
+	],
+	"theme_color": "#ffffff",
+	"background_color": "#ffffff",
+	"display": "standalone"
+}

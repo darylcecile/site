@@ -3,6 +3,7 @@ import TweetRenderer from '@/components/utils/renderers/TweetRenderer';
 import InfoBox from '../InfoBox';
 import ResponsiveImgRenderer from '@/components/utils/renderers/ResponsiveImgRenderer';
 import CodeRenderer from '@/components/utils/renderers/CodeRenderer';
+import GalleryRenderer from '@/components/utils/renderers/GalleryRenderer';
 
 type Props = {
 	content: string;
@@ -33,7 +34,8 @@ export default function MarkdownRenderer(props: Props) {
 						return <CodeRenderer lang={language}>{code}</CodeRenderer>;
 					}
 					return <pre {...props} />;
-				}
+				},
+				'Gallery': GalleryRenderer
 			}}
 		/>
 	)

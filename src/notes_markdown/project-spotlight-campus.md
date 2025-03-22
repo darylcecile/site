@@ -30,22 +30,20 @@ By the final version of Campus, we were able to bring about the following featur
   
 All in all, this platform has grown with ProjectFunction to meet its growing demands. It's been an amazing experience to build and maintain, but as with all good things, it is now time to put it to rest. 
 
-<Gallery>
-    { 
-        "/images/spotlight/campus/campus_login_page.png": "Campus login page", 
-        "/images/spotlight/campus/campus_dashboard.png": "Dashboard showing articles from dev.to", 
-        "/images/spotlight/campus/campus_assignments.png": "Assigment page showing a list of outstanding tasks", 
-        "/images/spotlight/campus/campus_assignment_detail.png": "Assignment detail page", 
-        "/images/spotlight/campus/campus_submissions.png": "User assignment submission page", 
-        "/images/spotlight/campus/campus_submission_detail.png": "Submission detail page showing automatic testing results", 
-        "/images/spotlight/campus/fizzbuzz_assignment.png": "Sample assignment: Fizzbuzz", 
-        "/images/spotlight/campus/create_from_template.png": "Github 6showing flow from Campus for learner to create repo", 
-        "/images/spotlight/campus/user_account.png": "User account showing engagement rating and attendance", 
-        "/images/spotlight/campus/manage_permissions.png": "In dark mode: Admin page showing permission settings",
-        "/images/spotlight/campus/campus_lesson.png": "Lesson page allows user to recap the sessions they attend",
-        "/images/spotlight/campus/lesson_resources.png": "Any resources used throughout the lesson are available on lesson pages",
-        "/images/spotlight/campus/campus_quick_jump.png": "Learners can use quick jump to access lessons, resources, and more"
-    }
-</Gallery>
+<Gallery images={{ 
+	"/images/spotlight/campus/campus_login_page.png": "Campus login page", 
+	"/images/spotlight/campus/campus_dashboard.png": "Dashboard showing articles from dev.to", 
+	"/images/spotlight/campus/campus_assignments.png": "Assigment page showing a list of outstanding tasks", 
+	"/images/spotlight/campus/campus_assignment_detail.png": "Assignment detail page", 
+	"/images/spotlight/campus/campus_submissions.png": "User assignment submission page", 
+	"/images/spotlight/campus/campus_submission_detail.png": "Submission detail page showing automatic testing results", 
+	"/images/spotlight/campus/fizzbuzz_assignment.png": "Sample assignment: Fizzbuzz", 
+	"/images/spotlight/campus/create_from_template.png": "Github 6showing flow from Campus for learner to create repo", 
+	"/images/spotlight/campus/user_account.png": "User account showing engagement rating and attendance", 
+	"/images/spotlight/campus/manage_permissions.png": "In dark mode: Admin page showing permission settings",
+	"/images/spotlight/campus/campus_lesson.png": "Lesson page allows user to recap the sessions they attend",
+	"/images/spotlight/campus/lesson_resources.png": "Any resources used throughout the lesson are available on lesson pages",
+	"/images/spotlight/campus/campus_quick_jump.png": "Learners can use quick jump to access lessons, resources, and more"
+}} />
 
 I've personally learned a lot along the way, and there are many lessons to take away from the experiences ive gained by building and scaling this platform. Im excited to see where this knowledge takes me 🚀
