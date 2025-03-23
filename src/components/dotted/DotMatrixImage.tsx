@@ -135,8 +135,8 @@ export default function DotMatrixImage({
 			setIsLoading(false)
 		}
 
-		img.onerror = () => {
-			console.error("Error loading image")
+		img.onerror = (e) => {
+			console.error("Error loading image", e)
 			setIsLoading(false)
 		}
 	}, [

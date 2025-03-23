@@ -126,3 +126,9 @@
   --sidebar-ring: oklch(0.439 0 0);
 }
 }
+
+.body {
+	background-image: url('/static.png');
+	background-repeat: repeat;
+	background-size: 600px 600px;
+}

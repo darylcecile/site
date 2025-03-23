@@ -33,7 +33,8 @@ export default function HeaderClient() {
 
 	return (
 		<DotMatrixImage
-			src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_1601-9yuID5GpoyFr3s9DYcDfmHnjH7CGp3.jpeg"
+			// src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_1601-9yuID5GpoyFr3s9DYcDfmHnjH7CGp3.jpeg"
+			src="https://avatars.githubusercontent.com/u/6310278?v=4"
 			width={Math.round(containerWidth / 5)}
 			height={Math.round(containerWidth / 5)}
 			dotSize={dotSize}

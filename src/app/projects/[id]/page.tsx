@@ -1,15 +1,15 @@
 import type { Metadata, ResolvingMetadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import LocalDate from "../../../components/utils/LocalDate";
-import { getAllNotesDataSorted, getNoteData } from "@/lib/repo/notesRepo";
+import { getAllProjectsDataSorted, getProjectData } from "@/lib/repo/projectsRepo";
 import MarkdownRenderer from '@/components/utils/renderers/MarkdownRenderer';
 import dayjs from "dayjs";
 import { cn } from "@/lib/utils";
 import { unstable_ViewTransition as ViewTransition } from 'react';
 
-type NotePageProps = {
+type ProjectPageProps = {
 	params: Promise<{
-		slug: string;
+		id: string;
 	}>;
 	searchParams?: Promise<Record<string, string>>;
 };
@@ -17,40 +17,44 @@ type NotePageProps = {
 export async function generateViewport({
 	params,
 	searchParams,
-}: NotePageProps): Promise<Viewport[]> {
+}: ProjectPageProps): Promise<Viewport[]> {
 	return [{ minimumScale: 1, initialScale: 1, width: "device-width" }];
 }
 
 export async function generateMetadata(
-	props: NotePageProps,
+	props: ProjectPageProps,
 	parent: ResolvingMetadata,
 ): Promise<Metadata> {
 	const params = await props.params;
-	const postData = await getNoteData(params.slug, true);
+	const postData = await getProjectData(params.id);
+
+	const image = !postData.image ? undefined : (
+		URL.canParse(postData.image) ? postData.image : `/images/projects/${postData.image}`
+	)
 
 	return {
 		...((await parent) as any),
 		metadataBase: new URL("https://darylcecile.net/"),
 		alternates: {
-			canonical: `https://darylcecile.net/notes/${postData?.slug}`,
+			canonical: `https://darylcecile.net/projects/${postData?.id}`,
 			types: {
 				"application/rss+xml": [
 					{ title: "RSS Feed for darylcecile.net", url: "/rss.xml" },
 				],
 			},
 		},
-		title: postData?.title,
+		title: postData?.name,
 		authors: { name: "Daryl Cecile", url: "https://darylcecile.net" },
-		description: postData?.snippet,
+		description: postData?.summary,
 		openGraph: {
-			title: postData?.title,
-			images: [`https://darylcecile.net/og?slug=${postData?.slug}`],
+			title: postData?.name,
+			images: [image],
 			locale: "en_US",
 		},
 		twitter: {
 			card: "summary_large_image",
-			title: postData?.title,
-			images: `https://darylcecile.net/og?slug=${postData?.slug}`,
+			title: postData?.name,
+			images: image,
 			site: "@darylcecile",
 			creator: "@darylcecile",
 		},
@@ -88,27 +92,22 @@ export async function generateMetadata(
 	} satisfies Metadata;
 }
 
-export default async function SingleNotePage(props: NotePageProps) {
+export default async function SingleProjectPage(props: ProjectPageProps) {
 	const params = await props.params;
-	const postData = await getNoteData(params.slug);
-	if (!postData) return notFound();
+	const project = await getProjectData(params.id);
+	if (!project) return notFound();
+
+	const projectImage = !project.image ? undefined : (
+		URL.canParse(project.image) ? project.image : `/images/projects/${project.image}`
+	);
 
 	return (
 		<article className="content px-8">
 			<div className="max-w-2xl mx-auto w-full pt-20">
-				<ViewTransition name={`notes-${postData.slug}`}>
-					<h1 className="text-3xl">{postData.title}</h1>
-					<p className="text-foreground/70 prose">
-						<LocalDate dateString={postData.date} /> &middot;{" "}
-						{postData.readTime}
-					</p>
+				<ViewTransition name={`projects-${project.id}`}>
+					<h1 className="text-3xl">{project.name}</h1>
+					<p className="text-foreground text-sm opacity-75">{project.startYear} - {project.endYear ?? 'Ongoing'}</p>
 				</ViewTransition>
-				{!!postData.lastUpdated && (
-					<p className="text-foreground/70 prose">
-						{"Last updated: "}
-						<LocalDate dateString={postData.lastUpdated} />
-					</p>
-				)}
 			</div>
 			<br />
 			<div
@@ -118,8 +117,17 @@ export default async function SingleNotePage(props: NotePageProps) {
 					"prose-figcaption:text-center prose-h5:font-medium prose-h5:text-foreground"
 				)}
 			>
+				{projectImage && (
+					<ViewTransition name={`projects-image-${project.id}`}>
+						<img
+							src={projectImage}
+							alt={''}
+							className="max-w-2xl mx-auto w-full z-2 aspect-auto object-cover rounded-sm" />
+					</ViewTransition>
+				)}
+
 				<div className="max-w-2xl mx-auto w-full text-foreground/70">
-					<MarkdownRenderer content={postData.content} />
+					<MarkdownRenderer content={project.summary} />
 				</div>
 			</div>
 			{/* <div className={galleryStyles.workAroundTodoGalleryStyles} /> */}
@@ -128,11 +136,9 @@ export default async function SingleNotePage(props: NotePageProps) {
 }
 
 export async function generateStaticParams() {
-	const posts = getAllNotesDataSorted(true).filter(
-		(note) => !note.hidden && dayjs(note.date).toDate().getTime() <= Date.now(),
-	);
+	const projects = getAllProjectsDataSorted();
 
-	return posts.map((post) => ({
-		slug: post.slug,
+	return projects.map((post) => ({
+		id: post.id,
 	}));
 }
