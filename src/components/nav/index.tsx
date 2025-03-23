@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { createContext, type Dispatch, type SetStateAction, use, useCallback, useRef, useState, type PropsWithChildren, useId } from "react";
 import * as motion from "motion/react-client";
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ArrowLeftIcon, SearchIcon } from "lucide-react";
 import { useResize } from "@/lib/hooks/useResize";
 import { createPortal } from 'react-dom';
@@ -18,16 +18,25 @@ type NavContextType = {
 
 const NavContext = createContext<NavContextType>(null);
 
-export function Nav(props: PropsWithChildren) {
+export function NavProvider({ children }: PropsWithChildren) {
 	const [isSearchActive, setIsSearchActive] = useState(false);
 	const portalId = useId();
-
 	return (
 		<NavContext.Provider value={{
 			isSearchActive,
 			setIsSearchActive,
 			portalId
 		}}>
+			{children}
+		</NavContext.Provider>
+	)
+}
+
+export function Nav(props: PropsWithChildren) {
+	const { portalId } = useNav();
+
+	return (
+		<>
 			<motion.nav
 				className={cn(
 					"fixed left-1/2 -translate-x-1/2 p-2 rounded-full overflow-hidden shadow-2xl",
@@ -42,7 +51,7 @@ export function Nav(props: PropsWithChildren) {
 				</ul>
 			</motion.nav>
 			<div id={portalId} />
-		</NavContext.Provider>
+		</>
 	);
 }
 
@@ -255,4 +264,38 @@ export function NavSearchPanel() {
 			</span>
 		</motion.div>
 		, document.getElementById(navContext.portalId));
+}
+
+export function NavBackButton() {
+	const navContext = useNav();
+	const router = useRouter();
+
+	const clickHandler = useCallback(() => {
+		navContext.setIsSearchActive(false);
+		router.back();
+	}, [navContext, router]);
+
+	return (
+		<motion.div
+			className={cn(
+				"fixed left-1/2 -translate-x-1/2 p-2 max-h-12 rounded-full overflow-hidden shadow-2xl",
+				"bg-neutral-100/70 dark:bg-muted/70 backdrop-blur-2xl backdrop-saturate-150 z-50"
+			)}
+			initial={{ bottom: -100, scale: 0.5 }}
+			animate={{ bottom: 16, scale: 1 }}
+			transition={{ type: 'spring' }}
+		>
+			<button
+				onClick={clickHandler}
+				className={cn(
+					'rounded-full gap-0 w-full justify-center inline-flex flex-row items-center overflow-hidden min-w-8 transition-all',
+					// "focus-visible:outline-amber-300 outline-1 outline-transparent",
+					"focus-visible:outline-amber-300 outline-1 outline-transparent",
+				)}
+			>
+				<ArrowLeftIcon className="size-8 text-inherit" />
+			</button>
+		</motion.div>
+
+	)
 }

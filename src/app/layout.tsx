@@ -1,5 +1,5 @@
 import { FolderCodeIcon, HomeIcon, PenBoxIcon } from 'lucide-react';
-import { Nav, NavItem } from '@/components/nav';
+import { Nav, NavBackButton, NavItem, NavProvider } from '@/components/nav';
 import { NavSearch, NavSearchPanel } from '@/components/nav/index';
 import "./globals.css";
 import { ThemeProvider } from 'next-themes'
@@ -56,19 +56,23 @@ export default function RootLayout({
 					}}
 				/>
 				<ThemeProvider attribute={'class'}>
-					<Nav>
-						<NavItem label="Home" href="/">
-							<HomeIcon className="size-4" />
-						</NavItem>
-						<NavItem label="Notes" href="/notes">
-							<PenBoxIcon className="size-4" />
-						</NavItem>
-						<NavItem label="Projects" href="/projects">
-							<FolderCodeIcon className="size-4" />
-						</NavItem>
-						<NavSearch />
-						<NavSearchPanel />
-					</Nav>
+					<NavProvider>
+						<NavBackButton />
+
+						<Nav>
+							<NavItem label="Home" href="/">
+								<HomeIcon className="size-4" />
+							</NavItem>
+							<NavItem label="Notes" href="/notes">
+								<PenBoxIcon className="size-4" />
+							</NavItem>
+							<NavItem label="Projects" href="/projects">
+								<FolderCodeIcon className="size-4" />
+							</NavItem>
+							<NavSearch />
+							<NavSearchPanel />
+						</Nav>
+					</NavProvider>
 
 					{children}
 

@@ -6,6 +6,7 @@ import MarkdownRenderer from '@/components/utils/renderers/MarkdownRenderer';
 import dayjs from "dayjs";
 import { cn } from "@/lib/utils";
 import { unstable_ViewTransition as ViewTransition } from 'react';
+import Link from 'next/link';
 
 type ProjectPageProps = {
 	params: Promise<{
@@ -128,6 +129,12 @@ export default async function SingleProjectPage(props: ProjectPageProps) {
 
 				<div className="max-w-2xl mx-auto w-full text-foreground/70">
 					<MarkdownRenderer content={project.summary} />
+				</div>
+
+				<div className='max-w-2xl mx-auto w-full mb-10 flex items-center justify-end'>
+					<p className='text-sm pt-4'>
+						Curious? <Link className='text-foreground/50 hover:underline underline-offset-2' href={project.link}>Get the Details</Link> ↗
+					</p>
 				</div>
 			</div>
 			{/* <div className={galleryStyles.workAroundTodoGalleryStyles} /> */}
