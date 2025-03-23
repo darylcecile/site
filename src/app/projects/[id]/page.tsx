@@ -1,12 +1,11 @@
 import type { Metadata, ResolvingMetadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import LocalDate from "../../../components/utils/LocalDate";
 import { getAllProjectsDataSorted, getProjectData } from "@/lib/repo/projectsRepo";
 import MarkdownRenderer from '@/components/utils/renderers/MarkdownRenderer';
-import dayjs from "dayjs";
 import { cn } from "@/lib/utils";
 import { unstable_ViewTransition as ViewTransition } from 'react';
 import Link from 'next/link';
+import ProjectsPageClient from '@/app/projects/[id]/page.client';
 
 type ProjectPageProps = {
 	params: Promise<{
@@ -138,6 +137,7 @@ export default async function SingleProjectPage(props: ProjectPageProps) {
 				</div>
 			</div>
 			{/* <div className={galleryStyles.workAroundTodoGalleryStyles} /> */}
+			<ProjectsPageClient />
 		</article>
 	);
 }

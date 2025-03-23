@@ -6,6 +6,7 @@ import MarkdownRenderer from '@/components/utils/renderers/MarkdownRenderer';
 import dayjs from "dayjs";
 import { cn } from "@/lib/utils";
 import { unstable_ViewTransition as ViewTransition } from 'react';
+import NotesPageClient from '@/app/notes/[slug]/page.client';
 
 type NotePageProps = {
 	params: Promise<{
@@ -123,6 +124,7 @@ export default async function SingleNotePage(props: NotePageProps) {
 				</div>
 			</div>
 			{/* <div className={galleryStyles.workAroundTodoGalleryStyles} /> */}
+			<NotesPageClient />
 		</article>
 	);
 }

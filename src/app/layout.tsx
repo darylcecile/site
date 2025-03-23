@@ -72,10 +72,10 @@ export default function RootLayout({
 							<NavSearch />
 							<NavSearchPanel />
 						</Nav>
+
+						{children}
+
 					</NavProvider>
-
-					{children}
-
 					<Footer />
 				</ThemeProvider>
 			</body>

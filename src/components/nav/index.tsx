@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { createContext, type Dispatch, type SetStateAction, use, useCallback, useRef, useState, type PropsWithChildren, useId } from "react";
+import { createContext, type Dispatch, type SetStateAction, use, useCallback, useRef, useState, type PropsWithChildren, useId, useEffect } from "react";
 import * as motion from "motion/react-client";
 import { usePathname, useRouter } from 'next/navigation';
 import { ArrowLeftIcon, SearchIcon } from "lucide-react";
@@ -13,19 +13,41 @@ import { useMounted } from "@/lib/hooks/useMounted";
 type NavContextType = {
 	isSearchActive: boolean;
 	setIsSearchActive: Dispatch<SetStateAction<boolean>>;
-	portalId: string
+	portalId: string;
+	isBackActive: boolean;
+	setIsBackActive: Dispatch<SetStateAction<boolean>>;
+	useBackButton: () => { show: () => void; hide: () => void };
 }
 
 const NavContext = createContext<NavContextType>(null);
 
 export function NavProvider({ children }: PropsWithChildren) {
 	const [isSearchActive, setIsSearchActive] = useState(false);
+	const [isBackActive, setIsBackActive] = useState(false);
 	const portalId = useId();
+
+	const useBackButton = useCallback(() => {
+		useEffect(() => {
+			setIsBackActive(true);
+			return () => {
+				setIsBackActive(false);
+			}
+		}, []);
+
+		return {
+			show: () => setIsBackActive(true),
+			hide: () => setIsBackActive(false)
+		}
+	}, []);
+
 	return (
 		<NavContext.Provider value={{
 			isSearchActive,
 			setIsSearchActive,
-			portalId
+			portalId,
+			isBackActive,
+			setIsBackActive,
+			useBackButton
 		}}>
 			{children}
 		</NavContext.Provider>
@@ -33,7 +55,9 @@ export function NavProvider({ children }: PropsWithChildren) {
 }
 
 export function Nav(props: PropsWithChildren) {
-	const { portalId } = useNav();
+	const { portalId, isBackActive, isSearchActive } = useNav();
+
+	const showBackButton = isBackActive && !isSearchActive;
 
 	return (
 		<>
@@ -42,8 +66,13 @@ export function Nav(props: PropsWithChildren) {
 					"fixed left-1/2 -translate-x-1/2 p-2 rounded-full overflow-hidden shadow-2xl",
 					"bg-neutral-100/70 dark:bg-muted/70 backdrop-blur-2xl backdrop-saturate-150 z-50"
 				)}
-				initial={{ bottom: -100, scale: 0.5 }}
-				animate={{ bottom: 16, scale: 1 }}
+				variants={{
+					initial: { bottom: -100, scale: 0.5 },
+					visible: { bottom: 16, scale: 1, translateX: 0 },
+					withBack: { bottom: 16, scale: 1, translateX: 28 },
+				}}
+				initial={'initial'}
+				animate={showBackButton ? 'withBack' : 'visible'}
 				transition={{ type: 'spring' }}
 			>
 				<ul className="flex justify-between  gap-2">
@@ -55,7 +84,7 @@ export function Nav(props: PropsWithChildren) {
 	);
 }
 
-function useNav() {
+export function useNav() {
 	return use(NavContext)
 }
 
@@ -275,25 +304,34 @@ export function NavBackButton() {
 		router.back();
 	}, [navContext, router]);
 
+	const showBackButton = navContext.isBackActive && !navContext.isSearchActive;
+
 	return (
 		<motion.div
 			className={cn(
 				"fixed left-1/2 -translate-x-1/2 p-2 max-h-12 rounded-full overflow-hidden shadow-2xl",
-				"bg-neutral-100/70 dark:bg-muted/70 backdrop-blur-2xl backdrop-saturate-150 z-50"
+				"bg-neutral-100/70 dark:bg-muted/70 backdrop-blur-2xl backdrop-saturate-150 z-50",
+				"bottom-4"
 			)}
-			initial={{ bottom: -100, scale: 0.5 }}
-			animate={{ bottom: 16, scale: 1 }}
+			variants={{
+				hidden: { opacity: 0, translateX: 0 },
+				visible: { opacity: 1, translateX: -90 }
+			}}
+			initial={'hidden'}
+			animate={showBackButton ? 'visible' : 'hidden'}
 			transition={{ type: 'spring' }}
 		>
 			<button
 				onClick={clickHandler}
 				className={cn(
-					'rounded-full gap-0 w-full justify-center inline-flex flex-row items-center overflow-hidden min-w-8 transition-all',
+					'rounded-full gap-0 w-full justify-center inline-flex flex-row items-center overflow-hidden min-w-8 min-h-8 transition-all',
 					// "focus-visible:outline-amber-300 outline-1 outline-transparent",
 					"focus-visible:outline-amber-300 outline-1 outline-transparent",
+					"bg-transparent hover:bg-neutral-600 p-1 cursor-pointer",
+					"text-foreground hover:text-background dark:hover:text-foreground"
 				)}
 			>
-				<ArrowLeftIcon className="size-8 text-inherit" />
+				<ArrowLeftIcon className="size-4 text-inherit" />
 			</button>
 		</motion.div>
 
