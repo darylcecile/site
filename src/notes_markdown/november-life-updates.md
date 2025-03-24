@@ -19,7 +19,7 @@ So im pulling this from [Carol](https://carol.gg/)'s book an attempt to provide 
 
 Two weeks ago, I found myself in a bit of a rut. The hectic lifestyle i've been trying to keep up with, together with the extremely brutal renting market had led to me spiralling a litte &mdash; and it wast until my manager had brought it up that I had realised that I had not been spending any time on myself. Since then i've been trying to make more time for self-care:
 
-- I started watching Netflix again (My latest watch being <Abbr title="From Scratch" link="https://www.google.co.uk/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwi2yNmljpX7AhWIZ8AKHdlpA4cQFnoECEoQAQ&url=https%3A%2F%2Fwww.netflix.com%2Ftitle%2F81104486&usg=AOvVaw0LrPqvBVfWDOg0KdjX4ww1">From Scratch</Abbr> - which I highly recommend!)
+- I started watching Netflix again (My latest watch being <Abbr title="From Scratch" link="https://www.netflix.com/gb/title/81104486">From Scratch</Abbr> - which I highly recommend!)
 - Treated Will and I to a Spa day at Bannatyne Health Spa in Mansfield
 - Made some time to work on the designs for my upcoming side-project
 - Signed up to [BeReal](https://bere.al/dcjoa) to see what the hype is all about 👴🏾

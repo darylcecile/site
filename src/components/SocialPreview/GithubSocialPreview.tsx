@@ -88,7 +88,7 @@ export async function GitHubUser({ handle, children }: PropsWithChildren<GitHubU
 			</HoverCardTrigger>
 			<HoverCardContent
 				className="w-80 p-0 overflow-hidden border-none shadow-lg rounded-2xl"
-				align="start"
+				align="center"
 				sideOffset={5}
 			>
 				<div className="overflow-hidden bg-white dark:bg-gray-950">

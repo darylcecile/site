@@ -2,13 +2,16 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { createContext, type Dispatch, type SetStateAction, use, useCallback, useRef, useState, type PropsWithChildren, useId, useEffect } from "react";
+import { createContext, type Dispatch, type SetStateAction, use, useCallback, useRef, useState, type PropsWithChildren, useId, useEffect, useTransition } from "react";
 import * as motion from "motion/react-client";
 import { usePathname, useRouter } from 'next/navigation';
-import { ArrowLeftIcon, SearchIcon } from "lucide-react";
+import { ArrowLeftIcon, FolderGit2, FolderGit2Icon, Loader2, PenToolIcon, SearchIcon } from "lucide-react";
 import { useResize } from "@/lib/hooks/useResize";
 import { createPortal } from 'react-dom';
 import { useMounted } from "@/lib/hooks/useMounted";
+import { AnimatePresence } from "motion/react";
+import { useDebounce } from '@/lib/hooks/useDebounce';
+import { search } from '@/app/(actions)/search';
 
 type NavContextType = {
 	isSearchActive: boolean;
@@ -17,6 +20,25 @@ type NavContextType = {
 	isBackActive: boolean;
 	setIsBackActive: Dispatch<SetStateAction<boolean>>;
 	useBackButton: () => { show: () => void; hide: () => void };
+	searchState: NavContextSearchState;
+}
+
+type NavContextSearchState = {
+	searchTerm: string;
+	setSearchTerm: Dispatch<SetStateAction<string>>;
+
+	isPending: boolean;
+	results?: Array<{
+		type: 'note' | 'project';
+		title: string;
+		slug: string;
+		content: string;
+		keywords: string[];
+	}>,
+	error?: Error;
+	state: 'idle' | 'pending' | 'success' | 'empty';
+	selectionIndex: number;
+	setSelectionIndex: Dispatch<SetStateAction<number>>;
 }
 
 const NavContext = createContext<NavContextType>(null);
@@ -24,7 +46,13 @@ const NavContext = createContext<NavContextType>(null);
 export function NavProvider({ children }: PropsWithChildren) {
 	const [isSearchActive, setIsSearchActive] = useState(false);
 	const [isBackActive, setIsBackActive] = useState(false);
+	const [searchTerm, setSearchTerm] = useState('');
 	const portalId = useId();
+
+	const [isSearchPending, startSearchTransition] = useTransition();
+	const [results, setResults] = useState<NavContextSearchState['results']>(undefined);
+	const [selectionIndex, setSelectionIndex] = useState(0);
+	const text = useDebounce(searchTerm, 300);
 
 	const useBackButton = useCallback(() => {
 		useEffect(() => {
@@ -40,6 +68,17 @@ export function NavProvider({ children }: PropsWithChildren) {
 		}
 	}, []);
 
+	useEffect(() => {
+		setResults(undefined);
+
+		if (text.length > 0) {
+			startSearchTransition(async () => {
+				const result = await search(text);
+				setResults(result);
+			});
+		}
+	}, [text]);
+
 	return (
 		<NavContext.Provider value={{
 			isSearchActive,
@@ -47,7 +86,21 @@ export function NavProvider({ children }: PropsWithChildren) {
 			portalId,
 			isBackActive,
 			setIsBackActive,
-			useBackButton
+			useBackButton,
+			searchState: {
+				searchTerm,
+				setSearchTerm,
+				isPending: isSearchPending,
+				results,
+				error: undefined,
+				state: isSearchPending ? 'pending' : (
+					results ? (
+						results.length ? 'success' : 'empty'
+					) : 'idle'
+				),
+				selectionIndex,
+				setSelectionIndex,
+			}
 		}}>
 			{children}
 		</NavContext.Provider>
@@ -169,6 +222,7 @@ export function NavItem(props: NavItemProps) {
 export function NavSearch() {
 	const navContext = useNav();
 	const ref = useRef<HTMLInputElement>(null);
+	const router = useRouter();
 
 	const focusHandler = useCallback(() => {
 		navContext.setIsSearchActive(true);
@@ -236,6 +290,38 @@ export function NavSearch() {
 				placeholder="Looking for..."
 				onFocus={focusHandler}
 				transition={{ type: 'spring', bounce: 0.1 }}
+				value={navContext.searchState.searchTerm}
+				onChange={e => {
+					navContext.searchState.setSearchTerm(e.target.value);
+				}}
+				onKeyUp={e => {
+					if (e.key === 'ArrowDown') {
+						e.preventDefault();
+						navContext.searchState.setSelectionIndex(prev => {
+							if (prev + 1 >= navContext.searchState.results?.length) return prev;
+							return prev + 1;
+						});
+					}
+
+					if (e.key === 'ArrowUp') {
+						e.preventDefault();
+						navContext.searchState.setSelectionIndex(prev => {
+							if (prev - 1 < 0) return prev;
+							return prev - 1;
+						});
+					}
+
+					if (e.key === 'Enter') {
+						e.preventDefault();
+						const result = navContext.searchState.results?.[navContext.searchState.selectionIndex];
+						if (result) {
+							navContext.searchState.setSearchTerm('');
+							navContext.setIsSearchActive(false);
+							(e.target as HTMLInputElement).blur();
+							router.push(`/${result.type}s/${result.slug}`);
+						}
+					}
+				}}
 			/>
 			<SearchIcon
 				className={cn(
@@ -252,16 +338,28 @@ export function NavSearch() {
 export function NavSearchPanel() {
 	const navContext = useNav();
 	const isMounted = useMounted();
-
+	const { state, results, selectionIndex } = navContext.searchState;
 	const { windowWidth, windowHeight } = useResize();
+	const listRef = useRef<HTMLUListElement>(null);
+
+	useEffect(() => {
+		if (listRef.current) {
+			listRef.current.querySelectorAll('li').item(selectionIndex)?.scrollIntoView({
+				behavior: 'smooth',
+				block: 'nearest',
+				inline: 'nearest'
+			});
+		}
+	}, [selectionIndex]);
 
 	if (!isMounted) return null;
 
 	return createPortal(
 		<motion.div
-			className="bg-neutral-300/10 dark:bg-neutral-700/70 backdrop-blur-2xl backdrop-saturate-150 text-foreground z-49 fixed left-1/2 -translate-x-1/2 overflow-hidden shadow-2xl w-full h-auto"
-			initial={{ opacity: 0, maxHeight: 48 }}
+			className="flex flex-col bg-neutral-300/10 dark:bg-neutral-700/70 backdrop-blur-2xl backdrop-saturate-150 text-foreground z-49 fixed left-1/2 -translate-x-1/2 overflow-hidden shadow-2xl w-full h-auto"
+			initial={'initial'}
 			variants={{
+				initial: { opacity: 0, maxHeight: 48 },
 				hidden: {
 					opacity: 0,
 					maxHeight: 48 + 10,
@@ -271,10 +369,9 @@ export function NavSearchPanel() {
 				},
 				peeking: {
 					opacity: 1,
-					maxHeight: windowHeight / 3,
-					padding: 16,
-					paddingTop: 8,
-					paddingBottom: 48 + 4 + 8,
+					maxHeight: windowHeight - 48 - 16,
+					padding: 0,
+					paddingBottom: 48 + 4,
 					maxWidth: Math.min(
 						windowWidth - (8 * 2) - (8 * 2) - (32 - 8),
 						400 + 16 + 32 + 8 + 8
@@ -288,9 +385,69 @@ export function NavSearchPanel() {
 			animate={navContext.isSearchActive ? 'peeking' : 'hidden'}
 			transition={{ type: 'spring', bounce: 0.1 }}
 		>
-			<span className="text-xs opacity-50">
-				Start typing something...
-			</span>
+
+			{state === 'idle' && (
+				<span
+					key='idle-state'
+					className="text-xs opacity-50 flex flex-row items-center gap-2 p-4"
+				>
+					Start typing something...
+				</span>
+			)}
+			{state === 'pending' && (
+				<span
+					key='pending-state'
+					className="text-xs opacity-50 flex flex-row items-center gap-2 p-4"
+				>
+					<Loader2 className="animate-spin size-4 text-inherit" />
+					Searching...
+				</span>
+			)}
+			{state === 'empty' && (
+				<span
+					key='empty-state'
+					className="text-xs opacity-50 flex flex-row items-center gap-2 p-4"
+				>
+					No results found.
+				</span>
+			)}
+			<AnimatePresence>
+				{state === 'success' && (
+					<motion.ul
+						key='success-state'
+						ref={listRef}
+						className="grid grid-cols-1 gap-1 max-h-[calc(100vh-48px)] overflow-y-auto flex-1 p-1"
+					>
+						<AnimatePresence>
+							{results.map((result, i) => {
+								const Icon = result.type === 'project' ? FolderGit2Icon : PenToolIcon;
+								return (
+									<motion.li
+										key={result.slug}
+										className={cn(
+											"text-xs opacity-50 hover:bg-muted rounded-lg p-2 hover:opacity-100 hover:text-foreground transition-all duration-300 ease-in-out",
+											{ 'rounded-t-3xl': i === 0, 'rounded-b-3xl': i === results.length - 1 },
+											{ 'text-neutral-900 bg-amber-300 opacity-100': selectionIndex === i },
+										)}
+										exit={{ opacity: 0, transform: 'translateY(-1em)' }}
+									>
+										<Link
+											href={`/${result.type}s/${result.slug}`}
+											className="pl-2 flex flex-row items-center gap-4 text-inherit"
+										>
+											<Icon size={'1.5em'} />
+											<div className="flex flex-col">
+												<span className="text-base">{result.title}</span>
+												<span className="text-xs text-inherit/75 capitalize">{result.type}</span>
+											</div>
+										</Link>
+									</motion.li>
+								)
+							})}
+						</AnimatePresence>
+					</motion.ul>
+				)}
+			</AnimatePresence>
 		</motion.div>
 		, document.getElementById(navContext.portalId));
 }
