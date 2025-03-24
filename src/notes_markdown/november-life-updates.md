@@ -5,7 +5,7 @@ image: "https://darylcecile.net/r/images.unsplash.com/photo-1468245856972-a0333f
 snippet: Life updates - November
 ---
 
-So im pulling this from [Carol](https://carol.gg/)'s book an attempt to provide you with a [lifenote](https://twitter.com/carolsaysthings/status/1587174153190268929?s=61&t=jXDDwfGAQLaMRy52o0w4Qg)-esque life update. Since my <Abbr link="https://darylcecile.net/notes/moving-out-notts" title="Moving out">last post</Abbr>, a lot has happened;
+So im pulling this from [Carol](https://carol.gg/)'s book an attempt to provide you with a [lifenote](https://twitter.com/carolsaysthings/status/1587174153190268929?s=61&t=jXDDwfGAQLaMRy52o0w4Qg)-esque life update. Since my <Abbr link="https://darylcecile.net/notes/moving-out-notts" title="Moving out" hideFavicon={true}>last post</Abbr>, a lot has happened;
 
 - Ive done a couple of house viewings throughout London
 - Panther has officially moved down to London

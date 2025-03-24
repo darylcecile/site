@@ -2,6 +2,7 @@ import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/h
 import { cn } from '@/lib/utils';
 import { parse } from 'node-html-parser';
 import type { PropsWithChildren } from 'react';
+import FancyLink from './FancyLink';
 
 type AbbrPreviewProps = PropsWithChildren<{
 	title: string;
@@ -9,43 +10,44 @@ type AbbrPreviewProps = PropsWithChildren<{
 	favicon?: string;
 	link?: string;
 	description: string;
+	hideFavicon?: boolean;
 }>
 
 const base = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` || 'http://localhost:3000';
 
 export async function AbbrPreview(props: AbbrPreviewProps) {
 	const data = props.link && await getMetadata(props.link);
-	const origin = props.link && new URL(props.link, base).host;
 
-	if (!data && !props.title) {
+	if (!data && !props.title && !props.description) {
 		return props.children
 	}
 
+	const title = data?.title || props.title;
+
 	return (
-		<HoverCard>
-			<HoverCardTrigger href={props.link} className={cn(
-				'relative',
-				{ 'pl-5': !!origin }
-			)}>
-				{!!origin && (
-					<img
-						src={`https://icons.duckduckgo.com/ip3/${origin}.ico`}
-						alt=""
-						className="w-4 h-4 my-0 rounded inline not-prose absolute left-0 top-0.5"
-					/>
+		<HoverCard openDelay={100} closeDelay={200} >
+			<HoverCardTrigger asChild>
+				{props.link ? (
+					<FancyLink href={props.link} className='decoration-dotted' hideFavicon={props.hideFavicon}>{props.children}</FancyLink>
+				) : (
+					<span className={cn(
+						'underline decoration-dotted underline-offset-4'
+					)}>{props.children}</span>
 				)}
-				<span className={cn(
-					'underline decoration-dotted underline-offset-4'
-				)}>{props.children}</span>
 			</HoverCardTrigger>
 			<HoverCardContent
-				className="w-80 overflow-hidden border-none shadow-lg rounded-2xl bg-muted p-2 flex flex-col"
+				className={cn(
+					"w-80 overflow-hidden border-none shadow-lg rounded-2xl p-2 flex flex-col",
+					"bg-muted/20 backdrop-blur-2xl backdrop-saturate-150",
+				)}
 				align="center"
 			>
 				{data?.image && (
 					<img src={`/proxy?u=${btoa(data.image)}`} className='aspect-video w-full object-cover rounded-lg mb-2' alt="" />
 				)}
-				<p className={'p-1 leading-5 pb-0 text-balance relative'}>{data?.title ?? props.title}</p>
+				{title && (
+					<p className={'p-1 leading-5 pb-0 text-balance relative'}>{title}</p>
+				)}
 				<p className='p-1 text-sm text-muted-foreground'>{data?.description ?? props.description}</p>
 			</HoverCardContent>
 		</HoverCard>
@@ -68,7 +70,15 @@ function toColor(text: string) {
 	return colors[index];
 }
 
+const URL_IGNORE_LIST = [
+	"https://projectfunction.io/"
+];
+
 async function getMetadata(url: string) {
+	if (URL_IGNORE_LIST.some((ignore) => url.startsWith(ignore))) {
+		return null;
+	}
+
 	try {
 		const response = await fetch(url, { method: "GET" });
 		if (!response.ok) return null;

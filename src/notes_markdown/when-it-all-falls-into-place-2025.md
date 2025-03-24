@@ -16,7 +16,7 @@ With that in mind, there are some bits I want to achieve this year:
 - **Explore content creation 🎬**: Writing, sharing ideas, and creating—it’s time to step out of my comfort zone.  
 - **Travel more ✈️**: After years of feeling a bit stuck, it’s time to step away and experiences even more of what the world has to offer.  
 
-A potentially massive opportunity is on the horizon for me. I can’t say much yet, but I hope it works out—it could be a real game-changer. Keep your fingers crossed for me and [stay in the loop](https://bsky.app/profile/daryl.wtf)!
+A potentially massive opportunity is on the horizon for me. I can’t say much yet, but I hope it works out—it could be a real game-changer. Keep your fingers crossed and [stay in the loop](https://bsky.app/profile/daryl.wtf)!
 
 All in all, 2025 feels like the year of *realization*, and I can’t wait to see what’s ahead.
 

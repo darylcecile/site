@@ -17,6 +17,6 @@ Initially, I had so much excitement and ideas for this project, but over time I 
 
 So I got in touch with my Tutor and Module leader and requested a change of topic. The initial response was "Normally; we'd say its too late, but due to circumstances we could look into the possibility. Do you have a rough idea of how long it will take?". Once I calculated the time and sent a response I felt pretty sure this would be it... I'm still waiting.
 
-I've decided to take the risk and start working on the new project (called *rejig* - thanks to my friend [@rizbizkits](https://twitter.com/rizbizkits) for the name idea) despite the fact I am yet to hear back from the module leader. What i've discovered is that i'm much happier doing this work than I was when I was doing work on the previous topic.
+I've decided to take the risk and start working on the new project (called *rejig* - thanks to my friend [Riz](https://rizwanakhan.com) for the name idea) despite the fact I am yet to hear back from the module leader. What i've discovered is that i'm much happier doing this work than I was when I was doing work on the previous topic.
 
 "*I kindly await your response...*"

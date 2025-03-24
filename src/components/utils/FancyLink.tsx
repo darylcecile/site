@@ -9,26 +9,60 @@ type Props = PropsWithChildren<{
 } & LinkProps>;
 
 const base = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` || 'http://localhost:3000';
+// const FAV_URL = "https://icons.duckduckgo.com/ip3/{{host}}.ico";
+const FAV_URL = "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url={{origin}}&size=32";
+
+function getFaviconUrl(url: string) {
+	const host = new URL(url, base).host;
+	const origin = new URL(url, base).origin;
+	const favUrl = FAV_URL.replace("{{origin}}", origin).replace("{{host}}", host);
+	return favUrl;
+}
+
+const URL_IGNORE_LIST = [
+	"https://twitter.com/",
+	"https://projectfunction.io/"
+]
 
 export default function FancyLink(props: Props) {
-	const origin = new URL(props.href as string, base).host;
+	const { hideFavicon, ...rest } = props;
+	const url = props.href.toString();
+	const shouldHideFavicon = hideFavicon || URL_IGNORE_LIST.some(prefix => url.startsWith(prefix)) || url.startsWith('#') || url.startsWith('/');
+
 	return (
 		<Link
-			{...props}
+			{...rest}
 			className={cn(
 				props.className,
-				{ "pl-5 relative": !props.hideFavicon },
+				"font-normal underline underline-offset-4 not-prose whitespace-break-spaces",
+				generateColorFromText(url),
+				{ "pl-5 relative": !shouldHideFavicon },
 			)}
-			data-peg={origin}
 		>
-			{!props.hideFavicon && (
+			{!shouldHideFavicon && (
 				<img
-					src={`https://icons.duckduckgo.com/ip3/${origin}.ico`}
+					src={getFaviconUrl(props.href as string)}
 					alt=""
-					className="w-4 h-4 my-0 rounded inline not-prose absolute left-0 top-0.5"
+					className="w-4 h-4 min-w-4 min-h-4 aspect-square my-0 rounded inline not-prose absolute left-0 top-0.25"
 				/>
 			)}
 			{props.children}
 		</Link>
 	)
+}
+
+function generateColorFromText(text: string) {
+	// convert the text to a nummber between 0 and 7
+	const hash = [...text].reduce((acc, char) => acc + char.charCodeAt(0), 0);
+	const index = hash % 7;
+	const colors = [
+		"hover:text-red-700 dark:hover:text-red-400",
+		"hover:text-yellow-700 dark:hover:text-yellow-400",
+		"hover:text-green-700 dark:hover:text-green-400",
+		"hover:text-blue-700 dark:hover:text-blue-400",
+		"hover:text-indigo-700 dark:hover:text-indigo-400",
+		"hover:text-purple-700 dark:hover:text-purple-400",
+		"hover:text-pink-700 dark:hover:text-pink-400",
+	];
+	return colors[index];
 }

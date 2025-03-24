@@ -38,7 +38,8 @@ export default function MarkdownRenderer(props: Props) {
 					}
 					return <pre {...props} />;
 				},
-				'Gallery': GalleryRenderer
+				'Gallery': GalleryRenderer,
+				'h3': (props) => <h3 id={generateIdFromText(props.children)}>{props.children}</h3>,
 			}}
 			options={{
 				mdxOptions: {
@@ -47,4 +48,14 @@ export default function MarkdownRenderer(props: Props) {
 			}}
 		/>
 	)
+}
+
+function generateIdFromText(text: string) {
+	// create an HTML id-safe string from the text
+	const id = text
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '')
+		.replace(/--+/g, '-');
+	return id;
 }

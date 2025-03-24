@@ -4,7 +4,7 @@ date: "2022-06-05"
 snippet: A how-to guide on adding RSS to your site
 ---
 
-Recently, I've discovered a new-found love for <abbr title="Really Simple Syndication" link="https://rss.com/blog/how-do-rss-feeds-work/">RSS</abbr>. It gives
+Recently, I've discovered a new-found love for <Abbr title="Really Simple Syndication" link="https://rss.com/blog/how-do-rss-feeds-work/">RSS</Abbr>. It gives
 me the best of both worlds; fast access to content, and a way to subscribe to content from sites I frequently visit - without 
 having to share my email address. Coincidentally, over the Jubilee weekend, I've been updating my website; adding dark mode,
 writing new content, and even adding an RSS feed. So I thought id write a mini tutorial guide on adding autodiscovery to a website.

@@ -4,7 +4,7 @@ date: "2023-10-09"
 snippet: I'm looking for my next challenge!
 ---
 
-So it's been officially 3 years and 8 months (give or take) since I last wrote Futuristic <Abbr title="Futuristic Pursuit" link="https://darylcecile.net/notes/futuristic-pursuit">Pursuit</Abbr>. How time flies!
+So it's been officially 3 years and 8 months (give or take) since I last wrote <Abbr title="Futuristic Pursuit" link="https://darylcecile.net/notes/futuristic-pursuit">Futuristic Pursuit</Abbr>. How time flies!
 
 Since then, I got a job at Capital One UK; starting off as a Software Engineer and quickly progressing to a Senior Role, I finalized the winding-down of ProjectFunction, <Abbr title="Moving out" link="https://darylcecile.net/notes/moving-out-notts">Moved to London</Abbr> with Panther and my Partner, and got back into working on my side projects (after recovering from some serious burnout!)
 

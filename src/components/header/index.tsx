@@ -7,6 +7,7 @@ import HeaderClient from '@/components/header/index.client';
 import KnoshIcon from "@/../public/knosh-icon.png";
 import Image from 'next/image';
 import { KnoshLogo } from '@/components/vectors/KnoshLogo';
+import FancyLink from '../utils/FancyLink';
 
 export function Header() {
 
@@ -75,6 +76,10 @@ export function Header() {
 
 				<p>
 					It's all a collection of my curiosity in action — from throwaway projects that taught me something new, to concepts I just <i>had</i> to bring to life. So take a look around, and if you have any thoughts or feedback, I'd love to hear it.
+				</p>
+
+				<p className='text-balance'>
+					If you want to stay in touch, you can find me on <FancyLink href="https://github.com/darylcecile">GitHub</FancyLink>, <FancyLink href="https://bsky.app/profile/daryl.wtf">BlueSky</FancyLink>, and (reluctantly) <FancyLink href="https://twitter.com/darylcecile">Twitter</FancyLink>.
 				</p>
 			</div>
 		</div>

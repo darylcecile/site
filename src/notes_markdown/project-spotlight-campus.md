@@ -9,7 +9,7 @@ snippet: 'Spotlight: A Learning Management System created for ProjectFunction'
     This LMS was created for ProjectFunction, which closed its doors in May 2022. See an archive of it on the <i><a href="/projects#ProjectFunction">project page</a></i>.
 </InfoBox>
 
-For those of you who have not been keeping up with my adventures lately, [Rizwana](https://twitter.com/rizbizkits) and I [ended a PF session for the last time](https://web.archive.org/web/20220711151132/https%3A%2F%2Fprojectfunction.io%2Fnotes%2Fthis-isnt-farewell) in May after the successful completion of wave 9. Since then, I have gone for a well-needed holiday, replacing my mental and emotional burns with physical ones. 
+For those of you who have not been keeping up with my adventures lately, [Rizwana](https://rizwanakhan.com) and I [ended a PF session for the last time](https://web.archive.org/web/20220711151132/https%3A%2F%2Fprojectfunction.io%2Fnotes%2Fthis-isnt-farewell) in May after the successful completion of wave 9. Since then, I have gone for a well-needed holiday, replacing my mental and emotional burns with physical ones. 
 
 Despite existing and providing a digital learning experience for the past 3 years, Campus has never been seen outside of ProjectFunction. So I thought id take a moment to spotlight Campus - the LMS that I have been working on and maintaining for PF for a couple of years. 
 
