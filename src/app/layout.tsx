@@ -7,6 +7,7 @@ import { Rays } from '@/components/header/rays';
 import Footer from '@/components/footer/index';
 import { GeistSans } from "geist/font/sans";
 import { cn } from '@/lib/utils';
+import { ClientTheme } from '@/components/utils/ClientTheme';
 
 export const metadata = {
 	title: 'Next.js',
@@ -21,7 +22,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={cn(GeistSans.className, 'bg-background w-full min-h-screen')}>
-				<Rays className="w-full min-w-7xl -top-1/2 bg-center h-screen fixed opacity-50 pointer-events-none -z-1" />
+				<Rays className="w-full min-w-7xl -top-1/2 bg-center h-screen fixed opacity-50 pointer-events-none z-0" />
 				{/* TOP PROGRESSIVE BLUR */}
 				{/* <div
 					className="w-full h-20 -top-5 left-0 fixed pointer-events-none z-40"
@@ -56,6 +57,8 @@ export default function RootLayout({
 					}}
 				/>
 				<ThemeProvider attribute={'class'}>
+					{/* <ClientTheme /> */}
+					<meta name="theme-color" content="transparent" />
 					<NavProvider>
 						<NavBackButton />
 
@@ -73,7 +76,9 @@ export default function RootLayout({
 							<NavSearchPanel />
 						</Nav>
 
-						{children}
+						<div className='z-2'>
+							{children}
+						</div>
 
 					</NavProvider>
 					<Footer />

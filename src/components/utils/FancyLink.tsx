@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import type { LinkProps } from "next/link";
 import Link from "next/link";
 import type { PropsWithChildren } from "react";
+import { GitHubUser } from "../SocialPreview/GithubSocialPreview";
 
 type Props = PropsWithChildren<{
 	hideFavicon?: boolean;
@@ -24,12 +25,17 @@ const URL_IGNORE_LIST = [
 	"https://projectfunction.io/"
 ]
 
+const SPECIAL_ACCOUNT = [
+	{ github: 'rizbizkits', website: 'https://rizwanakhan.com' },
+	{ github: 'darylcecile', website: 'https://darylcecile.net' },
+];
+
 export default function FancyLink(props: Props) {
 	const { hideFavicon, ...rest } = props;
 	const url = props.href.toString();
 	const shouldHideFavicon = hideFavicon || URL_IGNORE_LIST.some(prefix => url.startsWith(prefix)) || url.startsWith('#') || url.startsWith('/');
 
-	return (
+	const el = (
 		<Link
 			{...rest}
 			className={cn(
@@ -48,7 +54,25 @@ export default function FancyLink(props: Props) {
 			)}
 			{props.children}
 		</Link>
-	)
+	);
+
+	const account = SPECIAL_ACCOUNT.find(account => {
+		const githubOptions = [
+			`https://github.com/${account.github}`,
+			`https://github.com/${account.github}/`,
+			`https://github.com/@${account.github}`,
+			`https://github.com/@${account.github}/`
+		]
+		if (githubOptions.includes(url)) return true;
+		if (url === account.website || url === `${account.website}/`) return true;
+		return false;
+	});
+
+	if (account) {
+		return <GitHubUser handle={account.github}>{el}</GitHubUser>
+	}
+
+	return el;
 }
 
 function generateColorFromText(text: string) {

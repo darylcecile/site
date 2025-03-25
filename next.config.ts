@@ -6,5 +6,13 @@ export default {
 	serverExternalPackages: ["@shikijs/twoslash"],
 	experimental: {
 		viewTransition: true
+	},
+	images: {
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'avatars.githubusercontent.com'
+			},
+		],
 	}
 } satisfies NextConfig

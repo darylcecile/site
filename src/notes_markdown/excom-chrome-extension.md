@@ -80,9 +80,7 @@ const returnValue = await popupScriptHandler.backgroundMethods.openTab('https://
 ```
 
 Once this was made and published<sup>[[1]](#reference1)</sup>, I decided to create a dummy extension
-that allows me to search through my open tabs through a search box that is injected on any page I'm on, with the background script
-handling the actual search and filtering. The experience was so much nicer; I could focus purely on calling methods and UI, and the library
-did the rest.
+that allows me to search through my open tabs through a search box that is injected on any page I'm on, with the background script handling the actual search and filtering. The experience was so much nicer; I could focus purely on calling methods and UI, and the library did the rest.
 
 Who knows where this may lead me? Maybe I'll become a full-time extensions developer 😏
 

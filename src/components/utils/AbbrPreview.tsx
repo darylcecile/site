@@ -71,7 +71,7 @@ function toColor(text: string) {
 }
 
 const URL_IGNORE_LIST = [
-	"https://projectfunction.io/"
+	"https://projectfunction.io"
 ];
 
 async function getMetadata(url: string) {
@@ -80,7 +80,10 @@ async function getMetadata(url: string) {
 	}
 
 	try {
-		const response = await fetch(url, { method: "GET" });
+		const response = await fetch(url, { method: "GET" }).catch(e => {
+			console.log("Error fetching URL:", url, e);
+			throw e;
+		});
 		if (!response.ok) return null;
 
 		const text = await response.text();

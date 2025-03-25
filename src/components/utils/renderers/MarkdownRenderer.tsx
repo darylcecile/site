@@ -7,6 +7,8 @@ import CodeRenderer from '@/components/utils/renderers/CodeRenderer';
 import GalleryRenderer from '@/components/utils/renderers/GalleryRenderer';
 import { AbbrPreview } from '@/components/utils/AbbrPreview';
 import FancyLink from '../FancyLink';
+import { InlineCodeRenderer } from './InlineCodeRenderer';
+import { Heading } from '@/components/notes/Heading';
 
 type Props = {
 	content: string;
@@ -31,15 +33,26 @@ export default function MarkdownRenderer(props: Props) {
 					return <p>{props.children}</p>;
 				},
 				'pre': (props) => {
-					if (props.children.type === 'code') {
+					if (props.children.type === 'code' || props.children.type.name === 'code') {
 						const language = props.children.props.className.replace('language-', '');
 						const code = props.children.props.children;
 						return <CodeRenderer lang={language} withIntellisense={props.twoslash}>{code}</CodeRenderer>;
 					}
 					return <pre {...props} />;
 				},
+				'code': (props) => {
+					if (props.className?.startsWith('language-')) {
+						return <code {...props} data-valley={true} />;
+					}
+					return <InlineCodeRenderer {...props} />;
+				},
 				'Gallery': GalleryRenderer,
-				'h3': (props) => <h3 id={generateIdFromText(props.children)}>{props.children}</h3>,
+				'h1': (props) => <Heading level={1} {...props} />,
+				'h2': (props) => <Heading level={2} {...props} />,
+				'h3': (props) => <Heading level={3} {...props} />,
+				'h4': (props) => <Heading level={4} {...props} />,
+				'h5': (props) => <Heading level={5} {...props} />,
+				'h6': (props) => <Heading level={6} {...props} />,
 			}}
 			options={{
 				mdxOptions: {
@@ -48,14 +61,4 @@ export default function MarkdownRenderer(props: Props) {
 			}}
 		/>
 	)
-}
-
-function generateIdFromText(text: string) {
-	// create an HTML id-safe string from the text
-	const id = text
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, '-')
-		.replace(/^-+|-+$/g, '')
-		.replace(/--+/g, '-');
-	return id;
 }

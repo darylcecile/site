@@ -5,7 +5,7 @@ import { getAllNotesDataSorted, getNoteData } from "@/lib/repo/notesRepo";
 import MarkdownRenderer from '@/components/utils/renderers/MarkdownRenderer';
 import dayjs from "dayjs";
 import { cn } from "@/lib/utils";
-import { unstable_ViewTransition as ViewTransition } from 'react';
+import { type CSSProperties, unstable_ViewTransition as ViewTransition } from 'react';
 import NotesPageClient from '@/app/notes/[slug]/page.client';
 
 type NotePageProps = {
@@ -94,12 +94,13 @@ export default async function SingleNotePage(props: NotePageProps) {
 	const postData = await getNoteData(params.slug);
 	if (!postData) return notFound();
 
+
 	return (
 		<article className="content px-8">
 			<div className="max-w-2xl mx-auto w-full pt-20">
 				<ViewTransition name={`notes-${postData.slug}`}>
 					<h1 className="text-3xl">{postData.title}</h1>
-					<p className="text-foreground/70 prose">
+					<p className="text-foreground/70 prose metalic-dark">
 						<LocalDate dateString={postData.date} /> &middot;{" "}
 						{postData.readTime}
 					</p>

@@ -96,7 +96,7 @@ export default function DotMatrixImage({
 		const canvas = canvasRef.current
 		if (!canvas) return
 
-		const ctx = canvas.getContext("2d", { alpha: true })
+		const ctx = canvas.getContext("2d", { alpha: true, willReadFrequently: true })
 		if (!ctx) return
 
 		setIsLoading(true)

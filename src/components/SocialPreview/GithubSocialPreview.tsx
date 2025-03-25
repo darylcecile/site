@@ -87,16 +87,24 @@ export async function GitHubUser({ handle, children }: PropsWithChildren<GitHubU
 				{children}
 			</HoverCardTrigger>
 			<HoverCardContent
-				className="w-80 p-0 overflow-hidden border-none shadow-lg rounded-2xl"
+				className={cn(
+					"w-80 p-0 overflow-hidden border-none shadow-lg rounded-2xl",
+					"bg-muted/80 backdrop-blur-2xl backdrop-saturate-150"
+				)}
 				align="center"
 				sideOffset={5}
 			>
-				<div className="overflow-hidden bg-white dark:bg-gray-950">
-					<div className="h-24 bg-[#327aff] dark:bg-[#0a1d3c] relative overflow-hidden">
-						<svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 100" preserveAspectRatio="none">
+				<div className="overflow-hidden ">
+					<div className="h-24 aspect-[4/1] bg-neutral-400 dark:bg-neutral-700 relative overflow-hidden">
+						{/* <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 100" preserveAspectRatio="none">
 							<path d="M0,50 C100,20 200,80 400,50 L400,100 L0,100 Z" fill="#1a2d4c" fillOpacity="0.4" />
 							<path d="M0,60 C150,30 250,90 400,60 L400,100 L0,100 Z" fill="#2a3d5c" fillOpacity="0.2" />
-						</svg>
+						</svg> */}
+						<img
+							src={profile.avatar_url || "/placeholder.svg"}
+							alt=""
+							className="absolute inset-0 h-full w-full object-cover opacity-100 saturate-150 blur-2xl"
+						/>
 					</div>
 					<div className="px-6 pb-6">
 						<div className="flex flex-col items-center -mt-12 mb-4">

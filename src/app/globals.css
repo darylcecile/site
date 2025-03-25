@@ -132,3 +132,9 @@
 	background-repeat: repeat;
 	background-size: 600px 600px;
 }
+
+.dark .metalic-dark {
+    color: rgb(255 255 255 / 89%);
+    mix-blend-mode: color-dodge;
+    background-color: #000000;
+}

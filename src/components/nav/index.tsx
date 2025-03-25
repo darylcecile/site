@@ -75,6 +75,7 @@ export function NavProvider({ children }: PropsWithChildren) {
 			startSearchTransition(async () => {
 				const result = await search(text);
 				setResults(result);
+				setSelectionIndex(0);
 			});
 		}
 	}, [text]);
@@ -108,9 +109,31 @@ export function NavProvider({ children }: PropsWithChildren) {
 }
 
 export function Nav(props: PropsWithChildren) {
-	const { portalId, isBackActive, isSearchActive } = useNav();
+	const { portalId, isBackActive, isSearchActive, setIsSearchActive, searchState } = useNav();
 
 	const showBackButton = isBackActive && !isSearchActive;
+
+	useEffect(() => {
+		const handleClick = (e: MouseEvent) => {
+			const withinNav = (e.target as HTMLElement).closest('nav');
+			const withinPortal = (e.target as HTMLElement).closest(`#${portalId}`);
+
+			if (withinNav) return;
+			// if (withinPortal) return;
+			if (isSearchActive) {
+				e.preventDefault();
+				e.stopPropagation();
+				setIsSearchActive(false);
+				searchState.setSearchTerm('');
+				searchState.setSelectionIndex(0);
+			}
+		};
+
+		document.addEventListener('click', handleClick);
+		return () => {
+			document.removeEventListener('click', handleClick);
+		}
+	}, [isSearchActive, portalId, setIsSearchActive]);
 
 	return (
 		<>
@@ -170,6 +193,7 @@ export function NavItem(props: NavItemProps) {
 				`${isActive ? 'bg-background' : 'bg-transparent'} hover:bg-neutral-600`,
 				"text-foreground hover:text-background dark:hover:text-foreground"
 			)}
+			style={{ maxWidth: 32 }}
 			variants={{
 				active: {
 					maxWidth: 200,
@@ -199,6 +223,7 @@ export function NavItem(props: NavItemProps) {
 			>
 				{props.children}
 				<motion.span
+					style={{ maxWidth: 0 }}
 					variants={{
 						active: {
 							opacity: 1,
@@ -248,6 +273,7 @@ export function NavSearch() {
 			<motion.button
 				onClick={blurHandler}
 				onFocus={focusSearchHandler}
+				style={{ maxWidth: 0 }}
 				variants={{
 					active: {
 						translateX: 0,
@@ -338,7 +364,7 @@ export function NavSearch() {
 export function NavSearchPanel() {
 	const navContext = useNav();
 	const isMounted = useMounted();
-	const { state, results, selectionIndex } = navContext.searchState;
+	const { state, results, selectionIndex, setSelectionIndex } = navContext.searchState;
 	const { windowWidth, windowHeight } = useResize();
 	const listRef = useRef<HTMLUListElement>(null);
 
@@ -380,7 +406,8 @@ export function NavSearchPanel() {
 				},
 			}}
 			style={{
-				borderRadius: (48 + 8) / 2
+				borderRadius: (48 + 8) / 2,
+				maxWidth: 200,
 			}}
 			animate={navContext.isSearchActive ? 'peeking' : 'hidden'}
 			transition={{ type: 'spring', bounce: 0.1 }}
@@ -434,6 +461,9 @@ export function NavSearchPanel() {
 										<Link
 											href={`/${result.type}s/${result.slug}`}
 											className="pl-2 flex flex-row items-center gap-4 text-inherit"
+											onMouseEnter={() => {
+												setSelectionIndex(i);
+											}}
 										>
 											<Icon size={'1.5em'} />
 											<div className="flex flex-col">
