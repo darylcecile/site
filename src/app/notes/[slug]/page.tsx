@@ -117,7 +117,8 @@ export default async function SingleNotePage(props: NotePageProps) {
 				className={cn(
 					"mx-auto wider-content content prose dark:prose-invert",
 					"prose-a:hover:text-pink-400 prose-a:underline-offset-2 prose-img:rounded-lg",
-					"prose-figcaption:text-center prose-h5:font-medium prose-h5:text-foreground"
+					"prose-figcaption:text-center prose-h5:font-medium prose-h5:text-foreground",
+					"prose-headings:inline-block prose-headings:mt-1 prose-headings:!mb-2"
 				)}
 			>
 				<div className="max-w-2xl mx-auto w-full text-foreground/70">
