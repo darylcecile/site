@@ -9,41 +9,18 @@ import Image from 'next/image';
 import { KnoshLogo } from '@/components/vectors/KnoshLogo';
 import FancyLink from '../utils/FancyLink';
 import DotImageBackground from './Dot';
+import Link from 'next/link';
+import Photography from '@/components/Photograph';
+import { AbbrPreview } from '../utils/AbbrPreview';
 
 export function Header() {
 
 	return (
 		<>
-			{/* <DotImageBackground
-				src="https://avatars.githubusercontent.com/u/6310278?v=4"
-				dotSize={1}
-				dotSpacing={1}
-				backgroundColor="transparent"
-				imageWidth={200}
-				imageHeight={200}
-				imagePosition="custom" // Try: "center", "top-left", "top-right", "bottom-left", "bottom-right", or "custom"
-				// If using "custom", you can specify exact coordinates:
-				// imagePosition="custom"
-				// imageX={100}
-				imageY={100}
-			/> */}
+
 			<div className="flex flex-col gap-8 min-h-screen items-center justify-center px-8 z-1 relative">
 				<div className="max-w-2xl mx-auto gap-8 flex flex-col">
-					{/* <div className='w-48 h-48 relative mb-8'> */}
-					<div className='flex items-center justify-center relative aspect-square'>
-						{/* <HeaderClient /> */}
-						<div
-							className="z-0 mix-blend-color-dodge bg-muted/20 backdrop-blur-2xl w-46 h-46 rounded-full absolute shadow-2xl border border-muted"
-						/>
-						<Image
-							src={"https://avatars.githubusercontent.com/u/6310278?v=4"}
-							alt="Knosh Logo"
-							className='z-1 rounded-full w-42 h-42'
-							width={192}
-							height={192}
-							priority
-						/>
-					</div>
+					<HeaderClient />
 					<div
 						className={cn(
 							GeistSans.className,
@@ -94,19 +71,19 @@ export function Header() {
 				animationDuration={300} // Animation duration in milliseconds
 			/> */}
 				</div>
-				<div className={cn(GeistSans.className, "max-w-2xl mx-auto flex flex-col gap-4", 'text-foreground leading-6 tracking-wide text-lg text-center')}>
+				<div className={cn(GeistSans.className, "max-w-2xl mx-auto flex flex-col gap-4 mb-8", 'text-foreground leading-6 tracking-wide text-lg text-center')}>
 					<p>
-						This portfolio showcases projects I've built for 🧠 learning purposes, some ideas I've 🔭 explored, and my creative journey through various proof-of-concept experiments ✨. My current side-project is <a href="https://knosh.app" target="_blank" rel="noreferrer" className='opacity-80 hover:opacity-100 focus-visible:opacity-100 translate-y-[2px] text-orange-500 inline-flex items-center justify-center'>
+						This portfolio showcases projects I've built for 🧠 learning purposes, some ideas I've 🔭 explored, and my creative journey through various proof-of-concept experiments ✨. My current side-project is <Link href="/projects/knosh" className='opacity-80 hover:opacity-100 focus-visible:opacity-100 translate-y-[2px] text-orange-500 inline-flex items-center justify-center'>
 							<KnoshLogo height={'0.78em'} width={'3.2em'} />
-						</a>
+						</Link>
 					</p>
 
 					<p>
-						It's all a collection of my curiosity in action — from throwaway projects that taught me something new, to concepts I just <i>had</i> to bring to life. So take a look around, and if you have any thoughts or feedback, I'd love to hear it.
+						It's all a collection of my curiosity in action — from <AbbrPreview title="Throwaway Projects" link="/notes/throwaway-prototypes">throwaway projects</AbbrPreview> that taught me something new, to concepts I just <i>had</i> to bring to life.
 					</p>
 
 					<p className='text-balance'>
-						If you want to stay in touch, you can find me on <FancyLink href="https://github.com/darylcecile">GitHub</FancyLink>, <FancyLink href="https://bsky.app/profile/daryl.wtf">BlueSky</FancyLink>, and (reluctantly) <FancyLink href="https://twitter.com/darylcecile">Twitter</FancyLink>.
+						You can find me on <FancyLink href="https://github.com/darylcecile">GitHub</FancyLink>, <FancyLink href="https://bsky.app/profile/daryl.wtf" >BlueSky</FancyLink>, and (reluctantly) <FancyLink href="https://twitter.com/darylcecile">Twitter</FancyLink>.
 					</p>
 				</div>
 			</div>

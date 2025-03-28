@@ -95,7 +95,7 @@ export async function GitHubUser({ handle, children }: PropsWithChildren<GitHubU
 				sideOffset={5}
 			>
 				<div className="overflow-hidden ">
-					<div className="h-24 aspect-[4/1] bg-neutral-400 dark:bg-neutral-700 relative overflow-hidden">
+					<div className="h-24 aspect-[4/1] bg-neutral-400 dark:bg-neutral-700 relative overflow-hidden -z-1">
 						{/* <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 100" preserveAspectRatio="none">
 							<path d="M0,50 C100,20 200,80 400,50 L400,100 L0,100 Z" fill="#1a2d4c" fillOpacity="0.4" />
 							<path d="M0,60 C150,30 250,90 400,60 L400,100 L0,100 Z" fill="#2a3d5c" fillOpacity="0.2" />
@@ -117,7 +117,7 @@ export async function GitHubUser({ handle, children }: PropsWithChildren<GitHubU
 								<h3 className="font-bold text-xl text-gray-900 dark:text-white mb-1">
 									{profile.name || profile.login}
 								</h3>
-								<p className="text-gray-500 dark:text-gray-400 text-sm mb-1 flex items-center gap-1">
+								<p className="text-gray-500 dark:text-gray-400 text-sm mb-1 flex text-center justify-center items-center gap-1">
 									<span className="">@{profile.login}</span>
 									{profile.site_admin && (
 										<Badge className="mt-0 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 text-gray-900 dark:text-gray-200 border-none uppercase text-[0.5rem] px-1 pb-0.25">

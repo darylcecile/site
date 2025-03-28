@@ -7,6 +7,7 @@ import { GitHubUser } from "../SocialPreview/GithubSocialPreview";
 type Props = PropsWithChildren<{
 	hideFavicon?: boolean;
 	className?: string;
+	faviconUrlOverride?: string;
 } & LinkProps>;
 
 const base = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` || 'http://localhost:3000';
@@ -25,36 +26,21 @@ const URL_IGNORE_LIST = [
 	"https://projectfunction.io/"
 ]
 
+const URL_REWRITE_LIST = [
+	{ from: 'https://projectfunction.io', to: 'https://web.archive.org/web/20240829122815/https://projectfunction.io' },
+];
+
 const SPECIAL_ACCOUNT = [
-	{ github: 'rizbizkits', website: 'https://rizwanakhan.com' },
-	{ github: 'darylcecile', website: 'https://darylcecile.net' },
+	{ github: 'rizbizkits', website: 'https://rizwanakhan.com', twitter: 'rizbizkits' },
+	{ github: 'darylcecile', website: 'https://darylcecile.net', twitter: 'darylcecile' },
+	{ github: 'megbird', website: 'https://megbird.me', twitter: 'itsmegbird' },
+	{ github: 'carolgilabert', website: 'https://carol.gg' },
 ];
 
 export default function FancyLink(props: Props) {
-	const { hideFavicon, ...rest } = props;
+	const { hideFavicon, faviconUrlOverride, ...rest } = props;
 	const url = props.href.toString();
-	const shouldHideFavicon = hideFavicon || URL_IGNORE_LIST.some(prefix => url.startsWith(prefix)) || url.startsWith('#') || url.startsWith('/');
-
-	const el = (
-		<Link
-			{...rest}
-			className={cn(
-				props.className,
-				"font-normal underline underline-offset-4 not-prose whitespace-break-spaces",
-				generateColorFromText(url),
-				{ "pl-5 relative": !shouldHideFavicon },
-			)}
-		>
-			{!shouldHideFavicon && (
-				<img
-					src={getFaviconUrl(props.href as string)}
-					alt=""
-					className="w-4 h-4 min-w-4 min-h-4 aspect-square my-0 rounded inline not-prose absolute left-0 top-0.25"
-				/>
-			)}
-			{props.children}
-		</Link>
-	);
+	const shouldHideFavicon = hideFavicon || URL_IGNORE_LIST.some(prefix => url.startsWith(prefix)) || ((url.startsWith('#') || url.startsWith('/')) && !faviconUrlOverride);
 
 	const account = SPECIAL_ACCOUNT.find(account => {
 		const githubOptions = [
@@ -65,8 +51,39 @@ export default function FancyLink(props: Props) {
 		]
 		if (githubOptions.includes(url)) return true;
 		if (url === account.website || url === `${account.website}/`) return true;
+		if (account.twitter && url === `https://twitter.com/${account.twitter}`) return true;
+		if ((account.twitter && url === `@${account.twitter}`) || url === `@${account.github}`) return true;
 		return false;
 	});
+
+	const rewrite = URL_REWRITE_LIST.find(item => url.startsWith(item.from));
+	const correctedUrl = rewrite ? url.replace(rewrite.from, rewrite.to) : url;
+
+	const el = (
+		<Link
+			{...rest}
+			href={correctedUrl.startsWith('@') ? account?.website : correctedUrl}
+			className={cn(
+				props.className,
+				// "font-normal underline underline-offset-4 not-prose whitespace-break-spaces",
+				"text-foreground before:absolute before:transparent before:w-full before:h-4 before:left-0 before:top-0.25 before:rounded-xs before:outline-4 before:outline-transparent",
+				"relative font-normal whitespace-nowrap not-prose hover:before:bg-current/10 hover:before:outline-current/10",
+				"focus-visible:before:bg-current/10 focus-visible:before:outline-current/10 focus-within:outline-none",
+				"underline underline-offset-4 hover:no-underline focus-visible:no-underline",
+				generateColorFromText(url),
+				{ "pl-5 relative": !shouldHideFavicon },
+			)}
+		>
+			{!shouldHideFavicon && (
+				<img
+					src={faviconUrlOverride ?? getFaviconUrl(correctedUrl as string)}
+					alt=""
+					className="w-4 h-4 min-w-4 min-h-4 aspect-square my-0 rounded inline not-prose absolute left-0 top-0.25"
+				/>
+			)}
+			{props.children}
+		</Link>
+	);
 
 	if (account) {
 		return <GitHubUser handle={account.github}>{el}</GitHubUser>
@@ -80,13 +97,13 @@ function generateColorFromText(text: string) {
 	const hash = [...text].reduce((acc, char) => acc + char.charCodeAt(0), 0);
 	const index = hash % 7;
 	const colors = [
-		"hover:text-red-700 dark:hover:text-red-400",
-		"hover:text-yellow-700 dark:hover:text-yellow-400",
-		"hover:text-green-700 dark:hover:text-green-400",
-		"hover:text-blue-700 dark:hover:text-blue-400",
-		"hover:text-indigo-700 dark:hover:text-indigo-400",
-		"hover:text-purple-700 dark:hover:text-purple-400",
-		"hover:text-pink-700 dark:hover:text-pink-400",
+		"hover:text-red-700 dark:hover:text-red-400 focus-visible:text-red-700 dark:focus-visible:text-red-400",
+		"hover:text-yellow-700 dark:hover:text-yellow-400 focus-visible:text-yellow-700 dark:focus-visible:text-yellow-400",
+		"hover:text-green-700 dark:hover:text-green-400 focus-visible:text-green-700 dark:focus-visible:text-green-400",
+		"hover:text-blue-700 dark:hover:text-blue-400 focus-visible:text-blue-700 dark:focus-visible:text-blue-400",
+		"hover:text-indigo-700 dark:hover:text-indigo-400 focus-visible:text-indigo-700 dark:focus-visible:text-indigo-400",
+		"hover:text-purple-700 dark:hover:text-purple-400 focus-visible:text-purple-700 dark:focus-visible:text-purple-400",
+		"hover:text-pink-700 dark:hover:text-pink-400 focus-visible:text-pink-700 dark:focus-visible:text-pink-400",
 	];
 	return colors[index];
 }

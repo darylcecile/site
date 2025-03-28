@@ -58,7 +58,6 @@ export default function RootLayout({
 				/>
 				<ThemeProvider attribute={'class'}>
 					{/* <ClientTheme /> */}
-					<meta name="theme-color" content="transparent" />
 					<NavProvider>
 						<NavBackButton />
 

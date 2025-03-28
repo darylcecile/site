@@ -138,3 +138,109 @@
     mix-blend-mode: color-dodge;
     background-color: #000000;
 }
+
+@supports (background-clip: text) {
+	.text-rainbow-gradient {
+		transition: color 0.2s ease-in-out;
+
+		&:hover {
+			background: linear-gradient(
+				to right,
+				rgb(250, 78, 10),
+				orange,
+				rgb(195, 195, 0),
+				rgb(48, 248, 255),
+				rgb(0, 106, 255),
+				rgb(247, 12, 204)
+			);
+			background-clip: text; 
+			color: transparent; 
+			background-size: 200% auto;
+			filter: saturate(1.5);
+			animation: gradientAnimation 3s linear infinite;
+		}
+	}
+
+	@keyframes gradientAnimation{
+		0%{
+			background-position: 200% 50%;
+		}
+		100%{
+			background-position: 0% 50%;
+		}
+	}
+}
+
+.text-rainbow {
+	animation: textRainbowAnimation 3s linear infinite;
+}
+
+@keyframes textRainbowAnimation {
+	0% {
+		color: rgb(250, 78, 10)
+	}
+	16.67% {
+		color: orange
+	}
+	33.33% {
+		color: rgb(195, 195, 0)
+	}
+	50% {
+		color: rgb(48, 248, 255)
+	}
+	66.67% {
+		color: rgb(0, 106, 255)
+	}
+	83.33% {
+		color: rgb(247, 12, 204)
+	}
+	100% {
+		color: rgb(250, 78, 10)
+	}
+}
+
+.img-tape {
+  position: relative;
+  text-align: center;
+  display: inline-block;
+  margin: 20px auto 10px;
+  
+  &:before,
+  &:after {
+    background: rgba(255,255,235,.6);
+    box-shadow: 0 1px 3px rgba(0,0,0,.4);
+    content: "";
+    display: block;
+    height: 30px;
+    position: absolute;
+    margin: auto;
+    width: 100px;
+  }
+
+  img {
+    background: #fff;
+    border: 0.5px solid var(--color-border);
+    box-shadow: 0 1px 3px rgba(0,0,0,.4);
+    display: inline-block;
+    height: auto;
+    margin: 0 20px;
+    max-width: 100%;
+    padding: 8px 8px 16px;
+    text-align: center;
+    vertical-align: top;
+  }
+}
+
+.img-tape--3 {
+  &:before {
+    left: 0;
+    top: 10px;
+    transform: rotate(-45deg);
+  }
+
+  &:after {
+    bottom: 10px;
+    right: 0;
+    transform: rotate(-35deg);
+  }
+}

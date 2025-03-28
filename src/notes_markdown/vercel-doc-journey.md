@@ -10,7 +10,7 @@ snippet: Join me on a cursory journey around the Vercel Documentation, and how I
 </InfoBox>
 
 
-<strong>Update:</strong> Last Thursday (24th Feb), I had the opportunity to chat to [Meg](https://twitter.com/itsmegbird) from Vercel about my experience and journey with the API docs. I have [extended](#update-improvement-suggestion) this note to include my take on how it could be improved.
+<strong>Update:</strong> Last Thursday (24th Feb), I had the opportunity to chat to [Meg](@itsmegbird) from Vercel about my experience and journey with the API docs. I have [extended](#update-improvement-suggestion) this note to include my take on how it could be improved.
 
 
 ---
@@ -116,7 +116,7 @@ The resulting wrapper can be found on my [GitHub repo](https://github.com/daryl-
 
 ---
 ### Update: Improvement suggestion
-As mentioned in my update note, I had a chance to chat to [Meg](https://twitter.com/itsmegbird) last Thursday (24th Feb) about my experience and journey with the API docs. At the end of our talk, Meg asked "If you could change anything about the docs site, what would it be?" and it got me thinking. I remembered not long ago, I had a play around with Slack's API and I really loved their [API Tester](https://api.slack.com/methods/admin.analytics.getFile/test) feature (This feature can be seen with Google's [API Explorer](https://developers.google.com/apis-explorer) too). This is what I think Vercel's API docs could use.
+As mentioned in my update note, I had a chance to chat to [Meg](@itsmegbird) last Thursday (24th Feb) about my experience and journey with the API docs. At the end of our talk, Meg asked "If you could change anything about the docs site, what would it be?" and it got me thinking. I remembered not long ago, I had a play around with Slack's API and I really loved their [API Tester](https://api.slack.com/methods/admin.analytics.getFile/test) feature (This feature can be seen with Google's [API Explorer](https://developers.google.com/apis-explorer) too). This is what I think Vercel's API docs could use.
 
 It would help keep the docs somewhat in-date with API changes, as developers would be able to make a test API call with the required parameters within the doc, and see a realtime response; enabling them to see what is expected with the call, and what to expect as a response. By allowing the dev to select an Endpoint version, it puts emphasis on the idea that the endpoints are versioned, and allows users to see how calls and responses differ between versions. In a nutshell, the test API caller becomes the live documentation; Showing instead of telling.
 

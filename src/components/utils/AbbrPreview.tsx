@@ -9,8 +9,9 @@ type AbbrPreviewProps = PropsWithChildren<{
 	image?: string;
 	favicon?: string;
 	link?: string;
-	description: string;
+	description?: string;
 	hideFavicon?: boolean;
+	faviconUrl?: string;
 }>
 
 const base = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` || 'http://localhost:3000';
@@ -28,7 +29,12 @@ export async function AbbrPreview(props: AbbrPreviewProps) {
 		<HoverCard openDelay={100} closeDelay={200} >
 			<HoverCardTrigger asChild>
 				{props.link ? (
-					<FancyLink href={props.link} className='decoration-dotted' hideFavicon={props.hideFavicon}>{props.children}</FancyLink>
+					<FancyLink
+						href={props.link}
+						className='decoration-dotted'
+						hideFavicon={props.hideFavicon}
+						faviconUrlOverride={props.faviconUrl}
+					>{props.children}</FancyLink>
 				) : (
 					<span className={cn(
 						'underline decoration-dotted underline-offset-4'
@@ -43,7 +49,7 @@ export async function AbbrPreview(props: AbbrPreviewProps) {
 				align="center"
 			>
 				{data?.image && (
-					<img src={`/proxy?u=${btoa(data.image)}`} className='aspect-video w-full object-cover rounded-lg mb-2' alt="" />
+					<img src={`/proxy?u=${btoa(data.image)}`} className='bg-muted aspect-video w-full object-cover rounded-lg mb-2' alt="" />
 				)}
 				{title && (
 					<p className={'p-1 leading-5 pb-0 text-balance relative'}>{title}</p>
@@ -80,7 +86,8 @@ async function getMetadata(url: string) {
 	}
 
 	try {
-		const response = await fetch(url, { method: "GET" }).catch(e => {
+		const qualifiedUrl = new URL(url, 'https://darylcecile.net');
+		const response = await fetch(qualifiedUrl, { method: "GET" }).catch(e => {
 			console.log("Error fetching URL:", url, e);
 			throw e;
 		});

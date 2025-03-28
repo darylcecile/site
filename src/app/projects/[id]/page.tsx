@@ -106,7 +106,7 @@ export default async function SingleProjectPage(props: ProjectPageProps) {
 			<div className="max-w-2xl mx-auto w-full pt-20">
 				<ViewTransition name={`projects-${project.id}`}>
 					<h1 className="text-3xl">{project.name}</h1>
-					<p className="text-foreground text-sm opacity-75">{project.startYear} - {project.endYear ?? 'Ongoing'}</p>
+					<p className="text-foreground/70 prose metalic-dark">{project.startYear} - {project.endYear ?? 'Ongoing'}</p>
 				</ViewTransition>
 			</div>
 			<br />
