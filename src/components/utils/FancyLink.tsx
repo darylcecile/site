@@ -60,10 +60,15 @@ export default function FancyLink(props: Props) {
 	const rewrite = URL_REWRITE_LIST.find(item => url.startsWith(item.from));
 	const correctedUrl = rewrite ? url.replace(rewrite.from, rewrite.to) : url;
 
+	const usableUrl = correctedUrl.startsWith('@') ? (account?.website ?? correctedUrl) : correctedUrl;
+	const isExternal = guessIsExternal(usableUrl);
+
 	const el = (
 		<Link
 			{...rest}
-			href={correctedUrl.startsWith('@') ? (account?.website ?? correctedUrl) : correctedUrl}
+			href={usableUrl}
+			target={isExternal ? "_blank" : undefined}
+			rel={isExternal ? "noopener noreferrer" : undefined}
 			className={cn(
 				props.className,
 				// "font-normal underline underline-offset-4 not-prose whitespace-break-spaces",
@@ -91,6 +96,24 @@ export default function FancyLink(props: Props) {
 	}
 
 	return el;
+}
+
+function guessIsExternal(url: string): boolean {
+	const BASE = 'https://darylcecile.net';
+	const HOME = new URL(BASE);
+
+	if (URL.canParse(url, BASE)) {
+		const u = new URL(url, BASE);
+
+		if (!u.host.endsWith(HOME.host)) {
+			// if the host is not the same as the base, it's external
+			return true;
+		}
+
+		return false;
+	}
+
+	return true;
 }
 
 function generateColorFromText(text: string) {
