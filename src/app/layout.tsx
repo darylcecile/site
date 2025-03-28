@@ -8,6 +8,7 @@ import Footer from '@/components/footer/index';
 import { GeistSans } from "geist/font/sans";
 import { cn } from '@/lib/utils';
 import { ClientTheme } from '@/components/utils/ClientTheme';
+import { Analytics } from "@vercel/analytics/react"
 
 export const metadata = {
 	title: 'Next.js',
@@ -22,6 +23,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={cn(GeistSans.className, 'bg-background w-full min-h-screen')}>
+				<Analytics />
 				<Rays className="w-full min-w-7xl -top-1/2 bg-center h-screen fixed opacity-50 pointer-events-none z-0" />
 				{/* TOP PROGRESSIVE BLUR */}
 				{/* <div
