@@ -35,6 +35,7 @@ const SPECIAL_ACCOUNT = [
 	{ github: 'darylcecile', website: 'https://darylcecile.net', twitter: 'darylcecile' },
 	{ github: 'megbird', website: 'https://megbird.me', twitter: 'itsmegbird' },
 	{ github: 'carolgilabert', website: 'https://carol.gg' },
+	{ github: 'monatheoctocat' },
 ];
 
 export default function FancyLink(props: Props) {
@@ -62,7 +63,7 @@ export default function FancyLink(props: Props) {
 	const el = (
 		<Link
 			{...rest}
-			href={correctedUrl.startsWith('@') ? account?.website : correctedUrl}
+			href={correctedUrl.startsWith('@') ? (account?.website ?? correctedUrl) : correctedUrl}
 			className={cn(
 				props.className,
 				// "font-normal underline underline-offset-4 not-prose whitespace-break-spaces",

@@ -1,5 +1,5 @@
 ---
-title: "Committing to Change: Joining Forces with Mona"
+title: "Committing to Change: Joining the Octocats"
 date: "2025-03-28"
 snippet: After years of hard work, I can finally announce that I am now a Hubber!
 ---

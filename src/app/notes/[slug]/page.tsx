@@ -99,7 +99,7 @@ export default async function SingleNotePage(props: NotePageProps) {
 		<article className="content px-8">
 			<div className="max-w-2xl mx-auto w-full pt-20">
 				<ViewTransition name={`notes-${postData.slug}`}>
-					<h1 className="text-3xl">{postData.title}</h1>
+					<h1 className="text-3xl text-balance">{postData.title}</h1>
 					<p className="text-foreground/70 prose metalic-dark">
 						<LocalDate dateString={postData.date} /> &middot;{" "}
 						{postData.readTime}
