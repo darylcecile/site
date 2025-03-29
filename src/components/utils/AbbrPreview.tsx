@@ -14,7 +14,7 @@ type AbbrPreviewProps = PropsWithChildren<{
 	faviconUrl?: string;
 }>
 
-const base = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` || 'http://localhost:3000';
+const base = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : 'http://localhost:3000';
 
 export async function AbbrPreview(props: AbbrPreviewProps) {
 	const data = props.link && await getMetadata(props.link);

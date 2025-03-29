@@ -4,7 +4,7 @@
         <title>Daryl Cecile</title>
         <link>https://darylcecile.net</link>
         <description>My notes</description>
-        <lastBuildDate>Fri, 23 Feb 2024 23:27:27 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 29 Mar 2025 18:20:20 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>mFeed</generator>
         <language>en</language>
@@ -13,42 +13,32 @@
             <url>https://darylcecile.net/images/core/header.png</url>
             <link>https://darylcecile.net</link>
         </image>
-        <copyright>Daryl Cecile © 2024</copyright>
+        <copyright>Daryl Cecile © 2025</copyright>
+        <item>
+            <title><![CDATA[Committing to Change: Joining the Octocats]]></title>
+            <link>https://darylcecile.net/notes/committing-to-change</link>
+            <guid>committing-to-change</guid>
+            <pubDate>Fri, 28 Mar 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[<link rel="preload" as="image" href="/daryl-octocat.png"/><p>The past year and a half has been a whirlwind in my career. There were many ups, but towards the end of 2024, I found myself in a bit of a <br /> Read more at <a href="https://darylcecile.net/notes/committing-to-change">darylcecile.net</a>]]></content:encoded>
+            <author>darylcecile@gmail.com (Daryl Cecile)</author>
+            <enclosure url="https://darylcecile.net/og?slug=committing-to-change" length="0" type="image//og"/>
+        </item>
+        <item>
+            <title><![CDATA[When it all falls into place 🍊]]></title>
+            <link>https://darylcecile.net/notes/when-it-all-falls-into-place-2025</link>
+            <guid>when-it-all-falls-into-place-2025</guid>
+            <pubDate>Wed, 01 Jan 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[<h3>New Horizons</h3>
+<p>As we step into the new year, I find myself brimming with energy and excitement for what lies ahead. Last year was not the easiest; it was marked by stagnation and challenges,<br /> Read more at <a href="https://darylcecile.net/notes/when-it-all-falls-into-place-2025">darylcecile.net</a>]]></content:encoded>
+            <author>darylcecile@gmail.com (Daryl Cecile)</author>
+            <enclosure url="https://darylcecile.net/og?slug=when-it-all-falls-into-place-2025" length="0" type="image//og"/>
+        </item>
         <item>
             <title><![CDATA[Next-level Pursuit 🐣]]></title>
             <link>https://darylcecile.net/notes/next-level-pursuit</link>
             <guid>next-level-pursuit</guid>
             <pubDate>Sun, 08 Oct 2023 23:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<p>So it’s been officially 3 years and 8 months (give or take) since I last wrote Futuristic <Abbr title="Futuristic Pursuit" link="https://darylcecile.net/notes/futuristic-pursuit">Pursuit</Abbr>. How time flies!</p>
-<p>Since then, I got a job at Capital One UK; starting off as a Software Engineer and quickly progressing to a Senior Role, I finalized the winding-down of ProjectFunction, <Abbr title="Moving out" link="https://darylcecile.net/notes/moving-out-notts">Moved to London</Abbr> with Panther and my Partner, and got back into working on my side projects (after recovering from some serious burnout!)</p>
-<p><img src="/images/mauritius-beach-profile-2023.jpg" alt="Daryl recovering from burnout, while burning out on a beach in Mauritius" loading="lazy" /></p>
-<h3>Time for change</h3>
-<p>Due to some recent changes in the engineering department structure and future direction, I decided it was time for me to find my next new challenge; to go out forth and figure out whats next in my career journey. Let me tell you, the market is brutal at the moment. Here are the numbers to date:</p>
-<ul class="para">
-<li>2 interviews at exciting companies</li>
-<li>4 interviews at companies that ended up throwing too many red flags</li>
-<li>1 interview at a company based in Germany</li>
-<li>3 pending interviews</li>
-</ul>
-<p>Initially I was struggling to get interviews, but more recently I’ve had an influx of invites and interviews come through on both my LinkedIn and <Abbr title="Otta Jobs" link="https://otta.com">Otta</Abbr>, so I am hopeful.</p>
-<p>With an aim to follow traditions (and in true Daryl-fashion), here is a rough idea of what im looking for next:</p>
-<ul class="para">
-<li>A <s>startup-like</s> ‘Big-corp’ environment would be perfect</li>
-<li>An internal tooling role (Web)</li>
-<li>Team where Node.js + Typescript are part of their toolset (or looking to adopt)</li>
-<li>Flexible working (No office-only)</li>
-<li>Having personal-development budget and opportunities</li>
-<li>No crunch-time (clear seperation of work and personal life)</li>
-<li>Regular opportunities for career-progression</li>
-<li>Stellar SEM known internally for their supportive and enabling nature</li>
-<li>Diverse and inclusive teams</li>
-<li>Actively pursues experimentation and Proof-of-concept</li>
-<li>A place that is not afraid to make (and dogfood) their own tools</li>
-<li>Open-souce contributors would be a plus</li>
-<li>A place that is happy to work and give back to the community</li>
-</ul>
-<p>All in all, I have a clear idea of the kind of workplace where I want to work as a Senior Software Engineer 👨🏽‍💻. Now we need to make it happen 🚀</p>
-]]></content:encoded>
+            <content:encoded><![CDATA[<link rel="preload" as="image" href="/images/mauritius-beach-profile-2023.jpg"/><p>So it&#x27;s been officially 3 years and 8 months (give or take) since I last wrote <abbr title="Futuristic Pursuit" <br /> Read more at <a href="https://darylcecile.net/notes/next-level-pursuit">darylcecile.net</a>]]></content:encoded>
             <author>darylcecile@gmail.com (Daryl Cecile)</author>
             <enclosure url="https://darylcecile.net/og?slug=next-level-pursuit" length="0" type="image//og"/>
         </item>
@@ -57,21 +47,7 @@
             <link>https://darylcecile.net/notes/throwaway-prototypes</link>
             <guid>throwaway-prototypes</guid>
             <pubDate>Wed, 21 Jun 2023 23:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<p>For the past couple of years I have grown fond of prototyping as a way of getting my ideas across to other developers. As part of my role at CapitalOne (Software Engineer - Internal Tooling), I’ve had the opportunity to come up with innovative ways to improve the developer experience at the company in a creative and fun way; it allowed me to explore new technologies and paradigms, and inherit new ways to architect and design products. Prototyping is not a topic that comes up often in my sphere, and it is definately not something I bring up often in conversations, however a recent Twitter post surfaced made me think a lot about the perceived value of prototyping as an engineer:</p>
-<p><Tweet id="1670411055296544773"></Tweet></p>
-<p>Working in a DevTools team, the customers I often created solutions for were other developers who were having a hard time; they were using tools that were slow, unstable, or sometime just plain unpleasant. Due to the size of the business, it meant that there was often a variety of pain-points that I could chose from to explore and solutionize. Some of my most recent successes include:</p>
-<ul class="para">
-<li>Designing and Implementing a Chrome Extension that summarizes CI/CD logs and surfaces solutions to those problems</li>
-<li>Creating a centralized package manager that simplified onboarding and setup of new development environments</li>
-<li>Creating an SSO wrapper that gave developers a drop-in solution to add Single Sign-On to any of their Lambda and Express applications</li>
-</ul>
-<p>Prototyping isn’t always going to lead to buy-in, however it almost always comes with other benefits which enable upskilling and exploring new technologies. Its also worth noting that building prototypes in an enterprise is obviously going to be easier that in smaller companies where resources are limited; however, I would say whenever possible prototyping is a valuable practice. It allows software engineers to explore and experiment with new technologies, methodologies, and ideas. By creating a prototype, engineers can quickly validate the feasibility of a concept, identify potential challenges, and gather feedback early on. This iterative process of building and refining helps to minimize risks and making informed decisions before investing significant resources into development.</p>
-<p>Moreover, prototypes serve as powerful communication tools. They allow software engineers to effectively convey their vision and ideas to stakeholders, product managers, and other teams. A lot of the solutions I brought to life at CapitalOne originated as a simple proof-of-concept prototypes. These prototypes helped me imagine up the solution, and solidify the implementation details that were floating in my head; and once I had a tangible solution, it helped me convey the value to other parts of the business. This visual representation also helps bridge the gap between technical and non-technical stakeholders, fostering collaboration and alignment throughout the development process.</p>
-<p>I encourage my mentees and more junior colleagues to create proof of concepts for ideas they might have, and so far both them and I have seen an increase in not just their confidence, but their skills. In addition to facilitating communication, prototypes also enable upskilling and knowledge expansion. As engineers work on prototypes, they gain hands-on experience with new technologies, frameworks, or approaches. This provides an opportunity for professional growth, allowing them to stay abreast of the latest industry trends and sharpen their skills. Furthermore, prototypes often act as a playground for experimentation, encouraging engineers to think creatively and explore alternative solutions that might not have been considered otherwise.</p>
-<p>Overall, prototyping and building proof of concepts offer numerous advantages. From solidifying implementation details to garnering support, these early-stage artifacts help shape successful software solutions. By leveraging prototypes, engineers can validate ideas, communicate effectively, and foster a culture of innovation within their organizations. Embracing the practice of prototyping ultimately leads to more robust, user-centric, and successful software products.</p>
-<hr />
-<p>P.S. At the time of writing, i’m attempting to prototype a <Abbr link="https://github.com/daryl-cecile/corai" >Toy React server</Abbr> to better understand how it works at a meta-framework level; and so far I have learned a lot about React Server Components. I plan to do a write-up on this soon!</p>
-]]></content:encoded>
+            <content:encoded><![CDATA[<p>For the past couple of years I have grown fond of prototyping as a way of getting my ideas across to other developers. As part of my role at CapitalOne (Software Engineer - Internal Tooling), I&#x2<br /> Read more at <a href="https://darylcecile.net/notes/throwaway-prototypes">darylcecile.net</a>]]></content:encoded>
             <author>darylcecile@gmail.com (Daryl Cecile)</author>
             <enclosure url="https://darylcecile.net/og?slug=throwaway-prototypes" length="0" type="image//og"/>
         </item>
@@ -80,19 +56,7 @@
             <link>https://darylcecile.net/notes/building-in-public</link>
             <guid>building-in-public</guid>
             <pubDate>Fri, 11 Nov 2022 00:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<InfoBox type="warn">
-<strong>DEPRECATED:</strong> This Project is no longer being maintained and has now be deprecated
-</InfoBox>
-<p>For a couple of weeks (months?) now, I have been playing around with the idea of a small API-first headless <Abbr title="Content Management System" link="https://kinsta.com/knowledgebase/content-management-system/">CMS</Abbr>. I started forming building blocks and planning they way it would look and behave.</p>
-<p>Initially it started off with curiousity around the logic behind what a headless CMS is; I was already familiar with coupled CMS’ thanks to my previous work on <Abbr title="SlantedPress" link="https://slantedpress.com">SlantedPress</Abbr> — so this time, I was keen on working out what a headless approach would be (if I were to build one from the ground up). So I started <a href="https://jumbled-dichondra-7a3.notion.site/NextCMS-ce699824a5cb439f822853e0c82dad46" target="_blank" rel="noopener" class="l" hreflang="en">architecting, designing, and moulding an API</a>.</p>
-<p><img src="/images/figma-inkly.png" alt="Figma designs of Inkly" loading="lazy" /></p>
-<p>When I first started thinking about this project, I knew I wanted the process to be product-driven, and from that I had planned to make the entire product React-hook-driven. When designing the initial design around some basic use-cases, I figured I wanted to try and make a powerful API and then have a bunch of React-hooks that could consume the endpoints and be super-easy-to-use™</p>
-<p>Recently however, Vercel and the Next.js team released <Abbr link="https://nextjs.org/blog/next-13">Next.js 13</Abbr>; along with it came the introduction to the <code>app</code> directory. Find out more about it on their blog. As part of this release, they also introduced Server Components to the Next.js ecosystem - which cannot make use of hooks.</p>
-<p>Im excited about this release, but at the same time feeling a little knocked-back as all of the ideas I had would now need to be reformed if I was to make use of the latest Next.js 13 had to offer.</p>
-<p>My hopes for this project is to get a better understanding of patterns and the logic behind headless CMS’, push myself to become better at marketing my skills (<em>we both know I suck at this!</em>), and maybe make some connections along the way 😉</p>
-<p>Im looking forward to seeing what I can come up with and intend to fully work through this in public - so watch out for updates both on here, and the bird app!</p>
-<p>Until then… ✌🏽</p>
-]]></content:encoded>
+            <content:encoded><![CDATA[<link rel="preload" as="image" href="/images/figma-inkly.png"/><div class="p-4 rounded-lg not-prose bg-amber-500/10 text-amber-500 dark:bg-[gold]/20 dark:text-[gold]" data-format="warn"><div class="m-<br /> Read more at <a href="https://darylcecile.net/notes/building-in-public">darylcecile.net</a>]]></content:encoded>
             <author>darylcecile@gmail.com (Daryl Cecile)</author>
             <enclosure url="https://darylcecile.net/og?slug=building-in-public" length="0" type="image//og"/>
         </item>
@@ -101,30 +65,7 @@
             <link>https://darylcecile.net/notes/november-life-updates</link>
             <guid>november-life-updates</guid>
             <pubDate>Sat, 05 Nov 2022 00:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<p>So im pulling this from <a href="https://carol.gg/" target="_blank" rel="noopener" class="l" hreflang="en">Carol</a>’s book an attempt to provide you with a <a href="https://twitter.com/carolsaysthings/status/1587174153190268929?s=61&amp;t=jXDDwfGAQLaMRy52o0w4Qg" target="_blank" rel="noopener" class="l" hreflang="en">lifenote</a>-esque life update. Since my <Abbr link="https://darylcecile.net/notes/moving-out-notts" title="Moving out">last post</Abbr>, a lot has happened;</p>
-<ul class="para">
-<li>Ive done a couple of house viewings throughout London</li>
-<li>Panther has officially moved down to London</li>
-<li>Ive completed work-related paper work in preparation for the move</li>
-<li>Booked a couple more viewings</li>
-<li>Finalized the <a href="https://web.archive.org/web/20220711151132/https%3A%2F%2Fprojectfunction.io%2Fnotes%2Fthis-isnt-farewell" target="_blank" rel="noopener" class="l" hreflang="en">closure of PF</a> 🥹</li>
-<li>Started putting together a rough plan for my next side project (Exciting times ahead - Keep an eye out for a post 🤞🏾)</li>
-<li>Panther and <a href="https://twitter.com/rizbizkits/status/1545162625411153923?s=46&amp;t=B1zScKx5_gYSKx0sedQ1-w" target="_blank" rel="noopener" class="l" hreflang="en">Mastoo</a> have found comfort in each-others company 🖤</li>
-</ul>
-<p><img src="/images/mastoo-and-panther-stairs.png" alt="Mastoo and Panther on the stairs" loading="lazy" /></p>
-<p>Two weeks ago, I found myself in a bit of a rut. The hectic lifestyle i’ve been trying to keep up with, together with the extremely brutal renting market had led to me spiralling a litte — and it wast until my manager had brought it up that I had realised that I had not been spending any time on myself. Since then i’ve been trying to make more time for self-care:</p>
-<ul class="para">
-<li>I started watching Netflix again (My latest watch being <Abbr title="From Scratch" link="https://www.google.co.uk/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwi2yNmljpX7AhWIZ8AKHdlpA4cQFnoECEoQAQ&url=https%3A%2F%2Fwww.netflix.com%2Ftitle%2F81104486&usg=AOvVaw0LrPqvBVfWDOg0KdjX4ww1">From Scratch</Abbr> - which I highly recommend!)</li>
-<li>Treated Will and I to a Spa day at Bannatyne Health Spa in Mansfield</li>
-<li>Made some time to work on the designs for my upcoming side-project</li>
-<li>Signed up to <a href="https://bere.al/dcjoa" target="_blank" rel="noopener" class="l" hreflang="en">BeReal</a> to see what the hype is all about 👴🏾</li>
-<li>Endulged in a Portobello Mushroom, Ricotta and Garlic brunch at a newly discovered <a href="https://maps.app.goo.gl/VfbxqFcovcLhof3Y6?g_st=ic" target="_blank" rel="noopener" class="l" hreflang="en">eatery</a></li>
-</ul>
-<p>All of this made possible by finding a temporary home for Panther, which allows me to stay down in London for viewings - rather than travelling down every weekend.</p>
-<p>Last weekend, Panther and I made our way down to London from Nottingham, and then trekked across the city to <a href="https://twitter.com/@AugustukazB" target="_blank" rel="noopener" class="l" hreflang="en">Augustina</a> who had kindly offered to house Panther until our housing situation was sorted. The poor boy had a very stressful trip but thankfully he has recovered and and is now enjoying the company of Aira 🖤</p>
-<p><img src="/images/aira-cat.jpg" alt="Aira in her elements" loading="lazy" /></p>
-<p>Stay tuned for some incoming pictures of Aira and Panther together 🐈‍⬛</p>
-]]></content:encoded>
+            <content:encoded><![CDATA[<link rel="preload" as="image" href="/images/mastoo-and-panther-stairs.png"/><link rel="preload" as="image" href="/images/aira-cat.jpg"/><p>So im pulling this from <a href="https://carol.gg/">Carol</a<br /> Read more at <a href="https://darylcecile.net/notes/november-life-updates">darylcecile.net</a>]]></content:encoded>
             <author>darylcecile@gmail.com (Daryl Cecile)</author>
             <enclosure url="https://darylcecile.net/og?slug=november-life-updates" length="0" type="image//og"/>
         </item>
@@ -133,44 +74,7 @@
             <link>https://darylcecile.net/notes/project-spotlight-campus</link>
             <guid>project-spotlight-campus</guid>
             <pubDate>Fri, 02 Sep 2022 23:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<InfoBox type="info">
-    This LMS was created for ProjectFunction, which closed its doors in May 2022. See an archive of it on the <i><a href="/projects#ProjectFunction">project page</a></i>.
-</InfoBox>
-<p>For those of you who have not been keeping up with my adventures lately, <a href="https://rizwanakhan.com" target="_blank" rel="noopener" class="l" hreflang="en">Rizwana</a> and I <a href="https://web.archive.org/web/20220711151132/https%3A%2F%2Fprojectfunction.io%2Fnotes%2Fthis-isnt-farewell" target="_blank" rel="noopener" class="l" hreflang="en">ended a PF session for the last time</a> in May after the successful completion of wave 9. Since then, I have gone for a well-needed holiday, replacing my mental and emotional burns with physical ones.</p>
-<p>Despite existing and providing a digital learning experience for the past 3 years, Campus has never been seen outside of ProjectFunction. So I thought id take a moment to spotlight Campus - the LMS that I have been working on and maintaining for PF for a couple of years.</p>
-<img src="/images/spotlight/campus/campus_login_page.png" alt="Campus Login screen" loading="lazy" />
-<p>Since the inception of v0.1, Campus has had 3 major updates; bringing about a new look, scalable infrastructure, and user-segmented data storage. These changes allowed Campus to grow with PF, as demand and userbase grew.</p>
-<p>By the final version of Campus, we were able to bring about the following features which helped improve the experience for individual instructors, as well as learners:</p>
-<ul class="para">
-<li><strong>Knowledge tracking</strong>: Allows instructors to review cohort progress and adjust content delivery methods to optimize learning</li>
-<li><strong>Lesson recaps</strong>: Learners were able to review any previous lessons and access the relevant assignments, worksheets, and cheatsheets</li>
-<li><strong>Automatic feedback</strong>: Provided instructors with the ability to configure assignment grading options so that assignment submissions could be automatically and instantly graded with feedback when learners submitted work</li>
-<li><strong>Engagement tracking</strong>: Instructors can view learner engagement to provide additional support to those who may need it. Engagement scores are used to guide instructors so they can maximize the engagement of their courses</li>
-<li><strong>Knowledge base</strong>: Each learner has the ability to create their own (or link to other) knowledge bases - enabling knowledge sharing and knowledge consolidation</li>
-<li>Attendance monitoring: Allows instructors to gauge attendance in relation to content delivery</li>
-<li><strong>Automatic assignments publication</strong>: Instructors could opt-in to automatic assignments so take-away tasks could be scheduled, created, and shared between instructors for their learners.</li>
-<li><strong>Github integration</strong>: Lets learners link to GitHub to manage their assignment submissions, while learning the basics of git</li>
-</ul>
-<p>All in all, this platform has grown with ProjectFunction to meet its growing demands. It’s been an amazing experience to build and maintain, but as with all good things, it is now time to put it to rest.</p>
-<Gallery>
-    { 
-        "/images/spotlight/campus/campus_login_page.png": "Campus login page", 
-        "/images/spotlight/campus/campus_dashboard.png": "Dashboard showing articles from dev.to", 
-        "/images/spotlight/campus/campus_assignments.png": "Assigment page showing a list of outstanding tasks", 
-        "/images/spotlight/campus/campus_assignment_detail.png": "Assignment detail page", 
-        "/images/spotlight/campus/campus_submissions.png": "User assignment submission page", 
-        "/images/spotlight/campus/campus_submission_detail.png": "Submission detail page showing automatic testing results", 
-        "/images/spotlight/campus/fizzbuzz_assignment.png": "Sample assignment: Fizzbuzz", 
-        "/images/spotlight/campus/create_from_template.png": "Github 6showing flow from Campus for learner to create repo", 
-        "/images/spotlight/campus/user_account.png": "User account showing engagement rating and attendance", 
-        "/images/spotlight/campus/manage_permissions.png": "In dark mode: Admin page showing permission settings",
-        "/images/spotlight/campus/campus_lesson.png": "Lesson page allows user to recap the sessions they attend",
-        "/images/spotlight/campus/lesson_resources.png": "Any resources used throughout the lesson are available on lesson pages",
-        "/images/spotlight/campus/campus_quick_jump.png": "Learners can use quick jump to access lessons, resources, and more"
-    }
-</Gallery>
-<p>I’ve personally learned a lot along the way, and there are many lessons to take away from the experiences ive gained by building and scaling this platform. Im excited to see where this knowledge takes me 🚀</p>
-]]></content:encoded>
+            <content:encoded><![CDATA[<link rel="preload" as="image" href="/images/spotlight/campus/campus_login_page.png"/><div class="p-4 rounded-lg not-prose bg-blue-500/10 text-blue-500 dark:bg-[deepskyblue]/20 dark:text-[deepskyblue]<br /> Read more at <a href="https://darylcecile.net/notes/project-spotlight-campus">darylcecile.net</a>]]></content:encoded>
             <author>darylcecile@gmail.com (Daryl Cecile)</author>
             <enclosure url="https://darylcecile.net/og?slug=project-spotlight-campus" length="0" type="image//og"/>
         </item>
@@ -179,31 +83,8 @@
             <link>https://darylcecile.net/notes/moving-out-notts</link>
             <guid>moving-out-notts</guid>
             <pubDate>Sat, 02 Jul 2022 23:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<p>This post has been a long time in the making. I’ve been scratching my head, wondering how to announce this<br />
-major milestone in my life. When writing notes for my website, I often like to form a story to help me get my thought process across;<br />
-but the thing is, this doesn’t need a story because it is already a story on its own. And after many unsuccessful attempts at starting this<br />
-post, I’ll cut straight to the chase; I’m moving back to London.</p>
-<p>This decision had been settled for a while now, and when I first announced it to my closest, everyone was somewhat shocked but supportive. After<br />
-spending 6+ years in Nottingham, I feel like it is finally time to move on and move out. I’ve made so many memories along the way, met so many<br />
-amazing people, forged new connections, made life-long friends, shared some amazing experiences<br />
-(see <a href="https://projectfunction.io/notes/this-isnt-farewell" target="_blank" rel="noopener" class="l" hreflang="en">PF</a>), and was welcomed into great communities like the<br />
-<a href="https://twitter.com/NTUPrideSociety" target="_blank" rel="noopener" class="l" hreflang="en">NTU Pride Society</a>, and <a href="https://twitter.com/technottingham" target="_blank" rel="noopener" class="l" hreflang="en">Tech Nottingham</a>. These are the ones I will<br />
-cherish forever; they have helped me discover who I am, and have helped shape who I want to be and what I want to achieve. 💕</p>
-<p><img src="/images/nottingham-memory.jpeg" alt="Pride Soc Group Pic on the Left, ProjectFunction Group Pic on the right" loading="lazy" /></p>
-<p>As some of you may know, I moved to Nottingham a little over 6 years ago for University; I did a Bachelor’s degree in Computer Science. Since then<br />
-I made great new friends, co-founded an amazing community-driven company called <Abbr link="https://projectfunction.io">ProjectFunction</Abbr>, and<br />
-made Nottingham my home. After leaving <Abbr link="https://ntu.ac.uk" static=true title="Nottingham Trent University">NTU</Abbr>, I went straight into work, working for a clinical trial company,<br />
-then a local web agency before moving to my current Job as a Software Development Engineer at CapitalOne. I’ve learned a lot along the way but<br />
-eventually started wondering whether there was more to it. As much as I love Notts, I ended up outgrowing it. Covid didn’t help; a lot of the places I<br />
-enjoyed frequenting have either closed down (looking at<br />
-you <a href="https://www.nottinghampost.com/whats-on/music-nightlife/end-era-nottingham-nightclub-closes-4140415" target="_blank" rel="noopener" class="l" hreflang="en">Propaganda</a>), or changed<br />
-<a href="https://newforestersnottingham.co.uk/" target="_blank" rel="noopener" class="l" hreflang="en">beyond recognition</a>. I needed space to stretch. London was the ideal next candidate having grown up there and<br />
-having family based there. I just needed one more reason to make the life-changing move.</p>
-<p>Last week, my partner started a new job in London; this was the perfect opportunity to make the move - and so the wheels were put in motion. I spoke<br />
-to work and got the green light to transfer to their london office, and then announced to my closest and dearest friends and family. I don’t know what<br />
-awaits, but I can truly say that I am ready for the next chapter of this adventure, and I’m excited to share my learnings and experiences in London.<br />
-This isn’t the last Notts will see of me; I will return to visit regularly. 🫶🏽</p>
-]]></content:encoded>
+            <content:encoded><![CDATA[<link rel="preload" as="image" href="/images/nottingham-memory.jpeg"/><p>This post has been a long time in the making. I&#x27;ve been scratching my head, wondering how to announce this
+major milestone<br /> Read more at <a href="https://darylcecile.net/notes/moving-out-notts">darylcecile.net</a>]]></content:encoded>
             <author>darylcecile@gmail.com (Daryl Cecile)</author>
             <enclosure url="https://darylcecile.net/og?slug=moving-out-notts" length="0" type="image//og"/>
         </item>
@@ -212,78 +93,7 @@ This isn’t the last Notts will see of me; I will return to visit regularly. �
             <link>https://darylcecile.net/notes/burning-bright-without-burning-out</link>
             <guid>burning-bright-without-burning-out</guid>
             <pubDate>Sat, 11 Jun 2022 23:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<InfoBox type="success">
-<strong>Opinion:</strong> This post is based mostly on my opinion, and experiences that I have gained and/or that have been shared with me. I
-am not a mental health specialist. 
-The main purpose of this post is to share how I approach burnout, and the mental model that has helped me to 
-better understand how it affects me, in the hope that it may help others.
-</InfoBox>
-<p>One of the biggest epidemic in software engineering at the moment, is <abbr link="https://mentalhealth-uk.org/burnout/" title="Burnout">burnout</abbr>;<br />
-A word that has almost become synonymous with working in tech over the past couple of years. According<br />
-to the <abbr title="World Health Organisation">WHO</abbr> definition,<br />
-an individual suffering from burnout is known to experience feelings of exhaustion, mental numbness, demotivation, and cynicism — often<br />
-in relation to hobbies or occupation.</p>
-<p>As both a software engineer, and a tech mentor, I have seen both sides of this in action; Many people (including myself) aren’t able to<br />
-recognise the slippery slope that leads to burnout straight away, and when they do it’s often too late. This sort of behaviour seems to stem<br />
-from a lack of understanding of how burnout takes place, as well as a lack of self-reflection; often forgetting that we need to check in on<br />
-ourselves. This is not to say that we lack the ability to take care of ourselves — we do! It’s just that sometimes, after a full session of<br />
-working, we have no mental capacity left for ourselves.</p>
-<p><img src="https://images.unsplash.com/photo-1517026575980-3e1e2dedeab4?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1098&amp;q=80" alt="Car accelerometer at 0. Photo by Chris Liverani on Unsplash" loading="lazy" /></p>
-<p>When I first started in the industry, I was a buzzing young developer who wanted to do many things all at once; so many ideas to explore,<br />
-concepts to learn, and tools to make. On numerous occasions, I would find myself attending conferences, signing up to events, starting (but<br />
-rarely finishing) side-projects, and refreshing twitter — all while managing studies and work. I barely had time left to afford myself the<br />
-luxury of self-reflexion and checking in on my mental well-being. And whenever id feel exhausted from the constant juggling id just brush it<br />
-off as <em>‘it’s <strong>just</strong> been a long day’</em>, and id go to bed to “recover”. Little did I know at the time that this was the start of my<br />
-occupational burnout.</p>
-<p>Understanding burnout and how it affects you as an individual is important in figuring out the steps you need to take to properly recover from<br />
-it. It is also important to be mindful that some steps may not be as easy or straightforward for everyone; The quickest route<br />
-may rely on some level of privilege that not everyone can afford.</p>
-<h3>Burnout expressions</h3>
-<p>Through conversations with colleagues, friends, and mentees, I’ve put together a mental model that represents how <em>I</em> experience burnout, and<br />
-the common expressions of burnout shared by others who have also experienced it.  You may find that your experiences of burnout are not the<br />
-same and therefore not reflected in this model, but use this as an idea to form your own model to better understand how you experience<br />
-burnout. Who knows, the model may help you discover new ways to approach managing your burnout rate.</p>
-<p>In order to better understand this mental model, we need to establish the foundation.</p>
-<h5>1. Burnout rate increases exponentially</h5>
-<p>It is important to note that burnout is not binary; Like most things it’s a scale. Signs of burnout may appear<br />
-quite early before it becomes burdensome and causes your productivity to tank. It is only when you ignore these signs and continue to pile<br />
-on the triggers that the affects accumulate exponentially.</p>
-<p>I personally believe that people don’t run out of energy; instead, energy gets<br />
-redirected and used to deal with the effects of burnout, leaving a little less each time for focusing on the task at hand. We often<br />
-spend so much of our capacity on workarounds for the symptoms of burnout that we have less capacity for the stuff that matters and tasks that<br />
-we actually want to do or makes use feel better.</p>
-<h5>2. It’s easier to burnout than to re-ignite</h5>
-<p>The more burnt-out you get, the harder and longer it takes to recover. Burning out is a slippery slope which many of us tend to blindly fall victim<br />
-to.</p>
-<p>Common tasks that contribute to burnout tend to be ones founded in habit; and so many people including myself, may struggle to break away from<br />
-those habits to allow for recovery to take place — further complicating the recovery process. For example, I love keeping tabs on how the web<br />
-is changing, so I often find myself doom-scrolling twitter, reddit, or hackernews for any piece of new tech-related news I can find; this habit<br />
-sometimes even extends to when I go on holiday — any idle time I could use<br />
-to <a href="https://www.helpguide.org/meditations/mindful-breathing-meditation.htm" target="_blank" rel="noopener" class="l" hreflang="en">take a breather</a> ends up being spent on these platforms.</p>
-<h5>3. Physical and mental stress work hand in hand, but they are not the same</h5>
-<p>A common phrase that often pops up when working with colleagues and people I mentor is <em>‘I shouldn’t feel this tired, I’ve barely done anything today’</em>.<br />
-And admittedly, I’m culprit of this too. It’s easy to forget that physical and mental pressures are not the same despite the fact that they<br />
-work hand in hand. Being mentally exhausted is not the same as being physically exhausted, and often people experience one without experiencing the<br />
-other; so it’s important to keep an eye out for this as it is one of the signals of burnout. Being able to detect this and changing your routine<br />
-will help decrease the burnout rate.</p>
-<p><img src="https://images.unsplash.com/photo-1654805540365-f5f7c81dfadf?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMnx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1280&amp;h=680&amp;q=90" alt="Mist spreading throughout a forest. Photo by Hans Isaacson on Unsplash" loading="lazy" /></p>
-<h3>Visualizing the burnout process</h3>
-<p>Picture this: Your mind is a forest, and the trees represent our ideas, energy, and motivation. When we focus intensively on specific tasks, the forest<br />
-gets misty, preventing us from focusing on other things. In order for the trees to grow and thrive, we need to occasionally see to it and water it,<br />
-and nurture it. But when we are too occupied and stressed trying to meet deadlines, we forget to look after it and the trees disappears. Everytime a tree<br />
-disappears, the landscape of our forest changes.</p>
-<p>Changes to the landscape of our forest makes us less productive as more time is spent remapping our forest and finding our way through it. This constant<br />
-remapping also tires us out. As a response to this, we start to limit our how we spend energy and stop checking the outer perimeters of our forest; causing<br />
-those trees to disappear.</p>
-<InfoBox type="warn">
-	WIP!
-</InfoBox>
-<h3>Can we recover from Burnout?</h3>
-<p>Trees grow, but they take time. And like most wounds, they heal. This is a process that can’t be rushed, and depending on how far they’ve pushed it, it may<br />
-take longer for some to recover than others. But if there is something we can all do straight away, it’s to watch out for the signs and make sure we take a<br />
-step back every now and then to evaluate how we are feeling, and where we are on our burnout scale. Seeding and growing a couple of trees is far less work<br />
-than re-growing an entire forest. 🌱</p>
-]]></content:encoded>
+            <content:encoded><![CDATA[<link rel="preload" as="image" href="https://images.unsplash.com/photo-1517026575980-3e1e2dedeab4?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;<br /> Read more at <a href="https://darylcecile.net/notes/burning-bright-without-burning-out">darylcecile.net</a>]]></content:encoded>
             <author>darylcecile@gmail.com (Daryl Cecile)</author>
             <enclosure url="https://darylcecile.net/og?slug=burning-bright-without-burning-out" length="0" type="image//og"/>
         </item>
@@ -292,28 +102,8 @@ than re-growing an entire forest. 🌱</p>
             <link>https://darylcecile.net/notes/rss-autodiscovery</link>
             <guid>rss-autodiscovery</guid>
             <pubDate>Sat, 04 Jun 2022 23:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<p>Recently, I’ve discovered a new-found love for <abbr title="Really Simple Syndication" link="https://rss.com/blog/how-do-rss-feeds-work/">RSS</abbr>. It gives<br />
-me the best of both worlds; fast access to content, and a way to subscribe to content from sites I frequently visit - without<br />
-having to share my email address. Coincidentally, over the Jubilee weekend, I’ve been updating my website; adding dark mode,<br />
-writing new content, and even adding an RSS feed. So I thought id write a mini tutorial guide on adding autodiscovery to a website.</p>
-<h3>Getting started</h3>
-<p>Firstly, put together an RSS feed. Most frameworks have their own way of implementing this. For my website, I had to do this<br />
-manually by writing a small pre-build script that utilizes the <a href="https://www.npmjs.com/package/feed" target="_blank" rel="noopener" class="l" hreflang="en">Feed NPM Package</a> to create<br />
-the xml, atom, and json feeds. Once you have a feed and a way to access it (i.e. the link where the feed is hosted), you can<br />
-go ahead with autodiscovery.</p>
-<p>Adding auto-discovery is as easy as adding the following snippet into the <code>&lt;head&gt;</code> tag of your page:</p>
-<pre><code class="lang-html">&lt;link rel=&quot;alternate&quot; 
-      type=&quot;application/rss+xml&quot; 
-      title=&quot;RSS Feed for darylcecile.net&quot; 
-      href=&quot;/rss.xml&quot; /&gt;
-</code></pre>
-<p>Make sure to update the <code>href</code> and <code>title</code> attributes to match your website content!</p>
-<p>If you are using an ATOM feed, you will need to change the <code>type</code> attribute value to <code>application/atom+xml</code>. This will tell the<br />
-feed crawlers that come across your site how to handle the feed you provide.</p>
-<p>After enabling autodiscovery, browsers and feed aggregators will be able to automatically detect that your website has a feed, making<br />
-it easier for visitors to subscribe to it. My <em>current</em> feed aggregator of choice is currently <a href="https://feeder.co" target="_blank" rel="noopener" class="l" hreflang="en">feeder</a>; It automatically<br />
-detects RSS, ATOM, and JSON feeds on pages that I visit, and allows me to subscribe to it with two clicks.</p>
-]]></content:encoded>
+            <content:encoded><![CDATA[<p>Recently, I&#x27;ve discovered a new-found love for <abbr title="Really Simple Syndication" link="https://rss.com/blog/how-do-rss-feeds-work/">RSS</abbr>. It gives
+me the best of both worlds; fast <br /> Read more at <a href="https://darylcecile.net/notes/rss-autodiscovery">darylcecile.net</a>]]></content:encoded>
             <author>darylcecile@gmail.com (Daryl Cecile)</author>
             <enclosure url="https://darylcecile.net/og?slug=rss-autodiscovery" length="0" type="image//og"/>
         </item>
@@ -322,78 +112,7 @@ detects RSS, ATOM, and JSON feeds on pages that I visit, and allows me to subscr
             <link>https://darylcecile.net/notes/excom-chrome-extension</link>
             <guid>excom-chrome-extension</guid>
             <pubDate>Fri, 03 Jun 2022 23:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<p>A couple of weeks ago, a conversation at work with my manager prompted me to revisit an old chrome extension I created a while<br />
-back to help me manage my tab usage better.</p>
-<p>The extension was born out of frustration for tab management; I was simply out of control.<br />
-A simple workday could easily land me with 50+ tabs. So I created an extension called <a href="https://chrome.google.com/webstore/detail/alfred/mjlmoifgncbednjccpnhcjeifpfnjeon" target="_blank" rel="noopener" class="l" hreflang="en">Alfred</a><br />
-that would automatically close tabs that I hadn’t used in a while. The experience was not something I enjoyed… or wanted to repeat. So I pushed that side-project aside like a typical developer<br />
-and avoided going back to it.</p>
-<p>Fast-forward to the conversation with my manager, I realised it was time to give Chrome extension development another shot. This time,<br />
-I had another motive; I wanted to prove that developing a Chrome extension using <a href="https://reactjs.org/" target="_blank" rel="noopener" class="l" hreflang="en">React</a>,<br />
-<a href="https://typescriptlang.org/" target="_blank" rel="noopener" class="l" hreflang="en">TypeScript</a>, and <a href="https://esbuild.github.io/" target="_blank" rel="noopener" class="l" hreflang="en">esbuild</a> could make the development<br />
-process enjoyable.</p>
-<p>So I set off creating a folder to house my project, and <code>yarn add</code>-ed esbuild, typescript, and react. I had a rough idea<br />
-of what I wanted; react for the content script (to inject into the page), and esbuild to transpile and bundle my .tsx into .js that<br />
-Chrome could consume directly. I started to plan down what I would make my extension do, and remembered why I didn’t enjoy developing<br />
-extensions - runtime realms.</p>
-<p>Chrome’s extension <a href="https://developer.chrome.com/docs/extensions/mv3/architecture-overview/#arch" target="_blank" rel="noopener" class="l" hreflang="en">runtime</a> is essentially<br />
-split into three ‘realms’ (I’m not sure if this is the correct name for it, but this is my post, so I’ll call it that going<br />
-forward); the content script, the background script, and the popup. (I know chrome also allows for new tab pages and the like,<br />
-but from my <em>limited</em> experience these act more or less like popups). Due to the sandboxing<br />
-nature and the way the extension-land is set up, most cross-realm communication need to take place<br />
-via <a href="https://developer.chrome.com/docs/extensions/mv3/messaging/" target="_blank" rel="noopener" class="l" hreflang="en">message passing</a>. So one realm needs to send, and<br />
-the receiving end needs to have a listener set up to respond to the messages. This is all fine and understandable, but when you look deeper<br />
-it becomes clear that the three realms don’t behave the same way and don’t have the same lifecycle steps. Now this is what annoyed me,<br />
-because as the developer, I had to manage not only the communication between the realms, but the fact that they are all in their own separate<br />
-contexts. Surely there was something I could do to bridge this gap and abstract it behind an api that would handle that for me?</p>
-<p><img src="/images/chrome-extension-architecture.png" alt="Extensions Architecture as seen on developer.chrome.com" loading="lazy" /></p>
-<p>I started by thinking of a simple (probably useless) scenario. I’d have the content-script injecting a React component with a simple<br />
-counter state. Then I should be able to update the state from the extension popup by calling the same function as the content-script -<br />
-all without having to think about messaging and listeners. And to be extra spicy, be able to trigger a ‘open new tab’ function that lives<br />
-in the background-script, from both the content-script and the popup.</p>
-<p>First thing was to create a class that would handle the communication itself between realm boundaries, making sure to handle function calls<br />
-from different realms first. I didn’t want to make every function in a realm accessible to other realms, so I added a <code>registerInterfaces(...)</code><br />
-method that would allow you to expose specific functions to other realms. This would then become accessible on that realm’s script instance.<br />
-After this I had to make sure that the incoming-messages listeners where set up, so I moved that to a <code>tap()</code> method that should be called<br />
-to set up the listeners. This was mostly done to satisfy my future react-related use-case where I’d need to be able to <code>untap()</code> to clean up<br />
-in <code>useEffect(...)</code> calls.</p>
-<p>After some playing about and end-to-end user-testing, I ended up with something that completed my initial plan, so<br />
-I <a href="https://www.npmjs.com/package/@projectfunction/excom" target="_blank" rel="noopener" class="l" hreflang="en">published</a>. Now I can have a handler in any realm, and easily<br />
-send messages and call exposed functions in other realms without having to think too hard about messaging and checking each message.<br />
-Instead, I can do this:</p>
-<pre><code class="lang-typescript">// In my background.ts
-import {backgroundScriptHandler} from &quot;@projectfunction/excom&quot;;
-
-backgroundScriptHandler.tap();
-
-backgroundScriptHandler.registerInterfaces({
-	openTab: async function(url){
-		let tab = await chrome.tabs.create({ url, active: false });
-		console.log(`opened tab with id ${tab.id}, from background script`);
-		return 25;
-	}
-});
-</code></pre>
-<p>and then in my content-script or popup, I can do:</p>
-<pre><code class="lang-typescript">import {popupScriptHandler} from &quot;@projectfunction/excom&quot;;
-
-popupScriptHandler.tap(); //somewhere at the start so it runs once
-
-const returnValue = await popupScriptHandler.backgroundMethods.openTab('https://youtube.com');
-
-// returnValue is 25
-</code></pre>
-<p>Once this was made and published<sup><a href="#reference1" target="_blank" rel="noopener" class="l" hreflang="en">[1]</a></sup>, I decided to create a dummy extension<br />
-that allows me to search through my open tabs through a search box that is injected on any page I’m on, with the background script<br />
-handling the actual search and filtering. The experience was so much nicer; I could focus purely on calling methods and UI, and the library<br />
-did the rest.</p>
-<p>Who knows where this may lead me? Maybe I’ll become a full-time extensions developer 😏</p>
-<p>–</p>
-<p>P.S. I am aware there may be other ways to tackle this and that this potentially has flaws that I am too tired to look into, but this<br />
-little exploration was worth it - and if anything, it was just the push I needed to get into extensions.</p>
-<hr />
-<p><sup id="reference1">[1]</sup> <a href="https://github.com/daryl-cecile/excom" target="_blank" rel="noopener" class="l" hreflang="en">Excom Repository</a></p>
-]]></content:encoded>
+            <content:encoded><![CDATA[<link rel="preload" as="image" href="/images/chrome-extension-architecture.png"/><p>A couple of weeks ago, a conversation at work with my manager prompted me to revisit an old chrome extension I creat<br /> Read more at <a href="https://darylcecile.net/notes/excom-chrome-extension">darylcecile.net</a>]]></content:encoded>
             <author>darylcecile@gmail.com (Daryl Cecile)</author>
             <enclosure url="https://darylcecile.net/og?slug=excom-chrome-extension" length="0" type="image//og"/>
         </item>
@@ -402,87 +121,7 @@ little exploration was worth it - and if anything, it was just the push I needed
             <link>https://darylcecile.net/notes/vercel-doc-journey</link>
             <guid>vercel-doc-journey</guid>
             <pubDate>Wed, 16 Feb 2022 00:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<InfoBox>
-<strong>Disclaimer:</strong> While this post outlines some of the issues I've had with the Vercel documentation, it in no way discredits the amazing work the Vercel Team have been doing. Documentation in this industry needs work as a whole, and for the most part, Vercel's documentation has helped me out countless times. This post is intended to note my discoveries, thought-processes, and eventual solution to the issues I came across, as I journey through the documentation. The outcome of this basic-level research will be published and open-sourced.
-</InfoBox>
-<p><strong>Update:</strong> Last Thursday (24th Feb), I had the opportunity to chat to <a href="https://twitter.com/itsmegbird" target="_blank" rel="noopener" class="l" hreflang="en">Meg</a> from Vercel about my experience and journey with the API docs. I have <a href="#update-improvement-suggestion" target="_blank" rel="noopener" class="l" hreflang="en">extended</a> this note to include my take on how it could be improved.</p>
-<hr />
-<p>Last week <a href="https://rizwanakhan.com" target="_blank" rel="noopener" class="l" hreflang="en">Rizwana</a> discovered a cute little <a href="https://www.cobdenplace.co.uk/" target="_blank" rel="noopener" class="l" hreflang="en">Co-working space</a> in Nottingham. We had been on the lookout for a place where we could carry out some work for <abbr link="https://projectfunction.io" title="ProjectFunction">PF</abbr><sup><a href="#reference1" target="_blank" rel="noopener" class="l" hreflang="en">[1]</a></sup>, as well as potentially run some of our upcoming courses. At the time, I was making some upgrades to <a href="https://projectfunction.io/how-we-teach" target="_blank" rel="noopener" class="l" hreflang="en">PF Campus</a>, trying to enable deployments for students to be able to deploy their work to a portfolio as part of their submission process. With previous versions of Campus being on a dedicated server, we offered learners with the option to privately deploy (onto our infrastructure) or publicly via Netlify; however, now that it has moved onto a serverless model, it was time to revisit the options.</p>
-<p><img src="/images/campus-deploy1.png" alt="Campus v1 Deployment to Netlify" loading="lazy" /></p>
-<p>As the great advocate that she is, she asked if there was a reason we weren’t deploying on Vercel. After all, Campus v2 was already deployed on there, so it only made sense.</p>
-<p>Early on in 2021, I had the exact same thought. However, after doing a deep dive, I realised that there was no available packages at the time that interfaced well with Vercel to allow us to programmatically manage projects and deployments the way we needed. And upon further venturing, I came to accept that (a) the available REST APIs was in too much of an early stage, and (b) developing a wrapper around it would be more work than I was able to put in given my day-to-day schedules, and the state of Vercel Documentation back then. In fact the latter was the exact reason that initially pushed me to use Netlify to deploy.</p>
-<p>Now before anyone jumps onto the “but Daryl, they provide a CLI” - I know! But it was not convenient and using it programmatically in our setup felt like a hack (we weren’t using a command-line interface). So it was best to avoid it. 🤷🏽‍♂️</p>
-<p>After a nudge to give the APIs a second consideration, I thought ‘<em>Well surely the REST APIs would have matured a little by now</em>’, and it did …kind of. While the APIs looked a lot more stable with <a href="https://vercel.com/docs/rest-api#introduction/api-basics/versioning" target="_blank" rel="noopener" class="l" hreflang="en">different versions</a> to avoid breaking changes, it still felt a little overwhelming; it felt like a lot of work had to be done on my part to figure out how things work and what the processes were. Some pages had incomplete documentation, while others had incorrect data-types listed for parameters.</p>
-<h3>Potential Solution? 🥊</h3>
-<p>Despite the issues with the doc, I decided to delve into it a bit more. If I could figure out the missing details and expected data for the API endpoints, I could create a wrapper around the API. This became the plan:</p>
-<ul class="para">
-<li>Set up a project for the wrapper</li>
-<li>Consolidate the must-have features (based on PF use-case)</li>
-<li>Work my way through the endpoints and create wrapper functions</li>
-<li>Write a script that calls each wrapper function, setting up projects and deployments, checking the status, and tearing them down.</li>
-</ul>
-<p>I set up a <a href="https://github.com/daryl-cecile/next-controls" target="_blank" rel="noopener" class="l" hreflang="en">small project</a> locally, and once I had all the dependencies in place to package my Typescript project, the journey through the docs began. Going into it, I only hoped the docs would be enough to fill the gaps; however, after looking through the endpoint documentation, I immediately fell in love with the addition of the <code>interaface</code> and <code>type</code> definitions (written in TS) for responses! It made the guesswork a little easier; and seeing as I was already using Typescript, it was a case of copy-pasta 🍝.</p>
-<p><img src="/images/vercel-docs-response-interface.png" alt="Sample response interface for the Aliases Endpoint" loading="lazy" /></p>
-<p>Seeing the typescript interface and type definitions brought about a sense of excitement but that feeling was quickly followed by a sense of defeat once I remembered how incomplete the documentation was as a whole.</p>
-<h3>Missing Definition</h3>
-<p>The first gripe was to do with the <a href="https://vercel.com/docs/rest-api#endpoints/deployments/create-a-new-deployment" target="_blank" rel="noopener" class="l" hreflang="en">Create new deployment</a> endpoint. It allows you to create deployments using a git source or by attaching files as part of the request. The latter made more sense for our use-case, so I tried to find out what the format and properties should be. Unfortunately, there was no information on this - the little bit of info I found suggested that the <code>files</code> property accepted “a list of objects with the files to be deployed”. What was this file object? I set up a quick function which made the call to the API endpoint, and attempted to pass the files as a simple key-value object:</p>
-<pre><code class="lang-typescript">function CreateDeployment({bearer, forceNew, ...body}:CreateDeploymentParams){
-    return axios.request&lt;CreateDeploymentResponse&gt;({
-        method: &quot;post&quot;,
-        url: DEPLOYMENTS_ENDPOINT_V13,
-        headers: {
-            &quot;Authorization&quot;: `BEARER ${bearer}`,
-            &quot;Content-Type&quot;: &quot;application/json&quot;,
-        },
-        data: {
-            name: body.projectId,
-            files: body.files,
-            target: body.target
-        },
-        validateStatus: () =&gt; true // prevent rejection on failed request
-    });
-}
-
-CreateDeployment({
-  target: &quot;staging&quot;,
-  projectId: &quot;prj_Ze66UvH4X9...t&quot;,
-  bearer: process.ENV.VERCEL_TOKEN,
-  forceNew: true,
-  files: [
-    {name: &quot;index.html&quot;, data: &quot;&lt;h1&gt;Test&lt;/h1&gt;&quot;}
-  ]
-}).then(res =&gt; {
-	console.log('Result:', res)
-})
-</code></pre>
-<p>After giving this a quick run, I received an error <code>bad_request</code> with the following message: <code>Invalid request: 'files[0]' should NOT have additional property 'name'.</code> This was interesting 🤔 Even though the documentation didnt seem to point out what was needed, the endpoint was doing some type of check to see what properties are expected. Based on the response, it seems <code>data</code> is likely expected, but surely there must be a property to specify the file name. After giving ‘fileName’, and ‘filePath’ a try (both returning similar errors), I became frustrated and decided to rethink; even if I did manage to guess the name, there is no way data would work without additional formatting - how would I upload image content as a reasonably-lengthened string?</p>
-<p>This realization drove me back to GitHub. Maybe (hopefully?) someone had the same question and found a solution? I searched through all repos including Vercel, but GitHub search really lived up to its bad reputation when it came to code-searching. Luckily they had another tool I could use (currently in beta). Enter <a href="https://cs.github.com" target="_blank" rel="noopener" class="l" hreflang="en">GitHub CodeSearch</a>.</p>
-<p><img src="/images/Github-CodeSearch.png" alt="GitHub CodeSearch Homepage" loading="lazy" /></p>
-<p>I began searching globally on CodeSearch for the Vercel deployment endpoint and in no time, I came across <a href="https://github.com/teleporthq/teleport-code-generators" target="_blank" rel="noopener" class="l" hreflang="en">TeleportHQ’s repo</a> which defined an <a href="https://cs.github.com/teleporthq/teleport-code-generators/blob/9f86b0edd484ae9cf6e93849d7f7d3924ce3daa0/packages/teleport-publisher-vercel/src/types.ts#L10" target="_blank" rel="noopener" class="l" hreflang="en">interface</a> named <code>VercelFile</code>. I was a little annoyed I didn’t try <code>file</code> as a property, but so relieved that there was a drop-in definition I could use.</p>
-<p>After dropping in the definition and updating the above code, I gave it another run, and alas the deployment succeeded!</p>
-<p><img src="/images/vercel-deploy-result1.png" alt="Successful deployment shown in Vercel" loading="lazy" /></p>
-<p>Once this step was cleared, I decided to go back to the documentation and see whether any of the optional query parameters for this endpoint would be of use for PF’s use-case; and that’s when I came across the second issue.</p>
-<h3>Unknown Types</h3>
-<p>This issue ended up being less of a blocker as some guesswork closed the gaps and allowed me to move forward, however I thought it was notable enough as in some cases, there were discrepancies between types.</p>
-<p>Looking at the deployment endpoint’s query param options, I could see some properties were unknown. I checked the documentation’s own <a href="https://vercel.com/docs/rest-api#introduction/api-basics/types" target="_blank" rel="noopener" class="l" hreflang="en">Types</a> section to see if this had some explanation, but it didn’t.</p>
-<p><img src="/images/Unknown-types-deploy.png" alt="Unknown types in the docs" loading="lazy" /></p>
-<p>As ive mentioned before, this was less of an issue and more of an inconvenience as I was able to guess the data types for those parameters.</p>
-<h3>Final Notes: PF + ▲ = 💜</h3>
-<p>As noted by Vercel, changes that they make to the APIs will be outlined in their changelogs, and it is possible that some outlined issues above could have cropped up there, however, this exploration was purely to build a wrapper around the API for consumption by PF (as I couldn’t find a suitable one that already existed).</p>
-<p>While this post outlines a couple of issues that I have personally come across while navigating the API endpoints that Vercel provides, It does not reflect the quality of their product or support that they provide. I personally<sup><a href="#reference2" target="_blank" rel="noopener" class="l" hreflang="en">[2]</a></sup> use their platform for numerous projects, and it has served me well; I continue to recommend them to friends and learners at ProjectFunction.</p>
-<p>Eventually, I was able to wrap a couple of the endpoints that I thought would be useful for PF, and I have to admit, the journey was fun. Moving forward, I can now integrate Vercel into the core of PFCampus to allow learners to deploy their work to showcase their abilities.</p>
-<p>The resulting wrapper can be found on my <a href="https://github.com/daryl-cecile/next-controls" target="_blank" rel="noopener" class="l" hreflang="en">GitHub repo</a>. Feel free to use and contribute!</p>
-<p><strong>P.S.</strong> Make sure you <a href="https://twitter.com/@darylcecile" target="_blank" rel="noopener" class="l" hreflang="en">follow me</a> on the bird app for updates ✌🏽</p>
-<br/>
-<hr />
-<h3>Update: Improvement suggestion</h3>
-<p>As mentioned in my update note, I had a chance to chat to <a href="https://twitter.com/itsmegbird" target="_blank" rel="noopener" class="l" hreflang="en">Meg</a> last Thursday (24th Feb) about my experience and journey with the API docs. At the end of our talk, Meg asked “If you could change anything about the docs site, what would it be?” and it got me thinking. I remembered not long ago, I had a play around with Slack’s API and I really loved their <a href="https://api.slack.com/methods/admin.analytics.getFile/test" target="_blank" rel="noopener" class="l" hreflang="en">API Tester</a> feature (This feature can be seen with Google’s <a href="https://developers.google.com/apis-explorer" target="_blank" rel="noopener" class="l" hreflang="en">API Explorer</a> too). This is what I think Vercel’s API docs could use.</p>
-<p>It would help keep the docs somewhat in-date with API changes, as developers would be able to make a test API call with the required parameters within the doc, and see a realtime response; enabling them to see what is expected with the call, and what to expect as a response. By allowing the dev to select an Endpoint version, it puts emphasis on the idea that the endpoints are versioned, and allows users to see how calls and responses differ between versions. In a nutshell, the test API caller becomes the live documentation; Showing instead of telling.</p>
-<br/>
-<hr />
-<p><sup id="reference1">[1]</sup> <a href="https://projectfunction.io" target="_blank" rel="noopener" class="l" hreflang="en">ProjectFunction</a></p>
-<p><sup id="reference2">[2]</sup> This <a href="https://darylcecile.net" target="_blank" rel="noopener" class="l" hreflang="en">website</a> was created using Next.js</p>
-]]></content:encoded>
+            <content:encoded><![CDATA[<link rel="preload" as="image" href="/images/campus-deploy1.png"/><link rel="preload" as="image" href="/images/vercel-docs-response-interface.png"/><link rel="preload" as="image" href="/images/Github-<br /> Read more at <a href="https://darylcecile.net/notes/vercel-doc-journey">darylcecile.net</a>]]></content:encoded>
             <author>darylcecile@gmail.com (Daryl Cecile)</author>
             <enclosure url="https://darylcecile.net/og?slug=vercel-doc-journey" length="0" type="image//og"/>
         </item>
@@ -491,133 +130,7 @@ CreateDeployment({
             <link>https://darylcecile.net/notes/hooked-on-react</link>
             <guid>hooked-on-react</guid>
             <pubDate>Tue, 01 Feb 2022 00:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<InfoBox type="warn">
-<strong>WIP:</strong> This post is WIP. I plan to continue to update it as my React journey continues. 
-</InfoBox>
-<p>Two years ago, there was a hype around React; and after a couple of months of trying to avoid<br />
-yet-another-javascript-framework, I gave up and decided to see what all the hype was all about. Since that time, Ive not<br />
-looked back.</p>
-<p>Fast-forward to today, I’ve used React (specifically with Next.js) to create over 4 professional sites, and over 7 side<br />
-projects. And throughout that time I have created a few custom hooks that I found myself reusing across projects. These<br />
-hooks help simplify my flow of data, and give me finer control over my components. These hooks may not be applicable to<br />
-all types of applications, but for the most part they have been super useful for my use-cases:</p>
-<h3>UseAsync</h3>
-<p>I use this hook to control data flow from async methods. This is usually from using third-party libraries, but can be<br />
-useful in other cases:</p>
-<pre><code class="lang-typescript">import {useCallback, useEffect, useState} from &quot;react&quot;;
-
-export default function useAsync&lt;T&gt;(method: () =&gt; Promise&lt;T&gt;, dependencies:Array&lt;any&gt; = []) {
-	const methodCaller = useCallback(()=&gt;{
-		setError(null);
-		setStatus(&quot;pending&quot;);
-		method().then(response =&gt; {
-			setData(response);
-			setStatus(&quot;fulfilled&quot;);
-		}).catch(err =&gt; {
-			setError(err);
-			setStatus(&quot;rejected&quot;);
-		});
-	}, [method, ...dependencies]);
-	const [data, setData] = useState&lt;T&gt;(null);
-	const [status, setStatus] = useState&lt;&quot;fulfilled&quot; | &quot;pending&quot; | &quot;rejected&quot;&gt;(&quot;pending&quot;);
-	const [error, setError] = useState&lt;Error&gt;(null);
-	
-	return {status, data, error, run:methodCaller};
-}
-
-// USAGE
-function MyComponent(){
-	const {data, run, status} = useAsync(()=&gt; fetchMovieDetail('harry potter'));
-
-	return (
-		&lt;div&gt;
-			&lt;pre&gt;{status === 'fulfilled' &amp;&amp; JSON.stringify(data, null, '\t')}&lt;/pre&gt;
-			&lt;button onClick={run}&gt;{status === 'pending' ? 'Pending' : 'Fetch'}&lt;/button&gt;
-		&lt;/div&gt;
-	)
-}
-</code></pre>
-<h3>UseRender</h3>
-<p>Occasionally, I find myself needing to interface with third-party libraries and need to control the rendering cycle<br />
-manually. React is good at managing rendering cycles in most cases, but in those rare situations like when you are using<br />
-third-parties like Monaco, this may come in handy:</p>
-<pre><code class="lang-typescript">import {useReducer} from &quot;react&quot;;
-
-export default function useRender() {
-	const [count, increment] = useReducer(n =&gt; n + 1, 0);
-	
-	return {render:increment}
-}
-</code></pre>
-<h3>UseEvent</h3>
-<p>While working on a previous side project, I found myself adding event listeners to dom events on a regular basis, so I<br />
-ended up with the following:</p>
-<pre><code class="lang-typescript">import {useCallback, useEffect, useState} from &quot;react&quot;;
-
-export default function useEvent(element?: EventTarget) {
-	const [eventListeners, setEventListeners] = useState&lt;Record&lt;string, ((ev: Event) =&gt; void)&gt;&gt;({});
-	
-	const addEventListener = useCallback((eventName:string, eventHandler)=&gt;{
-		setEventListeners(prev =&gt; {
-			return {
-				...prev,
-				[eventName]: eventHandler
-			}
-		});
-	}, [eventTarget]);
-	const removeEventListener = useCallback((eventName:string)=&gt;{
-		setEventListeners(prev =&gt; {
-			const draft = {...prev};
-			delete draft[eventName];
-			return draft;
-		});
-	}, [eventTarget]);
-
-	useEffect(() =&gt; {
-		const target = element ?? window;
-		const listeners = {...eventListeners};
-		
-		// addListeners
-		Object.entries(listeners).forEach(entry =&gt; {
-			eventTarget.addEventListener(entry[0], entry[1]);
-		});
-		
-		// remove old listeners
-		return ()=&gt; {
-			Object.entries(listeners).forEach(entry =&gt; {
-				eventTarget.removeEventListener(entry[0], entry[1]);
-			});
-		}
-	}, [eventListeners]);
-
-	return {
-		on:addEventListener,
-		off:removeEventListener
-	}
-}
-</code></pre>
-<h3>UseLockScroll</h3>
-<p>For accessibility-related work, I ended up needing a way to disable scroll lock when a modal component is mounted.</p>
-<pre><code class="lang-typescript">import {useLayoutEffect} from &quot;react&quot;;
-
-export default function useLockScroll() {
-	useLayoutEffect(() =&gt; {
-		const previous = window.getComputedStyle(document.body).overflow;
-
-		document.body.style.overflow = &quot;hidden&quot;;
-		
-		// undo on unmount
-		return () =&gt; {
-			document.body.style.overflow = previous
-		};
-	}, []);
-}
-</code></pre>
-<h3>Note</h3>
-<p>For now these have been my most used hooks. As my React journey continues, I may update this post to include<br />
-new hooks and explain their uses.</p>
-<p>✌🏽</p>
-]]></content:encoded>
+            <content:encoded><![CDATA[<div class="p-4 rounded-lg not-prose bg-amber-500/10 text-amber-500 dark:bg-[gold]/20 dark:text-[gold]" data-format="warn"><div class="m-0"><p><strong>WIP:</strong> This post is WIP. I plan to continu<br /> Read more at <a href="https://darylcecile.net/notes/hooked-on-react">darylcecile.net</a>]]></content:encoded>
             <author>darylcecile@gmail.com (Daryl Cecile)</author>
             <enclosure url="https://darylcecile.net/og?slug=hooked-on-react" length="0" type="image//og"/>
         </item>
@@ -626,101 +139,16 @@ new hooks and explain their uses.</p>
             <link>https://darylcecile.net/notes/something-needs-a-rejig</link>
             <guid>something-needs-a-rejig</guid>
             <pubDate>Tue, 26 May 2020 23:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<InfoBox type="warn">
-<strong>Edit:</strong> This post was scheduled to be published on the 8th of April, but due to the COVID pandemic and the uni-related consequences it brought about, I had to delay the post. However, I can now confirm that I am now working on another project idea that I have a genuine interest in and enjoy working on.
-</InfoBox>
-<p>As some of you may know, I am currently in the process of completing my final year project (FYP). Up until recently, I have been doing a dementia based project for my FYP. This included a web portal for carers to manage patients, as well as an Android app which the patients would have on their phone. The app was to help assist with daily tasks such as reminders to take medication, assist in making calls to carer and family members, as well as provide daily mental stimulation games.</p>
-<p>The completed app itself would be designed with little-to-no learning curve, so that patients with stage 1 to 3 of dementia and those with memory deficiency would be able to use it with no problem. This would have relied heavily on the principal of repetition and inforcement.</p>
-<p>The web platform would be accessible by the carer (who could potentially be assigned to multiple patients) and would allow them to remotely update medication reminders, update contact information, change the mental stimulation games and track behavioural changed based on time taken to carry out each task over time.</p>
-<p>Initially, I had so much excitement and ideas for this project, but over time I became more and more demotivated and lost all excitement and will to work on it. This got to the point where it made development depressing and I hated it 😭😭</p>
-<p>So I got in touch with my Tutor and Module leader and requested a change of topic. The initial response was “Normally; we’d say its too late, but due to circumstances we could look into the possibility. Do you have a rough idea of how long it will take?”. Once I calculated the time and sent a response I felt pretty sure this would be it… I’m still waiting.</p>
-<p>I’ve decided to take the risk and start working on the new project (called <em>rejig</em> - thanks to my friend <a href="https://rizwanakhan.com" target="_blank" rel="noopener" class="l" hreflang="en">@rizbizkits</a> for the name idea) despite the fact I am yet to hear back from the module leader. What i’ve discovered is that i’m much happier doing this work than I was when I was doing work on the previous topic.</p>
-<p>“<em>I kindly await your response…</em>”</p>
-]]></content:encoded>
+            <content:encoded><![CDATA[<div class="p-4 rounded-lg not-prose bg-amber-500/10 text-amber-500 dark:bg-[gold]/20 dark:text-[gold]" data-format="warn"><div class="m-0"><p><strong>Edit:</strong> This post was scheduled to be publ<br /> Read more at <a href="https://darylcecile.net/notes/something-needs-a-rejig">darylcecile.net</a>]]></content:encoded>
             <author>darylcecile@gmail.com (Daryl Cecile)</author>
             <enclosure url="https://darylcecile.net/og?slug=something-needs-a-rejig" length="0" type="image//og"/>
-        </item>
-        <item>
-            <title><![CDATA[I did a thing... PyroGist 👨🏽‍💻]]></title>
-            <link>https://darylcecile.net/notes/did-a-thing-pyro</link>
-            <guid>did-a-thing-pyro</guid>
-            <pubDate>Thu, 05 Mar 2020 00:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<InfoBox type="warn">
-<strong>DEPRECATED:</strong> This Project is no longer being maintained and has now be deprecated
-</InfoBox>
-<p>As some of you might have heard, ProjectFunction is partnering up with NTU to deliver a 2 weeks intensive course. As with other PF courses we have run in the past, this one will be open to those who are under-represented in the industry. As part of this programme, learners will have the opportunity to take part in workshops and attend talks related to working in tech. Additionally, they will have the opportunity to apply all the skills they gather and the knowledge they gain, to design and implement their own website.</p>
-<p>In preparation for this, I have started writing up some documentation and tasks for the learners. While doing the documentation for this, I came across 2 issues; firstly, there was no way to natively embed non-gist GitHub code into webpages, and secondly the option provided by GitHub does not make it difficult, if not impossible to restyle.</p>
-<p>As it currently stands, GitHub allows you to embed gists into your webpage using the <em>embed</em> option. But this comes in the form of a <code>&lt;script&gt;</code> tag that you insert into the page. This makes embedding simple, but at the cost of interface customizations. So I made my own. Now I know there are other solutions out there such as <a href="https://github.com/robertkrimen/gist-it" target="_blank" rel="noopener" class="l" hreflang="en"><em>gist-it</em></a> but I thought it would be a good challenge to implement my own.</p>
-<p>My main priority when creating this was simplicity and customizability. I wanted the library to be easy to use, but also provide some customization options. Furthermore, I wanted to keep the element in the light DOM (outside of the shadow DOM) to ensure users could go even further with their customizations by using custom CSS.</p>
-<p>Here is what I ended up creating:</p>
-<img src="/images/PyroGist_Example_Screenshot.png" alt="Screenshot of PyroGist in use" loading="lazy" />
-<p>As pictured above, the result allows the user to match the style of the embedded content to fit their page design. In order to use the library, you first have to link the stylesheet and put the script in the <code>&lt;head&gt;</code> of the destination document. Once you have this, PyroGist can be initialized.</p>
-<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/github.min.css">
-<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js"></script>
-<link rel="stylesheet" href="//darylcecile.net/scripts/PyroGist_v1/PyroGist.css">
-<script src="//darylcecile.net/scripts/PyroGist_v1/PyroGist.js"></script>
-<div id="preview">
-PyroGist("#preview",{
-    url: "https://github.com/daryl-cecile/MiniTest-1/blob/master/test.js",
-    theme: "normal",
-    autoFit: true,
-    highlight: true
-});
-</div>
-<p>The example above shows how to embed a simple mock test file from a GitHub repository. If you wish to embed custom content (not hosted on GitHub), you can put the content directly into the body of the containing element and ignore the ‘url’ option.</p>
-<div id="preview2">
-PyroGist("#preview2",{
-    name: "My custom file",
-    theme: "normal",
-    autoFit: true,
-    highlight: true
-});
-</div>
-<p>Currently, the highlighting is done by the highlightjs library (which users have to link themselves if they want syntax highlighting). However, the default colors can be easily overridden using custom CSS.</p>
-<script>
-PyroGist("#preview",{
-    name: "test.js",
-    theme: "normal",
-    autoFit: true,
-    highlight: true
-});
-    
-PyroGist("#preview2",{
-    name: "example",
-    theme: "normal",
-    autoFit: true,
-    highlight: true
-});
-
-console.log('Loaded PyroGist instances');
-</script>
-<p>Even though this library has a long way to go, I feel fairly comfident that it has met my initial goals and can serve its original purpose. In the near future, I intend to make GitHub gists embeddable via url. Additionally, I may create an adapter or customElement to automatically load the previews directly from markup (something like <code>&lt;pyro-gist url=&quot;/file/example.js&quot;&gt;&lt;/pyro-gist&gt;</code>).</p>
-<p>Until then… ✌🏽</p>
-<p>–</p>
-<p><em>P.S. This library can be found <a href="https://github.com/daryl-cecile/PyroGist" target="_blank" rel="noopener" class="l" hreflang="en">here</a>, on my GitHub account!</em></p>
-]]></content:encoded>
-            <author>darylcecile@gmail.com (Daryl Cecile)</author>
-            <enclosure url="https://darylcecile.net/og?slug=did-a-thing-pyro" length="0" type="image//og"/>
         </item>
         <item>
             <title><![CDATA[PF February Update ⚡️🧙🏽‍♂️]]></title>
             <link>https://darylcecile.net/notes/pf-february-update</link>
             <guid>pf-february-update</guid>
             <pubDate>Sat, 29 Feb 2020 00:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<p>This month’s entry is comparatively short to the last, as it is not what I had initially planned to post. This is due to me spending almost an hour and half doing the write up for the original post to then decide at the very last minute that I needed more time to refine the wording of the content. So here is a short post 😂</p>
-<p>As of two weeks ago, Rizwana and I have made the decision to overhaul the ProjectFunction website. This decision is a result of the increased intake in students. When I first wrote the original website, It was done very haphazardly. At the time, it felt more important to launch something that the learners could make use of to enhance their experience of ProjectFunction; and so I prioritised meeting a delivery deadline over maintainability, and as you can guess, this has not gone down well. 🤦🏽‍♂️</p>
-<p>The backend for the original database was written in PHP and the data was maintained in a (very) <em>loosely</em> relational MySQL database. Even though this allowed me to make changes to the database structure within minutes without losing any data, it did lead to a lot of redundant data. During the development of the website, I knew deep down it would need rewriting from the ground up. After all, the website was made as a proof-of-concept, and it was so well received that we ended up adding more features instead of re-writing. But now it is time.</p>
-<p>Due to our future plans and use-cases involving user-automated-tests, we have decided to move over to a NodeJS backend. This would mean we could re-use some of the libraries we have created over the year in both the front and backend, as well as run all user-automated-tests on our own end (instead of using heroku and hooks and hacky magic stuff 🧙🏽‍♂️)</p>
-<p>Last week, I started some work on the new system, setting up the server, services, and database structure. The number one difficulty I had with this process was moving the data we had over from the current (un)relational database, to our new one. Because of how much redundant data there was, as well as the lack of relations between some of the tables, I ended up having to create a data dump of the old database, then use a js script to read, analyse and re-associate each of the data entries so that they could be seeded into the new fully-relational database. Surprisingly, this process only took 4 minutes.</p>
-<p>So far, the database is fully set up and functional. All that is left to do now is move-over some of the old php-based views to EJS, and create routers for the new website. As for the design of the new website, we intend to keep the same look and feel, so the stylesheets we already have will be reused.</p>
-<p>As we’ve done in the past, we wont be minifying or obfuscating any of the resources. This was a conscious decision to enable learners to view the source of our website and see an untouched version of the resources. And based on the feedback we got from some learners, this was a good move as it enabled them to understand how we implemented some parts of our website.⚡️</p>
-<p>Over the next few weeks, we intend on working solely on the LMS side of the ProjectFunction website, so that it is ready for use in June. During this time, some parts of the website may change (for the better) as we decide what to keep, remove, and update. Once the site is ready for launch, we shall decomission the old LMS, and start working on moving the current visitor-facing site (i.e. The ProjectFunction homepage) over to NodeJS.</p>
-<p>Until then… ✌🏽</p>
-<p>–</p>
-<p><em>P.S. I realise now that this wasn’t exactly a “short” entry, but I know if I go back to make changes, this post wont be out on time… So, here</em> 🤷🏽‍♂️</p>
-<p><em>P.P.S. We got us some customized ProjectFunction business cards!</em></p>
-<img src="/images/business_card_1.jpeg" alt="Me holding my new PF business card" loading="lazy" />
-]]></content:encoded>
+            <content:encoded><![CDATA[<link rel="preload" as="image" href="/images/business_card_1.jpeg"/><p>This month&#x27;s entry is comparatively short to the last, as it is not what I had initially planned to post. This is due to me <br /> Read more at <a href="https://darylcecile.net/notes/pf-february-update">darylcecile.net</a>]]></content:encoded>
             <author>darylcecile@gmail.com (Daryl Cecile)</author>
             <enclosure url="https://darylcecile.net/og?slug=pf-february-update" length="0" type="image//og"/>
         </item>
@@ -729,30 +157,7 @@ console.log('Loaded PyroGist instances');
             <link>https://darylcecile.net/notes/futuristic-pursuit</link>
             <guid>futuristic-pursuit</guid>
             <pubDate>Fri, 31 Jan 2020 00:00:00 GMT</pubDate>
-            <content:encoded><![CDATA[<p>For the past 4 years, I’ve been telling myself that I will be ready for adult life when it comes - and until recently, that was true. I’ve always had a clear image of what I wanted to achieve in the future; Since college, I knew that I wanted to start my own (side?) project/company, and find a job in development somewhere that is chill. But now that I am finally about to step into proper “adult life”, I cant help but feel like i’m not as ready as I thought 😬</p>
-<p>The plan throughout uni was that i’d move back to London once my degree was over, find a job somewhere there as a software developer, and maybe start a company of my own (on the side). In fact, I was so confident in that plan until recently. Last year, during my time on placement at a company in Nottingham called ERT, a dear friend of mine (<a href="https://rizwanakhan.com" target="_blank" rel="noopener" class="l" hreflang="en">@rizbizkits</a>) and I co-founded an initiative called ProjectFunction (find out about it <a href="https://projectfunction.io" target="_blank" rel="noopener" class="l" hreflang="en">here</a>).</p>
-<p>ProjectFUnction has been quite successful, however, I never expected it to gain so much traction in the Nottingham Tech community. This made me realize that I would need to stick around in Notts a bit longer after uni to see it through its untapped potential. After some mental back and forth, I accepted that my plans to go back home to London would have to be put on hold. So now, I find myself looking for a place to stay for next year (as I’m currently staying in a student-only accomondation).</p>
-<p>I’ve been looking around Nottingham for a chill 2 bedroom flat - ideally one with parking, cat-friendly and on the ground floor. After all, Panther needs a place to stay too 😼</p>
-<img src="/images/pantherCat.jpg" alt="Panther cat doing a big stretch on the bed" loading="lazy" />
-<p>The places i’ve seen so far are quite afordable too, but then I realized, if I’m staying in Nottingham, I need to start looking for places <em>in</em> Notts 🤦🏽‍♂️. So I started looking…</p>
-<p><em>In retrospect, I realize that moving away from home to university in Nottingham was nothing compared to the “adult life” im finding myself flying towards this year. In fact, I’m not even sure I am ready for it in all honesty. But here we are 🤷🏽‍♂️</em></p>
-<p>In December, my friend Rizwana and I were discussing what kind of places I was looking for in terms of jobs, and after giving it some thought, considering my past experiences, it became clear that I had a rough idea of what I wanted 👇🏽</p>
-<ul class="para">
-<li>A startup-like environment would be great (1 - 30 people)</li>
-<li>Being flexible enough to work from home</li>
-<li>Having personal-development budget and opportunities</li>
-<li>No crunch-time (clear seperation of work and personal life)</li>
-<li>Countless opportunities for career-progression</li>
-<li>Diverse and inclusive teams</li>
-<li>Experimental when it comes to implementing new ideas</li>
-<li>A place that is not afraid to make their own tools to aid development</li>
-<li>Open-souce contributors would be nice</li>
-<li>Friendly/community-like team</li>
-<li>A place that is happy to work and give back to the community</li>
-<li>Somewhere that uses cutting edge technology</li>
-</ul>
-<p>All in all, I have a clear idea of the kind of workplace where I want to work as a Web developer 👨🏽‍💻. Now I just need to find it and make it happen. I guess i’ll find out when it gets to it. I just hope that the place I find meets those points as closely as possible 🤞🏽. Once I do that, I can finally start focusing on ProjectFunction, and the many plans we have for it in the near future!</p>
-]]></content:encoded>
+            <content:encoded><![CDATA[<link rel="preload" as="image" href="/images/pantherCat.jpg"/><p>For the past 4 years, I&#x27;ve been telling myself that I will be ready for adult life when it comes - and until recently, that was tr<br /> Read more at <a href="https://darylcecile.net/notes/futuristic-pursuit">darylcecile.net</a>]]></content:encoded>
             <author>darylcecile@gmail.com (Daryl Cecile)</author>
             <enclosure url="https://darylcecile.net/og?slug=futuristic-pursuit" length="0" type="image//og"/>
         </item>

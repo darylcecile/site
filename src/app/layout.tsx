@@ -7,12 +7,84 @@ import { Rays } from '@/components/header/rays';
 import Footer from '@/components/footer/index';
 import { GeistSans } from "geist/font/sans";
 import { cn } from '@/lib/utils';
-import { ClientTheme } from '@/components/utils/ClientTheme';
 import { Analytics } from "@vercel/analytics/react"
+import { Metadata } from 'next';
 
-export const metadata = {
-	title: 'Daryl Cecile',
-	description: 'Building things on the web',
+
+export async function generateMetadata(): Promise<Metadata> {
+	return {
+		metadataBase: new URL("https://darylcecile.net/"),
+		alternates: {
+			canonical: "https://darylcecile.net",
+			types: {
+				"application/rss+xml": [
+					{ title: "RSS Feed for darylcecile.net", url: "/rss.xml" },
+				],
+			},
+		},
+		viewport: { minimumScale: 1, initialScale: 1, width: "device-width" },
+		title: "Daryl Cecile",
+		authors: { name: "Daryl Cecile", url: "https://darylcecile.net" },
+		description: "Building experiences on the web 🍊",
+		openGraph: {
+			title: "Daryl Cecile",
+			images: ["https://darylcecile.net/og"],
+			locale: "en_US",
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: "Daryl Cecile",
+			images: "https://darylcecile.net/og",
+			site: "@darylcecile",
+			creator: "@darylcecile",
+			description: "Building experiences on the web 🍊",
+		},
+		icons: {
+			apple: {
+				sizes: "180x180",
+				url: "/images/core/profile-180.png",
+			},
+			icon: [
+				{
+					url: "/images/core/profile-64.png",
+					sizes: "64x64",
+					type: "image/png",
+				},
+				{
+					url: "/images/core/profile-128.png",
+					sizes: "128x128",
+					type: "image/png",
+				},
+				{
+					url: "/images/core/profile-256.png",
+					sizes: "256x256",
+					type: "image/png",
+				},
+				{
+					url: "/images/core/profile-512.png",
+					sizes: "512x512",
+					type: "image/png",
+				},
+				{
+					url: "/images/core/profile.png",
+					type: "image/png",
+				}
+			],
+			shortcut: ["/images/core/profile-256.ico"],
+			other: [
+				{ rel: "me", url: "https://twitter.com/darylcecile" },
+				{
+					rel: "webmention",
+					url: "https://webmention.io/darylcecile.net/webmention",
+				},
+				{
+					rel: "pingback",
+					url: "https://webmention.io/darylcecile.net/xmlrpc",
+				},
+			],
+		},
+		// manifest: "/site.webmanifest",
+	} satisfies Metadata;
 }
 
 export default function RootLayout({

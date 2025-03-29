@@ -1,4 +1,4 @@
-import { MDXRemote } from 'next-mdx-remote/rsc';
+import { MDXRemote, compileMDX } from 'next-mdx-remote/rsc';
 import rehypeMdxCodeProps from 'rehype-mdx-code-props'
 import TweetRenderer from '@/components/utils/renderers/TweetRenderer';
 import InfoBox from '../InfoBox';
@@ -9,6 +9,7 @@ import { AbbrPreview } from '@/components/utils/AbbrPreview';
 import FancyLink from '../FancyLink';
 import { InlineCodeRenderer } from './InlineCodeRenderer';
 import { Heading } from '@/components/notes/Heading';
+import { MDXComponents } from 'mdx/types.js'
 
 type Props = {
 	content: string;
@@ -18,42 +19,7 @@ export default function MarkdownRenderer(props: Props) {
 	return (
 		<MDXRemote
 			source={props.content}
-			components={{
-				'Abbr': AbbrPreview,
-				'TweetRenderer': TweetRenderer,
-				'InfoBox': InfoBox,
-				'img': ResponsiveImgRenderer,
-				'a': FancyLink,
-				'p': (props: any) => {
-					if (typeof props.children !== "string" && "type" in props.children) {
-						if (["ResponsiveImgRenderer", "TweetRenderer"].includes(props.children.type.name)) {
-							return props.children;
-						}
-					}
-					return <p>{props.children}</p>;
-				},
-				'pre': (props) => {
-					if (props.children.type === 'code' || props.children.type.name === 'code') {
-						const language = props.children.props.className.replace('language-', '');
-						const code = props.children.props.children;
-						return <CodeRenderer lang={language} withIntellisense={props.twoslash}>{code}</CodeRenderer>;
-					}
-					return <pre {...props} />;
-				},
-				'code': (props) => {
-					if (props.className?.startsWith('language-')) {
-						return <code {...props} data-valley={true} />;
-					}
-					return <InlineCodeRenderer {...props} />;
-				},
-				'Gallery': GalleryRenderer,
-				'h1': (props) => <Heading level={1} {...props} />,
-				'h2': (props) => <Heading level={2} {...props} />,
-				'h3': (props) => <Heading level={3} {...props} />,
-				'h4': (props) => <Heading level={4} {...props} />,
-				'h5': (props) => <Heading level={5} {...props} />,
-				'h6': (props) => <Heading level={6} {...props} />,
-			}}
+			components={components}
 			options={{
 				mdxOptions: {
 					rehypePlugins: [rehypeMdxCodeProps],
@@ -62,3 +28,40 @@ export default function MarkdownRenderer(props: Props) {
 		/>
 	)
 }
+
+const components: MDXComponents = {
+	'Abbr': AbbrPreview,
+	'TweetRenderer': TweetRenderer,
+	'InfoBox': InfoBox,
+	'img': ResponsiveImgRenderer,
+	'a': FancyLink,
+	'p': (props: any) => {
+		if (typeof props.children !== "string" && "type" in props.children) {
+			if (["ResponsiveImgRenderer", "TweetRenderer"].includes(props.children.type.name)) {
+				return props.children;
+			}
+		}
+		return <p>{props.children}</p>;
+	},
+	'pre': (props) => {
+		if (props.children.type === 'code' || props.children.type.name === 'code') {
+			const language = props.children.props.className.replace('language-', '');
+			const code = props.children.props.children;
+			return <CodeRenderer lang={language} withIntellisense={props.twoslash}>{code}</CodeRenderer>;
+		}
+		return <pre {...props} />;
+	},
+	'code': (props) => {
+		if (props.className?.startsWith('language-')) {
+			return <code {...props} data-valley={true} />;
+		}
+		return <InlineCodeRenderer {...props} />;
+	},
+	'Gallery': GalleryRenderer,
+	'h1': (props) => <Heading level={1} {...props} />,
+	'h2': (props) => <Heading level={2} {...props} />,
+	'h3': (props) => <Heading level={3} {...props} />,
+	'h4': (props) => <Heading level={4} {...props} />,
+	'h5': (props) => <Heading level={5} {...props} />,
+	'h6': (props) => <Heading level={6} {...props} />,
+};

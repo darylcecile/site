@@ -57,38 +57,8 @@ export async function generateMetadata(
 			images: image,
 			site: "@darylcecile",
 			creator: "@darylcecile",
+			description: postData?.summary,
 		},
-		icons: {
-			apple: {
-				sizes: "180x180",
-				url: "/images/core/profile_180.png",
-			},
-			icon: [
-				{
-					url: "/images/core/profile_32.png",
-					sizes: "32x32",
-					type: "image/png",
-				},
-				{
-					url: "/images/core/profile_16.png",
-					sizes: "16x16",
-					type: "image/png",
-				},
-			],
-			shortcut: ["/images/core/profile.ico"],
-			other: [
-				{ rel: "me", url: "https://twitter.com/darylcecile" },
-				{
-					rel: "webmention",
-					url: "https://webmention.io/darylcecile.net/webmention",
-				},
-				{
-					rel: "pingback",
-					url: "https://webmention.io/darylcecile.net/xmlrpc",
-				},
-			],
-		},
-		manifest: "/site.webmanifest",
 	} satisfies Metadata;
 }
 
