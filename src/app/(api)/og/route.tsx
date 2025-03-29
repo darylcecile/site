@@ -148,6 +148,7 @@ function AdvanceImage({ title, authorName, theme, readTime }) {
 					alt=""
 					style={{
 						height: 75,
+						width: 75,
 						aspectRatio: "1/1",
 					}}
 					tw=" rounded-full"
