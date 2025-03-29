@@ -10,7 +10,7 @@ type Props = PropsWithChildren<{
 	faviconUrlOverride?: string;
 } & LinkProps>;
 
-const base = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : 'http://localhost:3000';
+const base = process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000';
 // const FAV_URL = "https://icons.duckduckgo.com/ip3/{{host}}.ico";
 const FAV_URL = "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url={{origin}}&size=32";
 
