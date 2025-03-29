@@ -2,7 +2,6 @@ import { ImageResponse } from "@vercel/og";
 import { notFound } from "next/navigation";
 import type { NextRequest } from "next/server";
 import noteData from "@/../public/notes.json";
-import profileImage from "@/app/icon.png";
 import { cn } from "@/lib/utils";
 import dayjs from 'dayjs';
 import customParse from 'dayjs/plugin/customParseFormat';
@@ -65,7 +64,7 @@ function SimpleImage({ title, theme, subHeading }) {
 			tw="w-full h-full flex flex-col justify-center items-center p-16"
 		>
 			<img
-				src={new URL(profileImage.src, base).href}
+				src={new URL("/icon.png", base).href}
 				alt=""
 				style={{
 					width: 128,
@@ -144,7 +143,7 @@ function AdvanceImage({ title, authorName, theme, readTime }) {
 
 			<div tw="mt-auto flex flex-row items-center">
 				<img
-					src={new URL(profileImage.src, base).href}
+					src={new URL("/icon.png", base).href}
 					alt=""
 					style={{
 						height: 75,
