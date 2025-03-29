@@ -41,17 +41,18 @@ const feed = new Feed({
 	id: "https://darylcecile.net",
 	link: "https://darylcecile.net",
 	language: "en",
-	image: "https://darylcecile.net/images/core/header.png",
-	favicon: "https://darylcecile.net/images/core/profile.ico",
+	image: "https://darylcecile.net/og?header&dark",
+	favicon: "https://darylcecile.net/images/core/profile-256.ico",
 	copyright: `Daryl Cecile © ${new Date().getFullYear()}`,
 	generator: "mFeed",
 	feedLinks: {
-		json: "https://darylcecile.net/rss/json",
-		atom: "https://darylcecile.net/rss/atom",
+		json: "https://darylcecile.net/rss.json",
+		atom: "https://darylcecile.net/atom.xml",
+		xml: "https://darylcecile.net/rss.xml",
 	},
 	author: {
 		name: "Daryl Cecile",
-		email: "darylcecile@gmail.com",
+		email: "me@darylcecile.net",
 		link: "https://darylcecile.net",
 	},
 });
@@ -93,7 +94,7 @@ for (const note of notesList) {
 		author: [
 			{
 				name: "Daryl Cecile",
-				email: "darylcecile@gmail.com",
+				email: "me@darylcecile.net",
 				link: "https://darylcecile.net",
 			},
 		],

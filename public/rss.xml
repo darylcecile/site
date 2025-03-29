@@ -4,13 +4,13 @@
         <title>Daryl Cecile</title>
         <link>https://darylcecile.net</link>
         <description>My notes</description>
-        <lastBuildDate>Sat, 29 Mar 2025 18:20:20 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 29 Mar 2025 20:15:26 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>mFeed</generator>
         <language>en</language>
         <image>
             <title>Daryl Cecile</title>
-            <url>https://darylcecile.net/images/core/header.png</url>
+            <url>https://darylcecile.net/og?header&amp;dark</url>
             <link>https://darylcecile.net</link>
         </image>
         <copyright>Daryl Cecile © 2025</copyright>

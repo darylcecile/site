@@ -2,9 +2,9 @@
     "version": "https://jsonfeed.org/version/1",
     "title": "Daryl Cecile",
     "home_page_url": "https://darylcecile.net",
-    "feed_url": "https://darylcecile.net/rss/json",
+    "feed_url": "https://darylcecile.net/rss.json",
     "description": "My notes",
-    "icon": "https://darylcecile.net/images/core/header.png",
+    "icon": "https://darylcecile.net/og?header&dark",
     "author": {
         "name": "Daryl Cecile",
         "url": "https://darylcecile.net"
