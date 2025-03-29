@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://darylcecile.net</id>
     <title>Daryl Cecile</title>
-    <updated>2025-03-29T20:15:26.430Z</updated>
+    <updated>2025-03-29T21:35:03.296Z</updated>
     <generator>mFeed</generator>
     <author>
         <name>Daryl Cecile</name>
@@ -12,7 +12,7 @@
     <link rel="alternate" href="https://darylcecile.net"/>
     <link rel="self" href="https://darylcecile.net/atom.xml"/>
     <subtitle>My notes</subtitle>
-    <logo>https://darylcecile.net/og?header&amp;dark</logo>
+    <logo>https://darylcecile.net/og</logo>
     <icon>https://darylcecile.net/images/core/profile-256.ico</icon>
     <rights>Daryl Cecile © 2025</rights>
     <entry>

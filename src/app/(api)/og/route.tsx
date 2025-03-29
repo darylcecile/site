@@ -50,6 +50,7 @@ export async function GET(opt: NextRequest): Promise<Response> {
 			authorName={post.author[0].name}
 			readTime={post.readTime}
 			theme={searchParams.has("dark") ? "dark" : "light"}
+			previewImg={post.preview_img}
 		/>
 	) as Response;
 }
@@ -110,7 +111,7 @@ function SimpleImage({ title, theme, subHeading }) {
 	);
 }
 
-function AdvanceImage({ title, authorName, theme, readTime }) {
+function AdvanceImage({ title, authorName, theme, previewImg, readTime }) {
 	const bg = theme === 'dark' ? 'black' : 'white';
 	return (
 		<div
@@ -158,6 +159,23 @@ function AdvanceImage({ title, authorName, theme, readTime }) {
 					<p tw="m-0 opacity-60">darylcecile.net/notes</p>
 				</div>
 			</div>
+
+
+			{previewImg && (
+				<img
+					src={previewImg}
+					alt=""
+					style={{
+						height: 630 - 64,
+						width: 400,
+						position: "absolute",
+						objectFit: "contain",
+						right: 32,
+						top: 32,
+						bottom: 32
+					}}
+				/>
+			)}
 
 			<div
 				className={GeistSans.className}

@@ -16,6 +16,7 @@ export type Note = {
 	hidden?: boolean;
 	image?: string;
 	snippet?: string;
+	preview_img?: string;
 };
 
 const postsDirectory = path.join(process.cwd(), "src/notes_markdown");

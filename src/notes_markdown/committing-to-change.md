@@ -2,6 +2,7 @@
 title: "Committing to Change: Joining the Octocats"
 date: "2025-03-28"
 snippet: After years of hard work, I can finally announce that I am now a Hubber!
+preview_img: https://darylcecile.net/daryl-octocat-flipped.png
 ---
 
 The past year and a half has been a whirlwind in my career. There were many ups, but towards the end of 2024, I found myself in a bit of a rut. On the one hand, I was proud of the work I had done and the contributions I had made. On the other hand, I felt like I was stuck in a loop, doing the same things over and over, seeing no opportunities come my way. I was in a role that I had outgrown, and while I had learned so much, I felt like I was no longer being challenged. 

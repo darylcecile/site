@@ -98,6 +98,7 @@ for (const note of notesList) {
 				link: "https://darylcecile.net",
 			},
 		],
+		preview_img: note.preview_img
 	});
 }
 
