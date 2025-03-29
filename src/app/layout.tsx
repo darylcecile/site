@@ -8,8 +8,11 @@ import Footer from '@/components/footer/index';
 import { GeistSans } from "geist/font/sans";
 import { cn } from '@/lib/utils';
 import { Analytics } from "@vercel/analytics/react"
-import { Metadata } from 'next';
+import { Metadata, Viewport } from 'next';
 
+export async function generateViewport(): Promise<Viewport[]> {
+	return [{ minimumScale: 1, initialScale: 1, width: "device-width" }];
+}
 
 export async function generateMetadata(): Promise<Metadata> {
 	return {
@@ -22,7 +25,6 @@ export async function generateMetadata(): Promise<Metadata> {
 				],
 			},
 		},
-		viewport: { minimumScale: 1, initialScale: 1, width: "device-width" },
 		title: "Daryl Cecile",
 		authors: { name: "Daryl Cecile", url: "https://darylcecile.net" },
 		description: "Building experiences on the web 🍊",

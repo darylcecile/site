@@ -46,7 +46,7 @@
 		"markdown-it-modify-token": "^1.0.2",
 		"markdown-it-task-checkbox": "^1.0.6",
 		"motion": "^12.4.11",
-		"next": "^15.2.1",
+		"next": "^15.2.4",
 		"next-mdx-remote": "^5.0.0",
 		"next-themes": "^0.4.6",
 		"node-html-parser": "^7.0.1",

@@ -41,7 +41,7 @@ const feed = new Feed({
 	id: "https://darylcecile.net",
 	link: "https://darylcecile.net",
 	language: "en",
-	image: "https://darylcecile.net/og?header&dark",
+	image: "https://darylcecile.net/og",
 	favicon: "https://darylcecile.net/images/core/profile-256.ico",
 	copyright: `Daryl Cecile © ${new Date().getFullYear()}`,
 	generator: "mFeed",

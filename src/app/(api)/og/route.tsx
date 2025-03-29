@@ -30,16 +30,6 @@ export async function GET(opt: NextRequest): Promise<Response> {
 			) as Response;
 		}
 
-		if (searchParams.has("header")) {
-			return new ImageResponse(
-				<SimpleImage
-					title={"Hey! I'm Daryl 👋🏾"}
-					subHeading={"@darylcecile"}
-					theme={searchParams.has("dark") ? "dark" : "light"}
-				/>,
-			) as Response;
-		}
-
 		return new ImageResponse(
 			<SimpleImage
 				title={"Hey! I'm Daryl 👋🏾"}
