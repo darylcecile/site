@@ -13,7 +13,7 @@ dayjs.extend(advanceFormat);
 
 export const runtime = "edge";
 
-const base = process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000';
+const base = process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000';
 
 export async function GET(opt: NextRequest): Promise<Response> {
 	const { searchParams } = new URL(opt.url);
