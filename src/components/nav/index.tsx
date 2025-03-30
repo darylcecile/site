@@ -488,7 +488,18 @@ export function NavBackButton() {
 
 	const clickHandler = useCallback(() => {
 		navContext.setIsSearchActive(false);
-		router.back();
+		if (window.history.length > 1) {
+      router.back();
+  } else {
+      const pathSegments = window.location.pathname.split('/');
+      if (pathSegments.length > 1) {
+          pathSegments.pop();
+          const newPath = pathSegments.join('/') || '/';
+          router.push(newPath);
+      } else {
+          router.push('/');
+      }
+  }
 	}, [navContext, router]);
 
 	const showBackButton = navContext.isBackActive && !navContext.isSearchActive;
