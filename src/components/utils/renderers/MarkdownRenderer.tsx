@@ -1,15 +1,15 @@
-import { MDXRemote, compileMDX } from 'next-mdx-remote/rsc';
-import rehypeMdxCodeProps from 'rehype-mdx-code-props'
-import TweetRenderer from '@/components/utils/renderers/TweetRenderer';
-import InfoBox from '../InfoBox';
-import ResponsiveImgRenderer from '@/components/utils/renderers/ResponsiveImgRenderer';
+import { Heading } from '@/components/notes/Heading';
+import { AbbrPreview } from '@/components/utils/AbbrPreview';
 import CodeRenderer from '@/components/utils/renderers/CodeRenderer';
 import GalleryRenderer from '@/components/utils/renderers/GalleryRenderer';
-import { AbbrPreview } from '@/components/utils/AbbrPreview';
+import ResponsiveImgRenderer from '@/components/utils/renderers/ResponsiveImgRenderer';
+import TweetRenderer from '@/components/utils/renderers/TweetRenderer';
+import type { MDXComponents } from 'mdx/types.js'
+import { MDXRemote, compileMDX } from 'next-mdx-remote/rsc';
+import rehypeMdxCodeProps from 'rehype-mdx-code-props'
 import FancyLink from '../FancyLink';
+import InfoBox from '../InfoBox';
 import { InlineCodeRenderer } from './InlineCodeRenderer';
-import { Heading } from '@/components/notes/Heading';
-import { MDXComponents } from 'mdx/types.js'
 
 type Props = {
 	content: string;

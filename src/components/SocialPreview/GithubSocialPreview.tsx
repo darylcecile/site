@@ -1,8 +1,8 @@
-import { Github, ExternalLink } from "lucide-react"
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Badge } from "@/components/ui/badge"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { cn } from "@/lib/utils"
-import { cache, type PropsWithChildren } from "react"
+import { ExternalLink, Github } from "lucide-react"
+import { type PropsWithChildren, cache } from "react"
 
 interface GitHubUserProps {
 	handle: string
@@ -66,7 +66,7 @@ const getUser = cache(async (handle: string) => {
 			return myGithubProfileFallback as GitHubProfile
 		}
 
-		throw new Error(`Failed to fetch GitHub profile: ${response.statusText}`)
+		if (process.env.NODE_ENV === 'production') throw new Error(`Failed to fetch GitHub profile: ${response.statusText}`)
 	}
 
 	const profile = await response.json() as GitHubProfile
@@ -144,19 +144,19 @@ export async function GitHubUser({ handle, children }: PropsWithChildren<GitHubU
 						<div className="flex justify-center gap-6 text-sm">
 							<div className="text-center">
 								<div className="font-semibold text-gray-900 dark:text-white">
-									{profile.followers.toLocaleString()}
+									{profile.followers?.toLocaleString()}
 								</div>
 								<div className="text-gray-500 dark:text-gray-400 text-xs">Followers</div>
 							</div>
 							<div className="text-center">
 								<div className="font-semibold text-gray-900 dark:text-white">
-									{profile.following.toLocaleString()}
+									{profile.following?.toLocaleString()}
 								</div>
 								<div className="text-gray-500 dark:text-gray-400 text-xs">Following</div>
 							</div>
 							<div className="text-center">
 								<div className="font-semibold text-gray-900 dark:text-white">
-									{profile.public_repos.toLocaleString()}
+									{profile.public_repos?.toLocaleString()}
 								</div>
 								<div className="text-gray-500 dark:text-gray-400 text-xs">Repos</div>
 							</div>
