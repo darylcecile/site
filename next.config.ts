@@ -22,6 +22,11 @@ export default {
 				destination: "https://techhub.social/@daryl",
 				permanent: true,
 			},
+			{
+				source: "/24-jun-25",
+				destination: "https://gist.github.com/darylcecile/6ff45ea019d8817c76747689f830ae3f",
+				permanent: true
+			}
 		];
 	},
 	async rewrites() {
