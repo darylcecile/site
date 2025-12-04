@@ -39,7 +39,7 @@ function Badge({
   ...props
 }: React.ComponentProps<"span"> &
   VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
-  cacheLife({ revalidate: ms("7d") / 1000 }); // 1 week in seconds, UI rarely changes
+	cacheLife({ revalidate: ms("7d") / 1000 }); // 1 week in seconds, UI rarely changes
   const Comp = asChild ? Slot : "span"
 
   return (
