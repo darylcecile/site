@@ -13,7 +13,7 @@ export async function GET(req: Request) {
 	const res = await fetch(url, { method: "GET" });
 
 	if (!res.ok) {
-		console.error("Failed to fetch image:", res.status, res.statusText, await res.text());
+		console.error("Failed to fetch image:", res.status, res.statusText, url);
 		return notFound();
 	}
 
