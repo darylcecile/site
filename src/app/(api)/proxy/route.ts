@@ -13,7 +13,7 @@ export async function GET(req: Request) {
 	const res = await fetch(url, { method: "GET" });
 
 	if (!res.ok) {
-		console.error("Failed to fetch image:", res.status, res.statusText);
+		console.error("Failed to fetch image:", res.status, res.statusText, await res.text());
 		return notFound();
 	}
 
@@ -25,7 +25,7 @@ export async function GET(req: Request) {
 			fit: 'inside',
 		}).toBuffer();
 
-		return new Response(image, {
+		return new Response(new Uint8Array(image), {
 			headers: new Headers({
 				"Content-Type": "image/png", // Set the appropriate content type
 				"Cache-Control": "s-maxage=86400",
