@@ -12,6 +12,7 @@ import { useMounted } from "@/lib/hooks/useMounted";
 import { AnimatePresence } from "motion/react";
 import { useDebounce } from '@/lib/hooks/useDebounce';
 import { search } from '@/app/(actions)/search';
+import { Suspense } from "react";
 
 type NavContextType = {
 	isSearchActive: boolean;
@@ -81,30 +82,32 @@ export function NavProvider({ children }: PropsWithChildren) {
 	}, [text]);
 
 	return (
-		<NavContext.Provider value={{
-			isSearchActive,
-			setIsSearchActive,
-			portalId,
-			isBackActive,
-			setIsBackActive,
-			useBackButton,
-			searchState: {
-				searchTerm,
-				setSearchTerm,
-				isPending: isSearchPending,
-				results,
-				error: undefined,
-				state: isSearchPending ? 'pending' : (
-					results ? (
-						results.length ? 'success' : 'empty'
-					) : 'idle'
-				),
-				selectionIndex,
-				setSelectionIndex,
-			}
-		}}>
-			{children}
-		</NavContext.Provider>
+		<Suspense fallback={null}>
+			<NavContext.Provider value={{
+				isSearchActive,
+				setIsSearchActive,
+				portalId,
+				isBackActive,
+				setIsBackActive,
+				useBackButton,
+				searchState: {
+					searchTerm,
+					setSearchTerm,
+					isPending: isSearchPending,
+					results,
+					error: undefined,
+					state: isSearchPending ? 'pending' : (
+						results ? (
+							results.length ? 'success' : 'empty'
+						) : 'idle'
+					),
+					selectionIndex,
+					setSelectionIndex,
+				}
+			}}>
+				{children}
+			</NavContext.Provider>
+		</Suspense>
 	)
 }
 
@@ -489,17 +492,17 @@ export function NavBackButton() {
 	const clickHandler = useCallback(() => {
 		navContext.setIsSearchActive(false);
 		if (window.history.length > 1) {
-      router.back();
-  } else {
-      const pathSegments = window.location.pathname.split('/');
-      if (pathSegments.length > 1) {
-          pathSegments.pop();
-          const newPath = pathSegments.join('/') || '/';
-          router.push(newPath);
-      } else {
-          router.push('/');
-      }
-  }
+			router.back();
+		} else {
+			const pathSegments = window.location.pathname.split('/');
+			if (pathSegments.length > 1) {
+				pathSegments.pop();
+				const newPath = pathSegments.join('/') || '/';
+				router.push(newPath);
+			} else {
+				router.push('/');
+			}
+		}
 	}, [navContext, router]);
 
 	const showBackButton = navContext.isBackActive && !navContext.isSearchActive;
