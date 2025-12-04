@@ -6,6 +6,7 @@ import {
 } from '@shikijs/twoslash';
 import { CopyButton } from '@/components/utils/CopyButton';
 import './twoslash.css'
+import { cacheLife, cacheTag } from 'next/cache';
 
 type CodeRendererProps = {
 	lang: string;
@@ -13,20 +14,29 @@ type CodeRendererProps = {
 	withIntellisense?: boolean;
 }
 
-export default async function CodeRenderer(props: CodeRendererProps) {
-	const rawCode = props.children;
-	const out = await codeToHtml(rawCode, {
-		lang: props.lang,
+async function formatCode(rawCode: string, lang:string, withIntellisense?:boolean): Promise<string> {
+	"use cache";
+
+	cacheLife('seconds');
+
+	return codeToHtml(rawCode, {
+		lang: lang,
 		theme: 'github-dark',
 		transformers: [
 			transformerTwoslash({
 				renderer: rendererRich(),
 				filter: (lang, code, options) => {
-					return ["typescript", "ts", "tsx"].includes(lang) && props.withIntellisense
+					return ["typescript", "ts", "tsx"].includes(lang) && withIntellisense
 				}
 			})
 		]
 	});
+}
+
+
+export default async function CodeRenderer(props: CodeRendererProps) {
+	const rawCode = props.children;
+	const out = await formatCode(rawCode, props.lang, props.withIntellisense);
 
 	return (
 		<div className="relative group/code">

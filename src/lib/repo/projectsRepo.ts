@@ -22,7 +22,7 @@ export const getAllProjectsDataSorted = cache(async () => {
 	"use cache";
 
 	cacheTag("projects-data");
-	cacheLife('hours');
+	cacheLife('minutes');
 
 	// Get file names under /notes
 	const fileNames = fs.readdirSync(projectsDirectory);

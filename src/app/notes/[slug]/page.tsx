@@ -8,6 +8,7 @@ import type { Metadata, ResolvingMetadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { type CSSProperties, ViewTransition } from 'react';
 import LocalDate from "../../../components/utils/LocalDate";
+import { cacheLife } from 'next/cache';
 
 type NotePageProps = {
 	params: Promise<{
@@ -61,6 +62,10 @@ export async function generateMetadata(
 }
 
 export default async function SingleNotePage(props: NotePageProps) {
+	"use cache";
+
+	cacheLife('minutes');
+
 	const params = await props.params;
 	const postData = await getNoteData(params.slug);
 	if (!postData) return notFound();

@@ -3,6 +3,7 @@ import fsAsync from "node:fs/promises";
 import path from "node:path";
 import { cache } from "react";
 import { Mark } from "../markdown";
+import { cacheLife, cacheTag } from "next/cache";
 
 export type Note = {
 	[name: string]: any;
@@ -63,7 +64,13 @@ export const getAllNotesDataSorted_UnCached = (ignoreContent?: boolean) => {
 
 export const getAllNotesDataSorted = cache(getAllNotesDataSorted_UnCached);
 
-export const getAllNotesSlug_UnCached = () => {
+
+export const getAllNotesSlugs = cache(async function() {
+	"use cache";
+
+	cacheTag("notes-slugs");
+	cacheLife('seconds');
+
 	const fileNames = fs.readdirSync(postsDirectory);
 	return fileNames.filter(fileName => {
 		if (!fileName.endsWith('.md') && !fileName.endsWith('.mdx')) return false;
@@ -75,14 +82,17 @@ export const getAllNotesSlug_UnCached = () => {
 			},
 		};
 	});
-};
+});
 
-export const getAllNotesSlugs = cache(getAllNotesSlug_UnCached);
-
-export const getNoteData_UnCached = async (
+export const getNoteData = cache(async function(
 	slug: string,
 	ignoreContent?: boolean,
-) => {
+){
+	"use cache";
+
+	cacheTag(`note-${slug}-${ignoreContent ? 'no-content' : 'with-content'}`);
+	cacheLife('minutes');
+
 	const fullPath = path.join(postsDirectory, `${slug}.md`);
 
 	if (!existsSync(fullPath)) return null;
@@ -98,6 +108,4 @@ export const getNoteData_UnCached = async (
 		content: ignoreContent ? null : post.content,
 		renderedContent: ignoreContent ? null : post.renderedContent,
 	} as Note;
-};
-
-export const getNoteData = cache(getNoteData_UnCached);
+});

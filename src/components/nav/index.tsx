@@ -82,32 +82,30 @@ export function NavProvider({ children }: PropsWithChildren) {
 	}, [text]);
 
 	return (
-		<Suspense fallback={null}>
-			<NavContext.Provider value={{
-				isSearchActive,
-				setIsSearchActive,
-				portalId,
-				isBackActive,
-				setIsBackActive,
-				useBackButton,
-				searchState: {
-					searchTerm,
-					setSearchTerm,
-					isPending: isSearchPending,
-					results,
-					error: undefined,
-					state: isSearchPending ? 'pending' : (
-						results ? (
-							results.length ? 'success' : 'empty'
-						) : 'idle'
-					),
-					selectionIndex,
-					setSelectionIndex,
-				}
-			}}>
-				{children}
-			</NavContext.Provider>
-		</Suspense>
+		<NavContext.Provider value={{
+			isSearchActive,
+			setIsSearchActive,
+			portalId,
+			isBackActive,
+			setIsBackActive,
+			useBackButton,
+			searchState: {
+				searchTerm,
+				setSearchTerm,
+				isPending: isSearchPending,
+				results,
+				error: undefined,
+				state: isSearchPending ? 'pending' : (
+					results ? (
+						results.length ? 'success' : 'empty'
+					) : 'idle'
+				),
+				selectionIndex,
+				setSelectionIndex,
+			}
+		}}>
+			{children}
+		</NavContext.Provider>
 	)
 }
 

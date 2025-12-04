@@ -1,7 +1,7 @@
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
 import { cn } from '@/lib/utils';
 import { parse } from 'node-html-parser';
-import type { PropsWithChildren } from 'react';
+import { Suspense, type PropsWithChildren } from 'react';
 import FancyLink from './FancyLink';
 import { cacheLife, cacheTag } from 'next/cache';
 
@@ -27,37 +27,39 @@ export async function AbbrPreview(props: AbbrPreviewProps) {
 	const title = data?.title || props.title;
 
 	return (
-		<HoverCard openDelay={100} closeDelay={200} >
-			<HoverCardTrigger asChild>
-				{props.link ? (
-					<FancyLink
-						href={props.link}
-						className='decoration-dotted'
-						hideFavicon={props.hideFavicon}
-						faviconUrlOverride={props.faviconUrl}
-					>{props.children}</FancyLink>
-				) : (
-					<span className={cn(
-						'underline decoration-dotted underline-offset-4'
-					)}>{props.children}</span>
-				)}
-			</HoverCardTrigger>
-			<HoverCardContent
-				className={cn(
-					"w-80 overflow-hidden border-none shadow-lg rounded-2xl p-2 flex flex-col",
-					"bg-muted/20 backdrop-blur-2xl backdrop-saturate-150",
-				)}
-				align="center"
-			>
-				{data?.image && (
-					<img src={`/proxy?u=${btoa(data.image)}`} className='bg-muted aspect-video w-full object-cover rounded-lg mb-2' alt="" />
-				)}
-				{title && (
-					<p className={'p-1 leading-5 pb-0 text-balance relative'}>{title}</p>
-				)}
-				<p className='p-1 text-sm text-muted-foreground'>{data?.description ?? props.description}</p>
-			</HoverCardContent>
-		</HoverCard>
+		<Suspense fallback={props.children}>
+			<HoverCard openDelay={100} closeDelay={200} >
+				<HoverCardTrigger asChild>
+					{props.link ? (
+						<FancyLink
+							href={props.link}
+							className='decoration-dotted'
+							hideFavicon={props.hideFavicon}
+							faviconUrlOverride={props.faviconUrl}
+						>{props.children}</FancyLink>
+					) : (
+						<span className={cn(
+							'underline decoration-dotted underline-offset-4'
+						)}>{props.children}</span>
+					)}
+				</HoverCardTrigger>
+				<HoverCardContent
+					className={cn(
+						"w-80 overflow-hidden border-none shadow-lg rounded-2xl p-2 flex flex-col",
+						"bg-muted/20 backdrop-blur-2xl backdrop-saturate-150",
+					)}
+					align="center"
+				>
+					{data?.image && (
+						<img src={`/proxy?u=${btoa(data.image)}`} className='bg-muted aspect-video w-full object-cover rounded-lg mb-2' alt="" />
+					)}
+					{title && (
+						<p className={'p-1 leading-5 pb-0 text-balance relative'}>{title}</p>
+					)}
+					<p className='p-1 text-sm text-muted-foreground'>{data?.description ?? props.description}</p>
+				</HoverCardContent>
+			</HoverCard>
+		</Suspense>
 	)
 }
 
