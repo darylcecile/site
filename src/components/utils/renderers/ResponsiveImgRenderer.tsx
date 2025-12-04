@@ -11,20 +11,20 @@ type ResponsiveImgRendererProps = {
 function ResponsiveImg(props: ResponsiveImgRendererProps) {
 	const { src, alt, sizes, quality, loading, ...innerProps } = props;
 
-	const isSrcValid = URL.canParse(src);
+	const isSrcValid = typeof src === 'string' && URL.canParse(src);
 
 	const defaultSizes = sizes ?? [
 		640, 750, 828, 1080, 1200, 1920, 2048, 3840,
 	];
 	const srcSet = defaultSizes.map(
 		(size) =>
-			`/_next/image?url=${encodeURIComponent(src)}&w=${size}&q=${quality ?? 75} ${size}w`,
+			`/_next/image?url=${encodeURIComponent(String(src))}&w=${size}&q=${quality ?? 75} ${size}w`,
 	);
 
 	return (
 		<img
 			{...innerProps}
-			src={isSrcValid ? src : `/_next/image?url=${encodeURIComponent(src)}&w=1080&q=${quality ?? 90}`}
+			src={isSrcValid ? String(src) : `/_next/image?url=${encodeURIComponent(String(src))}&w=1080&q=${quality ?? 90}`}
 			alt={alt}
 			decoding={"async"}
 			loading={loading ?? "lazy"}
@@ -42,7 +42,7 @@ export default function ResponsiveImgRenderer(props: ComponentProps<'img'>) {
 		return (
 			<figure>
 				<ResponsiveImg
-					src={props.src}
+					src={String(props.src)}
 					alt={props.alt}
 					loading={props.loading ?? "lazy"}
 				/>
@@ -53,7 +53,7 @@ export default function ResponsiveImgRenderer(props: ComponentProps<'img'>) {
 
 	return (
 		<ResponsiveImg
-			src={props.src}
+			src={String(props.src)}
 			alt={props.alt ?? ""}
 			decoding={"async"}
 			loading={props.loading ?? "lazy"}

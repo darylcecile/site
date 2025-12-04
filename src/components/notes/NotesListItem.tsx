@@ -12,7 +12,7 @@ import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { unstable_ViewTransition as ViewTransition } from 'react'
+import { ViewTransition } from 'react'
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

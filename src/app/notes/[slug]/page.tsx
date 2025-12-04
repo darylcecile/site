@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import type { Metadata, ResolvingMetadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { type CSSProperties, unstable_ViewTransition as ViewTransition } from 'react';
+import { type CSSProperties, ViewTransition } from 'react';
 import LocalDate from "../../../components/utils/LocalDate";
 
 type NotePageProps = {

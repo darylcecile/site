@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getAllProjectsDataSorted, getProjectData } from "@/lib/repo/projectsRepo";
 import MarkdownRenderer from '@/components/utils/renderers/MarkdownRenderer';
 import { cn } from "@/lib/utils";
-import { unstable_ViewTransition as ViewTransition } from 'react';
+import { ViewTransition } from 'react';
 import Link from 'next/link';
 import ProjectsPageClient from '@/app/projects/[id]/page.client';
 

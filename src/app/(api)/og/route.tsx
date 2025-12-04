@@ -11,7 +11,7 @@ import { GeistSans } from "geist/font/sans";
 dayjs.extend(customParse);
 dayjs.extend(advanceFormat);
 
-export const runtime = "edge";
+// MIGRATED: Removed export const runtime = 'edge' (not compatible with cacheComponents)
 
 const base = process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000';
 

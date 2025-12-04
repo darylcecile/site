@@ -5,7 +5,8 @@ export default {
 	transpilePackages: ["next-mdx-remote"],
 	serverExternalPackages: ["@shikijs/twoslash"],
 	experimental: {
-		viewTransition: true
+		viewTransition: true,
+		cacheComponents: true, // Enabled for Next.js 16 stable
 	},
 	images: {
 		remotePatterns: [
