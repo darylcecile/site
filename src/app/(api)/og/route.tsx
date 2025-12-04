@@ -23,6 +23,15 @@ export async function GET(opt: NextRequest): Promise<Response> {
 					subHeading={"@darylcecile"}
 					theme={searchParams.has("dark") ? "dark" : "light"}
 				/>,
+				{
+					fonts: [
+						{
+							name: 'Geist Sans',
+							data: await loadGoogleFont('Geist', "@darylcecile" + searchParams.get("page")?.toLowerCase() + "/"),
+							style: 'normal',
+						}
+					]
+				}
 			) as Response;
 		}
 
