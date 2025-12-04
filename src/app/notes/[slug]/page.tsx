@@ -83,7 +83,7 @@ export default async function SingleNotePage(props: NotePageProps) {
 				</ViewTransition>
 				{!!postData.lastUpdated && (
 					<p className="text-foreground/70 prose">
-						{"Last updated: "}
+						<strong>Last updated: </strong>
 						<LocalDate dateString={postData.lastUpdated} />
 					</p>
 				)}

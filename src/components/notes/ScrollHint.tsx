@@ -29,10 +29,9 @@ export function useScrollHintHeading(id: string, text: string) {
 
 		// remove from the collection
 		return () => {
-			setHeadings((prev) => {
-				const { [id]: _, ...rest } = prev;
-				return rest;
-			});
+			setHeadings((prev) =>
+				Object.fromEntries(Object.entries(prev).filter(([key]) => key !== id))
+			);
 		}
 	}, [id, text, setHeadings]);
 
@@ -95,17 +94,17 @@ export function ScrollHint() {
 	if (keys.length < 2) return null;
 
 	return (
-		<div className="fixed top-1/2 -translate-y-1/2 left-4 min-w-12 min-h-2 grid grid-cols-1">
+		<div className="fixed top-1/2 -translate-y-1/2 left-4 min-w-12 min-h-2 grid grid-cols-1 group">
 			{keys.map((key, i) => {
 				const isActive = index === i;
 				return (
 					<button
 						key={key}
 						className={cn(
-							"group",
+							// "group-item",
 							"inline-block text-transparent text-[2px] whitespace-nowrap mr-auto rounded-full overflow-clip",
 							"transition-all duration-300 ease-out",
-							"hover:-translate-x-1 hover:text-xs p-0.5 bg-background"
+							"group-hover:-translate-x-1 group-hover:text-xs p-0.5 bg-background"
 						)}
 						onClick={() => {
 							const el = document.getElementById(key);
@@ -126,11 +125,14 @@ export function ScrollHint() {
 					>
 						<span
 							className={cn(
-								'bg-foreground/10',
+								'bg-neutral-300 dark:bg-neutral-700',
+								'text-transparent',
 								'group-hover:text-foreground group-hover:bg-background group-hover:p-2',
 								'transition-all duration-300 ease-out',
+								'hover:text-purple-500',
 								{
-									"bg-white": isActive,
+									"bg-black dark:bg-white": isActive,
+									"font-bold": isActive,
 								}
 							)}
 						>
