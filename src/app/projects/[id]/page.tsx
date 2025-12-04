@@ -113,7 +113,7 @@ export default async function SingleProjectPage(props: ProjectPageProps) {
 }
 
 export async function generateStaticParams() {
-	const projects = getAllProjectsDataSorted();
+	const projects = await getAllProjectsDataSorted();
 
 	return projects.map((post) => ({
 		id: post.id,

@@ -2,6 +2,7 @@ import fs, { existsSync } from "node:fs";
 import path from "node:path";
 import { cache } from "react";
 import { Mark } from "../markdown";
+import { cacheLife, cacheTag } from "next/cache";
 
 export type Project = {
 	name: string;
@@ -17,7 +18,12 @@ export type Project = {
 
 const projectsDirectory = path.join(process.cwd(), "src/projects_markdown");
 
-export const getAllProjectsDataSorted = cache(() => {
+export const getAllProjectsDataSorted = cache(async () => {
+	"use cache";
+
+	cacheTag("projects-data");
+	cacheLife('hours');
+
 	// Get file names under /notes
 	const fileNames = fs.readdirSync(projectsDirectory);
 	const allProjectsData: Project[] = fileNames.filter(fileName => {

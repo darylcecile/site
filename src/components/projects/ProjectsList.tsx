@@ -7,16 +7,9 @@ type ProjectsListProps = {
 	maxItems?: number;
 }
 
-
-
-"use cache";
-import { cacheLife } from "next/cache";
-import ms from "ms";
-
-
-export function ProjectsList(props: ProjectsListProps) {
-	cacheLife({ revalidate: ms("1d") / 1000 }); // 1 day in seconds (adjust to "1h" if projects change more often)
-	const publicProjects = getAllProjectsDataSorted().slice(0, props.maxItems);
+export async function ProjectsList(props: ProjectsListProps) {
+	const results = await getAllProjectsDataSorted();
+	const publicProjects = results.slice(0, props.maxItems);
 
 	return (
 		<div className={cn(GeistSans.className, 'max-w-2xl w-full mx-auto gap-8 flex flex-col  mb-8')}>
