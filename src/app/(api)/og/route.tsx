@@ -6,12 +6,9 @@ import { cn } from "@/lib/utils";
 import dayjs from 'dayjs';
 import customParse from 'dayjs/plugin/customParseFormat';
 import advanceFormat from 'dayjs/plugin/advancedFormat';
-import { GeistSans } from "geist/font/sans";
 
 dayjs.extend(customParse);
 dayjs.extend(advanceFormat);
-
-// MIGRATED: Removed export const runtime = 'edge' (not compatible with cacheComponents)
 
 const base = process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000';
 
@@ -35,6 +32,15 @@ export async function GET(opt: NextRequest): Promise<Response> {
 				subHeading={"@darylcecile"}
 				theme={searchParams.has("dark") ? "dark" : "light"}
 			/>,
+			{
+				fonts: [
+					{
+						name: 'Geist Sans',
+						data: await loadGoogleFont('Geist', "Hey! I'm Daryl @darylcecile"),
+						style: 'normal',
+					}
+				]
+			}
 		) as Response;
 	}
 
@@ -51,9 +57,36 @@ export async function GET(opt: NextRequest): Promise<Response> {
 			readTime={post.readTime}
 			theme={searchParams.has("dark") ? "dark" : "light"}
 			previewImg={post.preview_img}
-		/>
+		/>,
+		{
+			fonts: [
+				{
+					name: 'Geist Sans',
+					data: await loadGoogleFont('Geist', post.title + post.author[0].name + post.readTime + "DarylCecile" + "minutes"),
+					style: 'normal',
+				}
+			]
+		}
 	) as Response;
 }
+
+async function loadGoogleFont(font: string, letters: string) {
+	const text = Array.from(new Set(letters.split(''))).join('');
+	const url = `https://fonts.googleapis.com/css2?family=${font}&text=${encodeURIComponent(text)}`
+	const css = await (await fetch(url)).text()
+	const resource = css.match(/src: url\((.+)\) format\('(opentype|truetype)'\)/)
+
+	if (resource) {
+		const response = await fetch(resource[1])
+		if (response.status == 200) {
+			return await response.arrayBuffer()
+		}
+	}
+
+	console.log(css);
+	throw new Error('failed to load font data')
+}
+
 
 function SimpleImage({ title, theme, subHeading }) {
 	const bg = theme === 'dark' ? 'black' : 'white';
@@ -98,13 +131,13 @@ function SimpleImage({ title, theme, subHeading }) {
 
 
 			<div
-				className={GeistSans.className}
 				tw={cn("absolute -bottom-6 left-0 right-0 h-12")}
 				style={{
 					// rainbow gradient
 					backgroundImage:
 						"linear-gradient(to right, indigo, violet, red, orange, yellow, green, deepskyblue)",
 					filter: "blur(20px)",
+					fontFamily: "'Geist Sans', sans-serif",
 				}}
 			/>
 		</div>
@@ -118,8 +151,8 @@ function AdvanceImage({ title, authorName, theme, previewImg, readTime }) {
 			tw={"w-full h-full flex flex-col justify-center p-16"}
 			style={{
 				background: `linear-gradient(to bottom right, ${bg} 0%, ${bg} 50%, ${theme === 'dark' ? '#022f2e' : '#cbfbf1'} 100%)`,
+				fontFamily: "'Geist Sans', sans-serif",
 			}}
-			className={GeistSans.className}
 		>
 			<p
 				tw={theme === 'dark' ? "text-teal-100" : "text-teal-900"}
@@ -178,13 +211,13 @@ function AdvanceImage({ title, authorName, theme, previewImg, readTime }) {
 			)}
 
 			<div
-				className={GeistSans.className}
 				tw={cn("absolute -bottom-6 left-0 right-0 h-12")}
 				style={{
 					// rainbow gradient
 					backgroundImage:
 						"linear-gradient(to right, indigo, violet, red, orange, yellow, green, deepskyblue)",
 					filter: "blur(20px)",
+					fontFamily: "'Geist Sans', sans-serif",
 				}}
 			/>
 		</div>
