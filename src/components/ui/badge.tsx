@@ -1,3 +1,9 @@
+
+
+"use cache";
+import { cacheLife } from "next/cache";
+import ms from "ms";
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -25,6 +31,7 @@ const badgeVariants = cva(
   }
 )
 
+
 function Badge({
   className,
   variant,
@@ -32,6 +39,7 @@ function Badge({
   ...props
 }: React.ComponentProps<"span"> &
   VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
+  cacheLife({ revalidate: ms("7d") / 1000 }); // 1 week in seconds, UI rarely changes
   const Comp = asChild ? Slot : "span"
 
   return (

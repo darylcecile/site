@@ -7,7 +7,15 @@ type ProjectsListProps = {
 	maxItems?: number;
 }
 
+
+
+"use cache";
+import { cacheLife } from "next/cache";
+import ms from "ms";
+
+
 export function ProjectsList(props: ProjectsListProps) {
+	cacheLife({ revalidate: ms("1d") / 1000 }); // 1 day in seconds (adjust to "1h" if projects change more often)
 	const publicProjects = getAllProjectsDataSorted().slice(0, props.maxItems);
 
 	return (

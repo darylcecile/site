@@ -20,7 +20,15 @@ type NotesListProps = {
 	maxItems?: number;
 }
 
+
+
+"use cache";
+import { cacheLife } from "next/cache";
+import ms from "ms";
+
+
 export function NotesList(props: NotesListProps) {
+	cacheLife({ revalidate: ms("1h") / 1000 }); // 1 hour in seconds
 	const currentDate = dayjs().tz("Europe/London");
 
 	const publicNotes = getAllNotesDataSorted(false).map(note => {

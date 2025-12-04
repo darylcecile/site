@@ -8,7 +8,15 @@ type InfoBoxProps = {
 	type?: "info" | "warn" | "error" | "success";
 };
 
+
+
+"use cache";
+import { cacheLife } from "next/cache";
+import ms from "ms";
+
+
 export default function InfoBox(props: InfoBoxProps) {
+	cacheLife({ revalidate: ms("7d") / 1000 }); // 1 week in seconds, UI rarely changes
 	const type = props.type ?? "info";
 
 	return (
