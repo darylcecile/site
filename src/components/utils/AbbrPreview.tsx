@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import { parse } from 'node-html-parser';
 import type { PropsWithChildren } from 'react';
 import FancyLink from './FancyLink';
+import { cacheLife, cacheTag } from 'next/cache';
 
 type AbbrPreviewProps = PropsWithChildren<{
 	title: string;
@@ -81,6 +82,11 @@ const URL_IGNORE_LIST = [
 ];
 
 async function getMetadata(url: string) {
+	"use cache";
+
+	cacheTag(`abbr-preview-${url}`);
+	cacheLife('days');
+
 	if (URL_IGNORE_LIST.some((ignore) => url.startsWith(ignore))) {
 		return null;
 	}

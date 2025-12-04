@@ -6,8 +6,8 @@ export default {
 	serverExternalPackages: ["@shikijs/twoslash"],
 	experimental: {
 		viewTransition: true,
-		cacheComponents: true, // Enabled for Next.js 16 stable
 	},
+	cacheComponents: true,
 	images: {
 		remotePatterns: [
 			{

@@ -1,8 +1,8 @@
-import type { PropsWithChildren } from 'react';
+import { Suspense, type PropsWithChildren } from 'react';
 import { GeistSans } from 'geist/font/sans';
 import { cn } from '@/lib/utils';
 import { Github } from 'lucide-react';
-import { GitHubUser, GitHubUserPill } from '../SocialPreview/GithubSocialPreview';
+import { GitHubUser } from '../SocialPreview/GithubSocialPreview';
 import HeaderClient from '@/components/header/index.client';
 import KnoshIcon from "@/../public/knosh-icon.png";
 import Image from 'next/image';
@@ -32,14 +32,16 @@ export function Header() {
 						</h1>
 						<p className={'text-foreground leading-4 tracking-wide text-lg text-balance flex gap-0.5 items-center'}>
 							Software Engineer at
-							<GitHubUser handle="darylcecile">
-								<a
-									href="https://github.com/darylcecile"
-									className='flex items-center gap-0.5 hover:text-blue-500'
-								>
-									<Github className="ml-1 w-5 h-5 flex items-center justify-center" strokeWidth={2} /> GitHub
-								</a>
-							</GitHubUser>
+							<Suspense fallback={<span className='italic opacity-50'>GitHub</span>}>
+								<GitHubUser handle="darylcecile">
+									<a
+										href="https://github.com/darylcecile"
+										className='flex items-center gap-0.5 hover:text-blue-500'
+									>
+										<Github className="ml-1 w-5 h-5 flex items-center justify-center" strokeWidth={2} /> GitHub
+									</a>
+								</GitHubUser>
+							</Suspense>
 						</p>
 						{/* <p
 						className={cn(

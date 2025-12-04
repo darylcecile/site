@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { cn } from "@/lib/utils"
 import { ExternalLink, Github } from "lucide-react"
+import { cacheLife, cacheTag } from "next/cache"
 import { type PropsWithChildren, cache } from "react"
 
 interface GitHubUserProps {
@@ -59,6 +60,11 @@ const myGithubProfileFallback = {
 }
 
 const getUser = cache(async (handle: string) => {
+	"use cache";
+
+	cacheTag(`github-user-${handle}`);
+	cacheLife('weeks')
+
 	const response = await fetch(`https://api.github.com/users/${handle}`);
 
 	if (!response.ok) {
@@ -95,7 +101,7 @@ export async function GitHubUser({ handle, children }: PropsWithChildren<GitHubU
 				sideOffset={5}
 			>
 				<div className="overflow-hidden ">
-					<div className="h-24 aspect-[4/1] bg-neutral-400 dark:bg-neutral-700 relative overflow-hidden -z-1">
+					<div className="h-24 aspect-4/1 bg-neutral-400 dark:bg-neutral-700 relative overflow-hidden -z-1">
 						{/* <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 100" preserveAspectRatio="none">
 							<path d="M0,50 C100,20 200,80 400,50 L400,100 L0,100 Z" fill="#1a2d4c" fillOpacity="0.4" />
 							<path d="M0,60 C150,30 250,90 400,60 L400,100 L0,100 Z" fill="#2a3d5c" fillOpacity="0.2" />
@@ -120,7 +126,7 @@ export async function GitHubUser({ handle, children }: PropsWithChildren<GitHubU
 								<p className="text-gray-500 dark:text-gray-400 text-sm mb-1 flex text-center justify-center items-center gap-1">
 									<span className="">@{profile.login}</span>
 									{profile.site_admin && (
-										<Badge className="mt-0 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 text-gray-900 dark:text-gray-200 border-none uppercase text-[0.5rem] px-1 pb-0.25">
+										<Badge className="mt-0 bg-linear-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 text-gray-900 dark:text-gray-200 border-none uppercase text-[0.5rem] px-1 pb-px">
 											Staff
 										</Badge>
 									)}
@@ -177,43 +183,6 @@ export async function GitHubUser({ handle, children }: PropsWithChildren<GitHubU
 				</div>
 			</HoverCardContent>
 		</HoverCard>
-	)
-}
-
-
-export async function GitHubUserPill({ handle }: GitHubUserProps) {
-	const profile = await getUser(handle);
-
-	return (
-		<div
-			className="group inline-flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 rounded-full cursor-pointer transition-all duration-200 border border-gray-200 dark:border-gray-800 shadow-sm"
-		>
-			<div className="relative w-5 h-5 overflow-hidden">
-				<div
-					className={cn(
-						"absolute inset-0 transition-all duration-500 transform-3d opacity-100 rotate-y-0",
-						'group-hover:opacity-0 group-hover:rotate-y-180',
-					)}
-				>
-					<Github className="w-5 h-5" />
-				</div>
-				{profile && (
-					<div
-						className={cn(
-							"absolute inset-0 transition-all duration-500 rounded-full transform-3d opacity-0 rotate-y-180",
-							'group-hover:opacity-100 group-hover:rotate-y-0',
-						)}
-					>
-						<img
-							src={profile.avatar_url || "/placeholder.svg"}
-							alt={`${profile.name || profile.login}'s GitHub avatar`}
-							className="w-full h-full object-cover rounded-full"
-						/>
-					</div>
-				)}
-			</div>
-			<span className="font-medium text-sm">{`@${handle}`}</span>
-		</div>
 	)
 }
 

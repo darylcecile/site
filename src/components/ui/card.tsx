@@ -1,15 +1,9 @@
 
-
-"use cache";
-import { cacheLife } from "next/cache";
-import ms from "ms";
-
 import { cn } from "@/lib/utils"
 import type * as React from "react"
 
 
 function Card({ className, ...props }: React.ComponentProps<"div">) {
-	cacheLife({ revalidate: ms("7d") / 1000 }); // 1 week in seconds, UI rarely changes
 	return (
 		<div
 			data-slot="card"
@@ -17,9 +11,9 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
 				"bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm",
 				className
 			)}
-			{...props}
-		/>
-	)
+		  {...props}
+	  />
+  )
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {

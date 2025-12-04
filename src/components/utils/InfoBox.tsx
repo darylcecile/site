@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import styles from "./../styles/infobox.module.scss";
 import { cn } from "@/lib/utils";
 
 type InfoBoxProps = {
@@ -9,16 +8,9 @@ type InfoBoxProps = {
 };
 
 
-
-"use cache";
-import { cacheLife } from "next/cache";
-import ms from "ms";
-
-
 export default function InfoBox(props: InfoBoxProps) {
-	cacheLife({ revalidate: ms("7d") / 1000 }); // 1 week in seconds, UI rarely changes
 	const type = props.type ?? "info";
-
+	
 	return (
 		<div
 			className={

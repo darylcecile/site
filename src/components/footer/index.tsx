@@ -1,12 +1,10 @@
-
-
-
 "use cache";
+
 import { cacheLife } from "next/cache";
 import ms from "ms";
 
 
-export default function Footer() {
+export default async function Footer() {
 	cacheLife({ revalidate: ms("1d") / 1000 }); // 1 day in seconds, so copyright year updates quickly
 	const copyrightYear = new Date().getFullYear();
 

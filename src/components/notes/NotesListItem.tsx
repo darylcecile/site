@@ -1,4 +1,3 @@
-"use client";
 
 import dayjs from 'dayjs';
 import { cn } from '@/lib/utils';
@@ -10,8 +9,6 @@ import utc from 'dayjs/plugin/utc';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { useCallback } from 'react';
-import { useRouter } from 'next/navigation';
 import { ViewTransition } from 'react'
 
 dayjs.extend(utc);
@@ -34,12 +31,7 @@ const rainbowColors = [
 ];
 
 export default function NotesListItem(props: { note: Note, index: number }) {
-	const router = useRouter();
 	const { note, index: i } = props;
-
-	const goTo = useCallback(() => {
-		router.push(`/notes/${note.slug}`);
-	}, [router, note.slug]);
 
 	return (
 		<Link
