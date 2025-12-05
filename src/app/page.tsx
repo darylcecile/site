@@ -2,6 +2,7 @@ import { Header } from '@/components/header/index';
 import { NotesList } from '@/components/notes/NotesList';
 import { getAllNotesDataSorted } from '@/lib/repo/notesRepo';
 import Link from 'next/link';
+import { GithubActivityHeatmap } from '@/components/ui/githubActivity';
 
 export default function Page() {
 	const notesCount = getAllNotesDataSorted(false).length;
@@ -36,6 +37,7 @@ export default function Page() {
 						Looking for more? <Link className='text-foreground/50 hover:underline underline-offset-2' href="/notes">View all {notesCount} notes</Link> →
 					</p>
 				</div>
+
 			</div>
 		</div>
 	)

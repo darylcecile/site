@@ -85,7 +85,7 @@ export function Header() {
 					</p>
 
 					<p className='text-balance'>
-						You can find me on <FancyLink href="https://github.com/darylcecile">GitHub</FancyLink>, <FancyLink href="https://bsky.app/profile/daryl.wtf" >BlueSky</FancyLink>, and (reluctantly) <FancyLink href="https://twitter.com/darylcecile">Twitter</FancyLink>.
+						You can find me on <FancyLink href="https://github.com/darylcecile" ghVariant='heatmap'>GitHub</FancyLink>, <FancyLink href="https://bsky.app/profile/daryl.wtf" >BlueSky</FancyLink>, and (reluctantly) <FancyLink href="https://twitter.com/darylcecile">Twitter</FancyLink>.
 					</p>
 				</div>
 			</div>

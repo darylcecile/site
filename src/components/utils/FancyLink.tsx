@@ -8,6 +8,7 @@ type Props = PropsWithChildren<{
 	hideFavicon?: boolean;
 	className?: string;
 	faviconUrlOverride?: string;
+	ghVariant?: "default" | "heatmap";
 } & LinkProps>;
 
 const base = process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000';
@@ -92,7 +93,7 @@ export default function FancyLink(props: Props) {
 	);
 
 	if (account) {
-		return <GitHubUser handle={account.github}>{el}</GitHubUser>
+		return <GitHubUser handle={account.github} variant={props.ghVariant}>{el}</GitHubUser>
 	}
 
 	return el;
