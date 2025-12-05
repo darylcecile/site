@@ -17,12 +17,17 @@ export async function GET(opt: NextRequest): Promise<Response> {
 
 	if (!searchParams.has("slug")) {
 		if (searchParams.has("page")) {
-			return new ImageResponse(
+			const pageImage = (
 				<SimpleImage
 					title={`/${searchParams.get("page")?.toLowerCase()}`}
 					subHeading={"@darylcecile"}
 					theme={searchParams.has("dark") ? "dark" : "light"}
-				/>,
+				/>
+			);
+
+			console.info('Sending Page Image');
+
+			return new ImageResponse(pageImage,
 				{
 					fonts: [
 						{
@@ -35,12 +40,17 @@ export async function GET(opt: NextRequest): Promise<Response> {
 			) as Response;
 		}
 
-		return new ImageResponse(
+		const defaultImage = (
 			<SimpleImage
 				title={"Hey! I'm Daryl 👋🏾"}
 				subHeading={"@darylcecile"}
 				theme={searchParams.has("dark") ? "dark" : "light"}
-			/>,
+			/>
+		);
+
+		console.info('Sending Default Image');
+
+		return new ImageResponse(defaultImage,
 			{
 				fonts: [
 					{
@@ -59,14 +69,19 @@ export async function GET(opt: NextRequest): Promise<Response> {
 
 	if (!post) return notFound();
 
-	return new ImageResponse(
+	const postImage = (
 		<AdvanceImage
 			title={post.title}
 			authorName={post.author[0].name}
 			readTime={post.readTime}
 			theme={searchParams.has("dark") ? "dark" : "light"}
 			previewImg={post.preview_img}
-		/>,
+		/>
+	);
+
+	console.info('Sending Post Image for:', post.title);
+
+	return new ImageResponse(postImage,
 		{
 			fonts: [
 				{
