@@ -1,4 +1,4 @@
-import { ImageResponse } from "@vercel/og";
+import { ImageResponse } from "next/og";
 import { notFound } from "next/navigation";
 import type { NextRequest } from "next/server";
 import noteData from "@/../public/notes.json";
@@ -37,7 +37,7 @@ export async function GET(opt: NextRequest): Promise<Response> {
 						}
 					]
 				}
-			) as Response;
+			);
 		}
 
 		const defaultImage = (
@@ -60,7 +60,7 @@ export async function GET(opt: NextRequest): Promise<Response> {
 					}
 				]
 			}
-		) as Response;
+		);
 	}
 
 	const post = noteData.items.find(
@@ -91,7 +91,7 @@ export async function GET(opt: NextRequest): Promise<Response> {
 				}
 			]
 		}
-	) as Response;
+	);
 }
 
 async function loadGoogleFont(font: string, letters: string) {
