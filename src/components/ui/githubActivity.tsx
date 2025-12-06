@@ -68,7 +68,7 @@ export async function GithubActivityHeatmap({
 				</header>
 
 				{/* heatmap grid */}
-				<WeeklyChart2 calendar={calendar} />
+				<WeeklyChart calendar={calendar} />
 			</div>
 		</section>
 	);
@@ -123,36 +123,6 @@ function DailyChart({ calendar }: { calendar: ContributionCalendar }) {
 }
 
 function WeeklyChart({ calendar }: { calendar: ContributionCalendar }) {
-	const avg = (...arg) => arg.reduce((a, b) => a + b, 0) / (arg.length || 1);
-	return (
-		<div className="grid grid-flow-col auto-cols-min grid-rows-5 grid-cols-12 gap-[3px]">
-			{calendar.weeks.map((week, weekIndex) => {
-				const day: ContributionDay = {
-					date: week.contributionDays[0].date,
-					count: avg(week.contributionDays.map(d => d.count)),
-					color: week.contributionDays[week.contributionDays.length - 1].color,
-				}
-
-				return (
-					<div
-						key={`${weekIndex}-${day.date}`}
-						title={`${day.count} contributions on ${day.date}`}
-						style={{
-							backgroundColor: day.color || "rgba(30, 41, 59, 0.6)",
-							opacity: day.count === 0 ? 0.3 : 1,
-							gridRowStart: weekIndex % 4.4 + 1, // 1..7 (Sun..Sat)
-							// @ts-ignore
-							cornerShape: 'superellipse(1.2)',
-						}}
-						className="h-4 w-4 rounded-sm"
-					/>
-				)
-			})}
-		</div>
-	)
-}
-
-function WeeklyChart2({ calendar }: { calendar: ContributionCalendar }) {
 	const cal = toMonthWeeks(calendar);
 	const sum = (arg) => arg.reduce((a, b) => a + b, 0);
 
