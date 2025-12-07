@@ -127,7 +127,7 @@ function WeeklyChart({ calendar }: { calendar: ContributionCalendar }) {
 	const sum = (arg) => arg.reduce((a, b) => a + b, 0);
 
 	return (
-		<div className="grid grid-flow-col auto-cols-min grid-rows-4 grid-cols-13 gap-[3px]">
+		<div className="grid grid-flow-col auto-cols-min grid-rows-4 grid-cols-13 gap-1.5">
 			{Object.values(cal).map((weeks, monthIndex) => {
 				// const weeks = month.length < 5 ? [...month, []] : month;
 				return weeks.map((week, weekIndex) => {
@@ -141,9 +141,9 @@ function WeeklyChart({ calendar }: { calendar: ContributionCalendar }) {
 									gridRowStart: weekIndex + 1,
 									gridColumnStart: monthIndex + 1,
 									// @ts-ignore
-									cornerShape: 'superellipse(1.2)',
+									cornerShape: 'superellipse(1.4)',
 								}}
-								className="h-4 w-4 rounded-sm"
+								className="aspect-square flex-1 rounded-md"
 							/>
 						)
 					}
@@ -151,22 +151,22 @@ function WeeklyChart({ calendar }: { calendar: ContributionCalendar }) {
 					const day: ContributionDay = {
 						date: week[0].date,
 						count: sum(week.map(d => d.count ?? 0)),
-						color: week[0].color,
+						color: week.toSorted((a, b) => (b.count ?? 0) - (a.count ?? 0))[0].color,
 					}
 
 					return (
 						<div
 							key={`${weekIndex}-${day.date}`}
-							title={`${day.count} contributions on ${day.date}`}
+							title={`${day.count} contributions on week starting ${day.date}`}
 							style={{
 								backgroundColor: day.color || "rgba(30, 41, 59, 0.6)",
 								opacity: day.count === 0 ? 0.3 : 1,
 								gridRowStart: weekIndex + 1,
 								gridColumnStart: monthIndex + 1,
 								// @ts-ignore
-								cornerShape: 'superellipse(1.2)',
+								cornerShape: 'superellipse(1.4)',
 							}}
-							className="h-4 w-4 rounded-sm"
+							className="aspect-square flex-1 rounded-md"
 						/>
 					)
 				})

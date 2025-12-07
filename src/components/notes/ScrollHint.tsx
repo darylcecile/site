@@ -104,7 +104,9 @@ export function ScrollHint() {
 							// "group-item",
 							"inline-block text-transparent text-[2px] whitespace-nowrap mr-auto rounded-full overflow-clip",
 							"transition-all duration-300 ease-out",
-							"group-hover:-translate-x-1 group-hover:text-xs p-0.5 bg-background"
+							"group-hover:-translate-x-1 group-hover:text-xs p-0.5 bg-background",
+							"max-w-[1lh] overflow-hidden md:max-w-full md:overflow-clip group-hover:max-w-full group-hover:overflow-clip",
+							"pointer-events-none md:pointer-events-auto"
 						)}
 						onClick={() => {
 							const el = document.getElementById(key);
