@@ -83,6 +83,10 @@ export async function generateMetadata(): Promise<Metadata> {
 					rel: "pingback",
 					url: "https://webmention.io/darylcecile.net/xmlrpc",
 				},
+				{
+					rel: "me",
+					url: "https://github.com/darylcecile"
+				}
 			],
 		},
 		// manifest: "/site.webmanifest",
