@@ -21,7 +21,7 @@ export default async function Footer() {
 					<a href="https://xn--sr8hvo.ws/next">→</a>
 				</span>
 				<span>
-					<a href="https://github.com/darylcecile" target="_blank" rel="noopener">An Open Source Site</a>
+					<a href="https://github.com/darylcecile/site" target="_blank" rel="noopener">An Open Source Site</a>
 				</span>
 			</div>
 		</footer>
