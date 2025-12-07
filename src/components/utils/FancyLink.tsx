@@ -9,6 +9,7 @@ type Props = PropsWithChildren<{
 	className?: string;
 	faviconUrlOverride?: string;
 	ghVariant?: "default" | "heatmap";
+	manualColor?: boolean
 } & LinkProps>;
 
 const base = process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000';
@@ -40,7 +41,7 @@ const SPECIAL_ACCOUNT = [
 ];
 
 export default function FancyLink(props: Props) {
-	const { hideFavicon, faviconUrlOverride, ghVariant, ...rest } = props;
+	const { hideFavicon, faviconUrlOverride, ghVariant, manualColor, ...rest } = props;
 	const url = props.href.toString();
 	const shouldHideFavicon = hideFavicon || URL_IGNORE_LIST.some(prefix => url.startsWith(prefix)) || ((url.startsWith('#') || url.startsWith('/')) && !faviconUrlOverride);
 
@@ -71,13 +72,15 @@ export default function FancyLink(props: Props) {
 			target={isExternal ? "_blank" : undefined}
 			rel={isExternal ? "noopener noreferrer" : undefined}
 			className={cn(
+				"text-foreground",
 				props.className,
 				// "font-normal underline underline-offset-4 not-prose whitespace-break-spaces",
-				"text-foreground before:absolute before:transparent before:w-full before:h-4 before:left-0 before:top-0.25 before:rounded-xs before:outline-4 before:outline-transparent",
-				"relative font-normal whitespace-nowrap not-prose hover:before:bg-current/10 hover:before:outline-current/10",
+				"before:absolute before:-z-1 z-0 before:transparent before:w-full before:h-4 before:left-0 before:top-0.25 before:rounded-xs before:outline-4 before:outline-transparent",
+				"relative font-normal whitespace-nowrap not-prose",
 				"focus-visible:before:bg-current/10 focus-visible:before:outline-current/10 focus-within:outline-none",
 				"underline underline-offset-4 hover:no-underline focus-visible:no-underline",
-				generateColorFromText(url),
+				"hover:before:bg-current/10 hover:before:outline-current/10",
+				!manualColor ? generateColorFromText(url) : "",
 				{ "pl-5 relative": !shouldHideFavicon },
 			)}
 		>

@@ -13,6 +13,8 @@ type AbbrPreviewProps = PropsWithChildren<{
 	description?: string;
 	hideFavicon?: boolean;
 	faviconUrl?: string;
+	className?: string;
+	manualColor?: boolean
 }>
 
 const base = process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000';
@@ -33,13 +35,15 @@ export async function AbbrPreview(props: AbbrPreviewProps) {
 					{props.link ? (
 						<FancyLink
 							href={props.link}
-							className='decoration-dotted'
+							className={cn('decoration-dotted', props.className)}
 							hideFavicon={props.hideFavicon}
 							faviconUrlOverride={props.faviconUrl}
+							manualColor={props.manualColor}
 						>{props.children}</FancyLink>
 					) : (
 						<span className={cn(
-							'underline decoration-dotted underline-offset-4'
+							'underline decoration-dotted underline-offset-4',
+							props.className
 						)}>{props.children}</span>
 					)}
 				</HoverCardTrigger>
