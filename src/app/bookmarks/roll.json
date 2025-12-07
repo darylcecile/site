@@ -12,6 +12,13 @@
 		"tags": ["AI", "Tech"]
 	},
 	{
+		"owner":"BinaryDigit",
+		"title": "Digital Brain Dump",
+		"link": "https://binarydigit.dev/",
+		"tags": ["Tech", "Tinkerer"],
+		"rss": "https://binarydigit.dev/feed/?type=rss/"
+	},
+	{
 		"owner": "Hedy",
 		"title": "Blog",
 		"link": "https://home.hedy.dev/posts/",

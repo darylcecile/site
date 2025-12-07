@@ -4,7 +4,6 @@ image: screenshots/nordarkco.png
 startYear: 2023
 endYear: 2024
 link: https://nordark.co
-sticky: true
 tokens: [web, platform]
 ---
 
