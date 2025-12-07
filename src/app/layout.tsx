@@ -1,4 +1,4 @@
-import { FolderCodeIcon, HomeIcon, PenBoxIcon, ScrollIcon, ScrollTextIcon } from 'lucide-react';
+import { BookmarkCheckIcon, FolderCodeIcon, HomeIcon, PenBoxIcon, ScrollIcon, ScrollTextIcon } from 'lucide-react';
 import { Nav, NavBackButton, NavItem, NavProvider } from '@/components/nav';
 import { NavSearch, NavSearchPanel, NavContainer } from '@/components/nav/index';
 import "./globals.css";
@@ -152,8 +152,8 @@ export default function RootLayout({
 								<NavItem label="Projects" href="/projects">
 									<FolderCodeIcon className="size-4" />
 								</NavItem>
-									<NavItem label="Blogroll" href="/blogroll">
-										<ScrollTextIcon className="size-4" />
+									<NavItem label="Bookmarks" href="/bookmarks">
+										<BookmarkCheckIcon className="size-4" />
 									</NavItem>
 								<NavSearch />
 								<NavSearchPanel />

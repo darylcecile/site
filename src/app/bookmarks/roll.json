@@ -1,0 +1,80 @@
+[
+	{
+		"owner": "Rizwana Khan",
+		"title": "rizwanakhan.com",
+		"link": "https://rizwanakhan.com",
+		"tags": ["Writer", "Tech"]
+	},
+	{
+		"owner": "Jon Ready",
+		"title": "Everyone in Seattle Hates AI",
+		"link": "https://jonready.com/blog/posts/everyone-in-seattle-hates-ai.html",
+		"tags": ["AI", "Tech"]
+	},
+	{
+		"owner": "Jhey Tompkins",
+		"title": "jhey.dev",
+		"link": "https://jhey.dev",
+		"tags": ["Design", "Tech", "Developer Advocate"]
+	},
+	{
+		"owner": "Matty Benedetto",
+		"title": "Unnecessary Inventions",
+		"link": "https://unnecessaryinventions.com/",
+		"tags": ["Humor"]
+	},
+	{
+		"owner": "Centiskorch",
+		"title": "Centiskorch's Blog",
+		"link": "https://centiskor.ch/",
+		"tags": ["Pokemon", "Humor"],
+		"rss": "https://centiskor.ch/rss.xml"
+	},
+	{
+		"owner": "Wes Bos",
+		"title": "Blog",
+		"link": "https://wesbos.com/blog",
+		"tags": ["Tech", "Developer Advocate"],
+		"rss": "https://wesbos.com/blog/rss.xml"
+	},
+	{
+		"owner": "Swyx",
+		"title": "swyx.io",
+		"link": "https://swyx.io",
+		"tags": ["Tech", "AI", "Developer Advocate"],
+		"rss": "https://swyx.io/rss.xml"
+	},
+	{
+		"owner": "Simon Collison",
+		"title": "Timeline",
+		"link": "https://colly.com/",
+		"tags": ["Design", "Writer"]
+	},
+	{
+		"owner": "Kent C. Dodds",
+		"title": "kentcdodds.com",
+		"link": "https://kentcdodds.com/blog",
+		"tags": ["Tech", "Developer Advocate"],
+		"rss": "https://kentcdodds.com/blog/rss.xml"
+	},
+	{
+		"owner": "Paco Coursey",
+		"title": "Writing",
+		"link": "https://paco.me/writing",
+		"tags": ["Tech"]
+	},
+	{
+		"owner": "Dan Abramov",
+		"title": "overreacted.io",
+		"link": "https://overreacted.io",
+		"tags": ["Tech", "Developer Advocate"],
+		"rss": "https://overreacted.io/rss.xml"
+	},
+	{
+		"owner": "Cassidy Williams",
+		"title": "cassidoo.co",
+		"link": "https://cassidoo.co",
+		"tags": ["Tech", "Developer Advocate"],
+		"rss": "https://cassidoo.co/rss.xml"
+	}
+]
