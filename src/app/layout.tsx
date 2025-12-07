@@ -1,6 +1,6 @@
-import { FolderCodeIcon, HomeIcon, PenBoxIcon } from 'lucide-react';
+import { FolderCodeIcon, HomeIcon, PenBoxIcon, ScrollIcon, ScrollTextIcon } from 'lucide-react';
 import { Nav, NavBackButton, NavItem, NavProvider } from '@/components/nav';
-import { NavSearch, NavSearchPanel } from '@/components/nav/index';
+import { NavSearch, NavSearchPanel, NavContainer } from '@/components/nav/index';
 import "./globals.css";
 import { ThemeProvider } from 'next-themes'
 import { Rays } from '@/components/header/rays';
@@ -139,21 +139,26 @@ export default function RootLayout({
 				<ThemeProvider attribute={'class'}>
 					{/* <ClientTheme /> */}
 					<NavProvider>
-						<NavBackButton />
+						<NavContainer>
+							<NavBackButton />
 
-						<Nav>
-							<NavItem label="Home" href="/">
-								<HomeIcon className="size-4" />
-							</NavItem>
-							<NavItem label="Notes" href="/notes">
-								<PenBoxIcon className="size-4" />
-							</NavItem>
-							<NavItem label="Projects" href="/projects">
-								<FolderCodeIcon className="size-4" />
-							</NavItem>
-							<NavSearch />
-							<NavSearchPanel />
-						</Nav>
+							<Nav>
+								<NavItem label="Home" href="/">
+									<HomeIcon className="size-4" />
+								</NavItem>
+								<NavItem label="Notes" href="/notes">
+									<PenBoxIcon className="size-4" />
+								</NavItem>
+								<NavItem label="Projects" href="/projects">
+									<FolderCodeIcon className="size-4" />
+								</NavItem>
+									<NavItem label="Blogroll" href="/blogroll">
+										<ScrollTextIcon className="size-4" />
+									</NavItem>
+								<NavSearch />
+								<NavSearchPanel />
+							</Nav>
+						</NavContainer>
 
 						<div className='z-2'>
 							{children}

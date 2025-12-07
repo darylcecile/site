@@ -140,16 +140,15 @@ export function Nav(props: PropsWithChildren) {
 		<>
 			<motion.nav
 				className={cn(
-					"fixed left-1/2 -translate-x-1/2 p-2 rounded-full overflow-hidden shadow-2xl",
+					"relative p-2 rounded-full overflow-hidden shadow-2xl",
 					"bg-neutral-100/70 dark:bg-muted/70 backdrop-blur-2xl backdrop-saturate-150 z-50"
 				)}
 				variants={{
 					initial: { bottom: -100, scale: 0.5 },
-					visible: { bottom: 16, scale: 1, translateX: 0 },
-					withBack: { bottom: 16, scale: 1, translateX: 28 },
+					visible: { bottom: 0, scale: 1 },
 				}}
 				initial={'initial'}
-				animate={showBackButton ? 'withBack' : 'visible'}
+				animate={'visible'}
 				transition={{ type: 'spring' }}
 			>
 				<ul className="flex justify-between  gap-2">
@@ -159,6 +158,19 @@ export function Nav(props: PropsWithChildren) {
 			<div id={portalId} />
 		</>
 	);
+}
+
+export function NavContainer(props: PropsWithChildren) {
+	return (
+		<div
+			id="tt"
+			className={cn(
+				"fixed w-full bottom-4 h-12 gap-2 flex flex-row justify-center items-center z-99",
+			)}
+		>
+			{props.children}
+		</div>
+	)
 }
 
 export function useNav() {
@@ -508,13 +520,12 @@ export function NavBackButton() {
 	return (
 		<motion.div
 			className={cn(
-				"fixed left-1/2 -translate-x-1/2 p-2 max-h-12 rounded-full overflow-hidden shadow-2xl",
+				"relative p-2 max-h-12 rounded-full overflow-hidden shadow-2xl",
 				"bg-neutral-100/70 dark:bg-muted/70 backdrop-blur-2xl backdrop-saturate-150 z-50",
-				"bottom-4"
 			)}
 			variants={{
-				hidden: { opacity: 0, translateX: 0 },
-				visible: { opacity: 1, translateX: -90 }
+				hidden: { opacity: 0, marginRight: -48 },
+				visible: { opacity: 1, marginRight: 0 }
 			}}
 			initial={'hidden'}
 			animate={showBackButton ? 'visible' : 'hidden'}
