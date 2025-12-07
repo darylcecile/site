@@ -1,4 +1,5 @@
 "use server";
+
 import Fuse from 'fuse.js';
 import { getAllNotesDataSorted } from "@/lib/repo/notesRepo";
 import { getAllProjectsDataSorted } from "@/lib/repo/projectsRepo";

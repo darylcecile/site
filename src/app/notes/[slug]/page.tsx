@@ -1,14 +1,14 @@
 import NotesPageClient from '@/app/notes/[slug]/page.client';
 import { ScrollHint } from '@/components/notes/ScrollHint';
 import MarkdownRenderer from '@/components/utils/renderers/MarkdownRenderer';
-import { getAllNotesDataSorted, getNoteData } from "@/lib/repo/notesRepo";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import type { Metadata, ResolvingMetadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { type CSSProperties, ViewTransition } from 'react';
+import { ViewTransition } from 'react';
 import LocalDate from "../../../components/utils/LocalDate";
 import { cacheLife } from 'next/cache';
+import studio from '@/../studio';
 
 type NotePageProps = {
 	params: Promise<{
@@ -29,7 +29,7 @@ export async function generateMetadata(
 	parent: ResolvingMetadata,
 ): Promise<Metadata> {
 	const params = await props.params;
-	const postData = await getNoteData(params.slug, true);
+	const postData = await studio.getCollection('notes').getEntry(params.slug);
 
 	return {
 		...((await parent) as any),
@@ -42,21 +42,21 @@ export async function generateMetadata(
 				],
 			},
 		},
-		title: postData?.title,
+		title: postData.metadata.title,
 		authors: { name: "Daryl Cecile", url: "https://darylcecile.net" },
-		description: postData?.snippet,
+		description: postData.metadata.snippet,
 		openGraph: {
-			title: postData?.title,
+			title: postData.metadata.title,
 			images: [`https://darylcecile.net/og?slug=${postData?.slug}`],
 			locale: "en_US",
 		},
 		twitter: {
 			card: "summary_large_image",
-			title: postData?.title,
+			title: postData.metadata.title,
 			images: `https://darylcecile.net/og?slug=${postData?.slug}`,
 			site: "@darylcecile",
 			creator: "@darylcecile",
-			description: postData?.snippet,
+			description: postData.metadata.snippet,
 		}
 	} satisfies Metadata;
 }
@@ -67,24 +67,23 @@ export default async function SingleNotePage(props: NotePageProps) {
 	cacheLife('minutes');
 
 	const params = await props.params;
-	const postData = await getNoteData(params.slug);
+	const postData = await studio.getCollection('notes').getEntry(params.slug);
 	if (!postData) return notFound();
-
 
 	return (
 		<article className="content px-8">
 			<div className="max-w-2xl mx-auto w-full pt-20">
 				<ViewTransition name={`notes-${postData.slug}`}>
-					<h1 className="text-3xl text-balance">{postData.title}</h1>
+					<h1 className="text-3xl text-balance">{postData.metadata.title}</h1>
 					<p className="text-foreground/70 prose metalic-dark">
-						<LocalDate dateString={postData.date} /> &middot;{" "}
+						<LocalDate dateString={postData.metadata.date} /> &middot;{" "}
 						{postData.readTime}
 					</p>
 				</ViewTransition>
-				{!!postData.lastUpdated && (
+				{!!postData.metadata.lastUpdated && (
 					<p className="text-foreground/70 prose">
 						<strong>Last updated: </strong>
-						<LocalDate dateString={postData.lastUpdated} />
+						<LocalDate dateString={postData.metadata.lastUpdated} />
 					</p>
 				)}
 			</div>
@@ -111,8 +110,17 @@ export default async function SingleNotePage(props: NotePageProps) {
 }
 
 export async function generateStaticParams() {
-	const posts = getAllNotesDataSorted(true).filter(
-		(note) => !note.hidden && dayjs(note.date).toDate().getTime() <= Date.now(),
+	const items = await studio.getCollection('notes').getEntries();
+	
+	items.sort((a, b) => {
+		if ((a.metadata.lastUpdated ?? a.metadata.date) < (b.metadata.lastUpdated ?? b.metadata.date)) {
+			return 1;
+		}
+		return -1;
+	});
+
+	const posts = items.filter(
+		(note) => !note.metadata.hidden && dayjs(note.metadata.date).toDate().getTime() <= Date.now(),
 	);
 
 	return posts.map((post) => ({

@@ -1,6 +1,5 @@
 "use cache";
 
-import { getAllNotesDataSorted } from "@/lib/repo/notesRepo";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
@@ -12,6 +11,7 @@ import NotesListItem from '@/components/notes/NotesListItem';
 
 import { cacheLife } from "next/cache";
 import ms from "ms";
+import studio from "studio";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -26,10 +26,21 @@ export async function NotesList(props: NotesListProps) {
 	cacheLife({ revalidate: ms("1h") / 1000 }); // 1 hour in seconds
 	const currentDate = dayjs().tz("Europe/London");
 
-	const publicNotes = getAllNotesDataSorted(false).map(note => {
+	const notes = await studio.getCollection('notes').getEntries();
+
+	notes.sort((a, b) => {
+		if ((a.metadata.lastUpdated ?? a.metadata.date) < (b.metadata.lastUpdated ?? b.metadata.date)) {
+			return 1;
+		}
+		return -1;
+	});
+
+	const publicNotes = notes.map(note => {
 		return {
-			...note,
-			publishDate: dayjs.tz(note.date, "YYYY-MM-DD", "Europe/London").toDate(),
+			slug: note.slug,
+			...note.metadata,
+			content: note.content,
+			publishDate: dayjs.tz(note.metadata.date, "YYYY-MM-DD", "Europe/London").toDate(),
 			readTime: dayjs.duration({
 				minutes: Math.ceil(note.content.split(" ").length / 200)
 			}).humanize()

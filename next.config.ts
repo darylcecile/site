@@ -1,11 +1,14 @@
-import type { NextConfig } from "next";
-
+import { type NextConfig } from "next";
+import { join } from "node:path";
 
 export default {
 	transpilePackages: ["next-mdx-remote"],
 	serverExternalPackages: ["@shikijs/twoslash"],
 	experimental: {
 		viewTransition: true,
+	},
+	turbopack: {
+		root: join(__dirname, ".."),
 	},
 	cacheComponents: true,
 	images: {

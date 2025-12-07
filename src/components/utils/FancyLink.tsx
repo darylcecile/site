@@ -40,7 +40,7 @@ const SPECIAL_ACCOUNT = [
 ];
 
 export default function FancyLink(props: Props) {
-	const { hideFavicon, faviconUrlOverride, ...rest } = props;
+	const { hideFavicon, faviconUrlOverride, ghVariant, ...rest } = props;
 	const url = props.href.toString();
 	const shouldHideFavicon = hideFavicon || URL_IGNORE_LIST.some(prefix => url.startsWith(prefix)) || ((url.startsWith('#') || url.startsWith('/')) && !faviconUrlOverride);
 
@@ -93,7 +93,7 @@ export default function FancyLink(props: Props) {
 	);
 
 	if (account) {
-		return <GitHubUser handle={account.github} variant={props.ghVariant}>{el}</GitHubUser>
+		return <GitHubUser handle={account.github} variant={ghVariant}>{el}</GitHubUser>
 	}
 
 	return el;

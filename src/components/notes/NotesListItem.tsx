@@ -10,6 +10,8 @@ import advancedFormat from 'dayjs/plugin/advancedFormat';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { ViewTransition } from 'react'
+import { ExtractEntryMetadataType } from '@shrubs/studio';
+import studio from '@/../studio';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -18,7 +20,11 @@ dayjs.extend(advancedFormat);
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
-type Note = ReturnType<typeof getAllNotesDataSorted>[number];
+type Note = ExtractEntryMetadataType<typeof studio, 'notes'> & {
+	slug: string;
+	readTime: string;
+	publishDate: Date;
+};
 
 const rainbowColors = [
 	{ text: 'text-red-500', bg: 'focus-within:bg-red-500/10', var: '--color-red-500' },

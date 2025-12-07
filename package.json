@@ -65,7 +65,8 @@
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17",
     "tailwindcss-animate": "^1.0.7",
-    "yaml-front-matter": "^4.1.1"
+    "yaml-front-matter": "^4.1.1",
+	"@shrubs/studio": "0.0.3"
   },
   "overrides": {
     "satori": "0.12.2"
