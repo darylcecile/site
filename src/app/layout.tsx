@@ -88,7 +88,7 @@ export async function generateMetadata(): Promise<Metadata> {
 					url: "https://github.com/darylcecile"
 				}
 			],
-		},
+		}
 		// manifest: "/site.webmanifest",
 	} satisfies Metadata;
 }
