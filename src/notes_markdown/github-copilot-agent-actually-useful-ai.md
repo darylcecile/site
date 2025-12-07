@@ -1,6 +1,6 @@
 ---
 title: "GitHub Copilot Agent: Actually Useful AI?"
-date: "2025-12-05"
+date: "2025-12-06"
 snippet: Thoughts on Copilot Agent, AI hype, and real-world usefulness.
 tags: ["AI", "Productivity", "Tools"]
 ---
