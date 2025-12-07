@@ -9,6 +9,7 @@ import { ViewTransition } from 'react';
 import LocalDate from "../../../components/utils/LocalDate";
 import { cacheLife } from 'next/cache';
 import studio from '@/../studio';
+import { MFPostArticle, MFPostContent } from '@/components/microformats/blog';
 
 type NotePageProps = {
 	params: Promise<{
@@ -71,19 +72,19 @@ export default async function SingleNotePage(props: NotePageProps) {
 	if (!postData) return notFound();
 
 	return (
-		<article className="content px-8">
+		<MFPostArticle className="content px-8 h-entry">
 			<div className="max-w-2xl mx-auto w-full pt-20">
 				<ViewTransition name={`notes-${postData.slug}`}>
-					<h1 className="text-3xl text-balance">{postData.metadata.title}</h1>
+					<MFPostContent className="text-3xl text-balance">{postData.metadata.title}</MFPostContent>
 					<p className="text-foreground/70 prose metalic-dark">
-						<LocalDate dateString={postData.metadata.date} /> &middot;{" "}
+						<LocalDate dateString={postData.metadata.date} className="dt-published" /> &middot;{" "}
 						{postData.readTime}
 					</p>
 				</ViewTransition>
 				{!!postData.metadata.lastUpdated && (
 					<p className="text-foreground/70 prose">
 						<strong>Last updated: </strong>
-						<LocalDate dateString={postData.metadata.lastUpdated} />
+						<LocalDate dateString={postData.metadata.lastUpdated} className='dt-updated' />
 					</p>
 				)}
 			</div>
@@ -97,15 +98,15 @@ export default async function SingleNotePage(props: NotePageProps) {
 						"prose-headings:inline-block prose-headings:mt-1 prose-headings:!mb-2"
 					)}
 				>
-					<div className="max-w-2xl mx-auto w-full text-foreground/70">
+					<MFPostContent className="max-w-2xl mx-auto w-full text-foreground/70">
 						<MarkdownRenderer content={postData.content} />
-					</div>
+					</MFPostContent>
 				</div>
 			</NotesPageClient>
 			{/* <div className={galleryStyles.workAroundTodoGalleryStyles} /> */}
 
 			<ScrollHint />
-		</article>
+		</MFPostArticle>
 	);
 }
 

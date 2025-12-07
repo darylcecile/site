@@ -162,6 +162,7 @@ export default function RootLayout({
 					</NavProvider>
 					<Footer />
 				</ThemeProvider>
+				<img className="hidden u-photo" src="/icon.png" alt=""/>
 			</body>
 		</html>
 	)

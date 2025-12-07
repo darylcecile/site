@@ -10,7 +10,7 @@ dayjs.extend(customParse);
 dayjs.extend(advanceFormat);
 dayjs.extend(timezone);
 
-export default function LocalDate({ dateString: isoDateString }: { dateString: string }) {
+export default function LocalDate({ dateString: isoDateString, className }: { dateString: string, className?: string }) {
 	const [dateFormatted, setDateFormatted] = useState<string>(() => dayjs(isoDateString, { format: 'YYYY-MM-DD', locale: 'en' }).format("dddd Do MMM, YYYY"));
 
 	useEffect(() => {
@@ -25,7 +25,7 @@ export default function LocalDate({ dateString: isoDateString }: { dateString: s
 	}, [isoDateString]);
 
 	return (
-		<time dateTime={isoDateString}>
+		<time dateTime={`${isoDateString} T00:00:00Z`} className={className}>
 			{dateFormatted}
 		</time>
 	);
