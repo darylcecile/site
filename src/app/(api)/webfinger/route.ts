@@ -1,6 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 
-export default (req: Request) => {
+export function GET(req: Request) {
 	const url = new URL(req.url);
 	const resource = url.searchParams.get('resource') as string;
 
