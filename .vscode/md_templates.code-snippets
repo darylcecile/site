@@ -1,0 +1,18 @@
+{
+	"New Note": {
+		"prefix": "mdnote",
+		"scope": "md,mdx,markdown",
+		"isFileTemplate": true,
+		"body": [
+			"---",
+			"title: ${1:Title}",
+			"date: ${2:${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}}",
+			"snippet: ${3:Brief description of the note's content}",
+			"tags: [${4:tag1, tag2}]",
+			"---",
+			"",
+			"${0:Content goes here...}"
+		],
+		"description": "Create a new markdown note with front matter"
+	}
+}
