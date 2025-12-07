@@ -10,6 +10,7 @@ import LocalDate from "../../../components/utils/LocalDate";
 import { cacheLife } from 'next/cache';
 import studio from '@/../studio';
 import { MFPostArticle, MFPostContent } from '@/components/microformats/blog';
+import { GeistSans } from 'geist/font/sans';
 
 type NotePageProps = {
 	params: Promise<{
@@ -76,13 +77,13 @@ export default async function SingleNotePage(props: NotePageProps) {
 			<div className="max-w-2xl mx-auto w-full pt-20">
 				<ViewTransition name={`notes-${postData.slug}`}>
 					<MFPostContent className="text-3xl text-balance">{postData.metadata.title}</MFPostContent>
-					<p className="text-foreground/70 prose metalic-dark">
+					<p className="text-foreground/85 prose metalic-dark">
 						<LocalDate dateString={postData.metadata.date} className="dt-published" /> &middot;{" "}
 						{postData.readTime}
 					</p>
 				</ViewTransition>
 				{!!postData.metadata.lastUpdated && (
-					<p className="text-foreground/70 prose">
+					<p className="text-foreground/85 prose">
 						<strong>Last updated: </strong>
 						<LocalDate dateString={postData.metadata.lastUpdated} className='dt-updated' />
 					</p>
@@ -98,7 +99,7 @@ export default async function SingleNotePage(props: NotePageProps) {
 						"prose-headings:inline-block prose-headings:mt-1 prose-headings:mb-2!"
 					)}
 				>
-					<MFPostContent className="max-w-2xl mx-auto w-full text-foreground/70">
+					<MFPostContent className="max-w-2xl mx-auto w-full text-foreground/85">
 						<MarkdownRenderer content={postData.content} />
 					</MFPostContent>
 				</div>

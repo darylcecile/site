@@ -12,16 +12,23 @@
 		"tags": ["AI", "Tech"]
 	},
 	{
+		"owner": "Hedy",
+		"title": "Blog",
+		"link": "https://home.hedy.dev/posts/",
+		"tags": ["Tech", "Tinkerer"],
+		"rss": "https://home.hedy.dev/posts/index.xml"
+	},
+	{
 		"owner": "Jhey Tompkins",
 		"title": "jhey.dev",
 		"link": "https://jhey.dev",
-		"tags": ["Design", "Tech", "Developer Advocate"]
+		"tags": ["Design", "Tech", "Developer Advocate", "Tinkerer"]
 	},
 	{
 		"owner": "Matty Benedetto",
 		"title": "Unnecessary Inventions",
 		"link": "https://unnecessaryinventions.com/",
-		"tags": ["Humor"]
+		"tags": ["Humor", "Tinkerer"]
 	},
 	{
 		"owner": "Centiskorch",

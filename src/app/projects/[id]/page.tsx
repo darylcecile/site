@@ -77,7 +77,7 @@ export default async function SingleProjectPage(props: ProjectPageProps) {
 			<div className="max-w-2xl mx-auto w-full pt-20">
 				<ViewTransition name={`projects-${project.id}`}>
 					<MFPostTitle className="text-3xl">{project.name}</MFPostTitle>
-					<p className="text-foreground/70 prose metalic-dark">{project.startYear} - {project.endYear ?? 'Ongoing'}</p>
+					<p className="text-foreground/85 prose metalic-dark">{project.startYear} - {project.endYear ?? 'Ongoing'}</p>
 				</ViewTransition>
 			</div>
 			<br />
@@ -97,7 +97,7 @@ export default async function SingleProjectPage(props: ProjectPageProps) {
 					</ViewTransition>
 				)}
 
-				<MFPostContent className="max-w-2xl mx-auto w-full text-foreground/70">
+				<MFPostContent className="max-w-2xl mx-auto w-full text-foreground/85">
 					<MarkdownRenderer content={project.summary} />
 				</MFPostContent>
 

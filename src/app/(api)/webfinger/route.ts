@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
-	const resource = req.query.resource as string;
+export default (req: Request) => {
+	const url = new URL(req.url);
+	const resource = url.searchParams.get('resource') as string;
 
 	if (resource?.includes("@")) {
 		const [user, domain] = resource.split("@");
@@ -9,7 +10,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
 			(name) => `acct:${name}`,
 		);
 		if (knownNames.includes(user) && domain === "darylcecile.net") {
-			res.json({
+			return Response.json({
 				subject: "acct:daryl@techhub.social",
 				aliases: [
 					"https://techhub.social/@daryl",
@@ -33,12 +34,11 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
 					},
 				],
 			});
-			return;
 		}
 	}
 
-	res.status(404).json({
+	return Response.json({
 		Error: "Unknown request",
 		resource,
-	});
+	}, { status: 404 });
 };

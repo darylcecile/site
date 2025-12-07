@@ -27,9 +27,14 @@ export default {
 				permanent: true,
 			},
 			{
-				source: "/24-jun-25",
-				destination: "https://gist.github.com/darylcecile/6ff45ea019d8817c76747689f830ae3f",
-				permanent: true
+				source: "/twitter",
+				destination: "https://twitter.com/darylcecile",
+				permanent: true,
+			},
+			{
+				source: "/github",
+				destination: "https://github.com/darylcecile",
+				permanent: true,
 			}
 		];
 	},
