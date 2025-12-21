@@ -90,5 +90,11 @@
 		"link": "https://cassidoo.co",
 		"tags": ["Tech", "Developer Advocate"],
 		"rss": "https://cassidoo.co/rss.xml"
+	},
+	{
+		"owner": "Maya",
+		"title": "onlineplace to connect with other humans",
+		"link": "https://veopia.net",
+		"tags": ["Tech", "Design", "Connect", "Hub"]
 	}
 ]
