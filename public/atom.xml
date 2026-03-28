@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://darylcecile.net</id>
     <title>Daryl Cecile</title>
-    <updated>2025-12-04T23:24:24.757Z</updated>
+    <updated>2026-03-28T12:32:10.733Z</updated>
     <generator>mFeed</generator>
     <author>
         <name>Daryl Cecile</name>
@@ -14,7 +14,31 @@
     <subtitle>My notes</subtitle>
     <logo>https://darylcecile.net/og</logo>
     <icon>https://darylcecile.net/images/core/profile-256.ico</icon>
-    <rights>Daryl Cecile © 2025</rights>
+    <rights>Daryl Cecile © 2026</rights>
+    <entry>
+        <title type="html"><![CDATA[Rediscovering the Internet]]></title>
+        <id>rediscovering-the-internet</id>
+        <link href="https://darylcecile.net/notes/rediscovering-the-internet"/>
+        <updated>2025-12-07T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<link rel="preload" as="image" href="/images/hml-nekoweb-webring.png"/><link rel="preload" as="image" href="/images/itsvaeav-nekoweb-webring.png"/><link rel="preload" as="image" href="/images/qswitch-<br /> Read more at <a href="https://darylcecile.net/notes/rediscovering-the-internet">darylcecile.net</a>]]></content>
+        <author>
+            <name>Daryl Cecile</name>
+            <email>darylcecile@gmail.com</email>
+            <uri>https://darylcecile.net</uri>
+        </author>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[GitHub Copilot Agent: Actually Useful AI?]]></title>
+        <id>github-copilot-agent-actually-useful-ai</id>
+        <link href="https://darylcecile.net/notes/github-copilot-agent-actually-useful-ai"/>
+        <updated>2025-12-06T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<div class="p-4 rounded-lg not-prose bg-blue-500/10 text-blue-500 dark:bg-[deepskyblue]/20 dark:text-[deepskyblue]" data-format="info"><div class="m-0"><p><strong>Note:</strong> These are just my pers<br /> Read more at <a href="https://darylcecile.net/notes/github-copilot-agent-actually-useful-ai">darylcecile.net</a>]]></content>
+        <author>
+            <name>Daryl Cecile</name>
+            <email>darylcecile@gmail.com</email>
+            <uri>https://darylcecile.net</uri>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Committing to Change: Joining the Octocats]]></title>
         <id>committing-to-change</id>

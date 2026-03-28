@@ -11,6 +11,30 @@
     },
     "items": [
         {
+            "id": "rediscovering-the-internet",
+            "content_html": "<link rel=\"preload\" as=\"image\" href=\"/images/hml-nekoweb-webring.png\"/><link rel=\"preload\" as=\"image\" href=\"/images/itsvaeav-nekoweb-webring.png\"/><link rel=\"preload\" as=\"image\" href=\"/images/qswitch-<br /> Read more at <a href=\"https://darylcecile.net/notes/rediscovering-the-internet\">darylcecile.net</a>",
+            "url": "https://darylcecile.net/notes/rediscovering-the-internet",
+            "title": "Rediscovering the Internet",
+            "image": "https://darylcecile.net/og?slug=rediscovering-the-internet",
+            "date_modified": "2025-12-07T00:00:00.000Z",
+            "author": {
+                "name": "Daryl Cecile",
+                "url": "https://darylcecile.net"
+            }
+        },
+        {
+            "id": "github-copilot-agent-actually-useful-ai",
+            "content_html": "<div class=\"p-4 rounded-lg not-prose bg-blue-500/10 text-blue-500 dark:bg-[deepskyblue]/20 dark:text-[deepskyblue]\" data-format=\"info\"><div class=\"m-0\"><p><strong>Note:</strong> These are just my pers<br /> Read more at <a href=\"https://darylcecile.net/notes/github-copilot-agent-actually-useful-ai\">darylcecile.net</a>",
+            "url": "https://darylcecile.net/notes/github-copilot-agent-actually-useful-ai",
+            "title": "GitHub Copilot Agent: Actually Useful AI?",
+            "image": "https://darylcecile.net/og?slug=github-copilot-agent-actually-useful-ai",
+            "date_modified": "2025-12-06T00:00:00.000Z",
+            "author": {
+                "name": "Daryl Cecile",
+                "url": "https://darylcecile.net"
+            }
+        },
+        {
             "id": "committing-to-change",
             "content_html": "<link rel=\"preload\" as=\"image\" href=\"/daryl-octocat.png\"/><p>The past year and a half has been a whirlwind in my career. There were many ups, but towards the end of 2024, I found myself in a bit of a <br /> Read more at <a href=\"https://darylcecile.net/notes/committing-to-change\">darylcecile.net</a>",
             "url": "https://darylcecile.net/notes/committing-to-change",

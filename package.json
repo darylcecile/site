@@ -11,9 +11,9 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/bun": "latest",
-    "@types/react": "19.2.7",
+    "@types/react": "19.2.14",
     "eslint": "^9",
-    "eslint-config-next": "16.0.7",
+    "eslint-config-next": "16.2.1",
     "typescript": "5.8.2"
   },
   "peerDependencies": {
@@ -47,13 +47,13 @@
     "markdown-it-modify-token": "^1.0.2",
     "markdown-it-task-checkbox": "^1.0.6",
     "motion": "^12.23.25",
-    "next": "16.0.7",
+    "next": "16.2.1",
     "next-mdx-remote": "^5.0.0",
     "next-themes": "^0.4.6",
     "node-html-parser": "^7.0.1",
     "postcss": "^8.5.6",
-    "react": "19.2.1",
-    "react-dom": "19.2.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
     "react-tweet": "^3.2.2",
     "rehype-mdx-code-props": "^3.0.1",
     "sharp": "^0.33.5",
@@ -69,6 +69,6 @@
     "satori": "0.12.2"
   },
   "resolutions": {
-    "@types/react": "19.2.7"
+    "@types/react": "19.2.14"
   }
 }

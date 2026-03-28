@@ -4,7 +4,7 @@
         <title>Daryl Cecile</title>
         <link>https://darylcecile.net</link>
         <description>My notes</description>
-        <lastBuildDate>Thu, 04 Dec 2025 23:24:24 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 28 Mar 2026 12:32:10 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>mFeed</generator>
         <language>en</language>
@@ -13,7 +13,25 @@
             <url>https://darylcecile.net/og</url>
             <link>https://darylcecile.net</link>
         </image>
-        <copyright>Daryl Cecile © 2025</copyright>
+        <copyright>Daryl Cecile © 2026</copyright>
+        <item>
+            <title><![CDATA[Rediscovering the Internet]]></title>
+            <link>https://darylcecile.net/notes/rediscovering-the-internet</link>
+            <guid>rediscovering-the-internet</guid>
+            <pubDate>Sun, 07 Dec 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[<link rel="preload" as="image" href="/images/hml-nekoweb-webring.png"/><link rel="preload" as="image" href="/images/itsvaeav-nekoweb-webring.png"/><link rel="preload" as="image" href="/images/qswitch-<br /> Read more at <a href="https://darylcecile.net/notes/rediscovering-the-internet">darylcecile.net</a>]]></content:encoded>
+            <author>darylcecile@gmail.com (Daryl Cecile)</author>
+            <enclosure url="https://darylcecile.net/og?slug=rediscovering-the-internet" length="0" type="image//og"/>
+        </item>
+        <item>
+            <title><![CDATA[GitHub Copilot Agent: Actually Useful AI?]]></title>
+            <link>https://darylcecile.net/notes/github-copilot-agent-actually-useful-ai</link>
+            <guid>github-copilot-agent-actually-useful-ai</guid>
+            <pubDate>Sat, 06 Dec 2025 00:00:00 GMT</pubDate>
+            <content:encoded><![CDATA[<div class="p-4 rounded-lg not-prose bg-blue-500/10 text-blue-500 dark:bg-[deepskyblue]/20 dark:text-[deepskyblue]" data-format="info"><div class="m-0"><p><strong>Note:</strong> These are just my pers<br /> Read more at <a href="https://darylcecile.net/notes/github-copilot-agent-actually-useful-ai">darylcecile.net</a>]]></content:encoded>
+            <author>darylcecile@gmail.com (Daryl Cecile)</author>
+            <enclosure url="https://darylcecile.net/og?slug=github-copilot-agent-actually-useful-ai" length="0" type="image//og"/>
+        </item>
         <item>
             <title><![CDATA[Committing to Change: Joining the Octocats]]></title>
             <link>https://darylcecile.net/notes/committing-to-change</link>
