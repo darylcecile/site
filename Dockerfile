@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 FROM oven/bun:1.3-alpine AS base
 
 # --- Install dependencies ---
@@ -12,9 +13,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG GITHUB_TOKEN
-ENV GITHUB_TOKEN=$GITHUB_TOKEN
-RUN bun run build
+RUN --mount=type=secret,id=GITHUB_TOKEN \
+    GITHUB_TOKEN=$(cat /run/secrets/GITHUB_TOKEN) \
+    bun run build
 # Flatten the nested standalone output (turbopack.root causes nesting)
 RUN NESTED="$(ls .next/standalone)" && \
     cp -a ".next/standalone/$NESTED/." .next/standalone/ && \
