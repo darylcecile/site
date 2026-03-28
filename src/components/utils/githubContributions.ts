@@ -82,11 +82,9 @@ export async function fetchGithubContributionCalendar(
 
 export function getLastYearRange() {
 	const to = new Date();
-	const from = new Date();
-	from.setFullYear(to.getFullYear() - 1);
-	from.setDate(1); // start from the 1st of the month
+	const from = new Date(to);
+	from.setFullYear(from.getFullYear() - 1);
+	from.setDate(from.getDate() + 1);
 
-	const toStr = to.toISOString();
-	const fromStr = from.toISOString();
-	return { from: fromStr, to: toStr };
+	return { from: from.toISOString(), to: to.toISOString() };
 }
