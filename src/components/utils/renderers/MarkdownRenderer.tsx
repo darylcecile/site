@@ -23,7 +23,8 @@ export default function MarkdownRenderer(props: Props) {
 			options={{
 				mdxOptions: {
 					rehypePlugins: [rehypeMdxCodeProps],
-				}
+				},
+				blockJS: false,
 			}}
 		/>
 	)

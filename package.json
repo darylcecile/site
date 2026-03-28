@@ -49,7 +49,7 @@
     "markdown-it-task-checkbox": "^1.0.6",
     "motion": "^12.23.25",
     "next": "16.2.1",
-    "next-mdx-remote": "^5.0.0",
+    "next-mdx-remote": "^6.0.0",
     "next-themes": "^0.4.6",
     "node-html-parser": "^7.0.1",
     "postcss": "^8.5.6",
