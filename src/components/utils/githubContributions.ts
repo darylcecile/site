@@ -80,13 +80,13 @@ export async function fetchGithubContributionCalendar(
 	};
 }
 
+// returns ISO strings for the last year range clamped to exactly 1 year
 export function getLastYearRange() {
 	const to = new Date();
-	const from = new Date();
-	from.setFullYear(to.getFullYear() - 1);
-	from.setDate(1); // start from the 1st of the month
+	const from = new Date(to);
+	from.setFullYear(from.getFullYear() - 1);
+	// nudge forward by 1 day so the span is strictly < 1 year
+	from.setDate(from.getDate() + 1);
 
-	const toStr = to.toISOString();
-	const fromStr = from.toISOString();
-	return { from: fromStr, to: toStr };
+	return { from: from.toISOString(), to: to.toISOString() };
 }

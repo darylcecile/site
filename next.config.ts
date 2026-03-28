@@ -55,3 +55,5 @@ export default {
 		];
 	},
 } satisfies NextConfig
+
+import('@opennextjs/cloudflare').then(m => m.initOpenNextCloudflareForDev());
