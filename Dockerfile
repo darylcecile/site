@@ -4,7 +4,7 @@ FROM oven/bun:1.3-alpine AS base
 FROM base AS deps
 WORKDIR /app
 COPY package.json bun.lockb ./
-RUN bun install --frozen-lockfile --production=false
+RUN bun install --frozen-lockfile
 
 # --- Build the app ---
 FROM base AS builder
@@ -14,10 +14,12 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN bun run build
 # Flatten the nested standalone output (turbopack.root causes nesting)
-RUN mv .next/standalone/$(ls .next/standalone)/* .next/standalone/ 2>/dev/null || true
+RUN NESTED="$(ls .next/standalone)" && \
+    cp -a ".next/standalone/$NESTED/." .next/standalone/ && \
+    rm -rf ".next/standalone/$NESTED"
 
 # --- Production image ---
-FROM node:22-alpine AS runner
+FROM node:24-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
