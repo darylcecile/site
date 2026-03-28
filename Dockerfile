@@ -12,6 +12,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
+ARG GITHUB_TOKEN
+ENV GITHUB_TOKEN=$GITHUB_TOKEN
 RUN bun run build
 # Flatten the nested standalone output (turbopack.root causes nesting)
 RUN NESTED="$(ls .next/standalone)" && \
