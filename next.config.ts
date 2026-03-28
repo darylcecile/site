@@ -4,6 +4,7 @@ import { join } from "node:path";
 export default {
 	transpilePackages: ["next-mdx-remote"],
 	serverExternalPackages: ["@shikijs/twoslash"],
+	output: "standalone",
 	experimental: {
 		viewTransition: true,
 	},
