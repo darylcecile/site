@@ -36,6 +36,10 @@ export default defineStudioConfig({
 					link: z.url().optional(),
 					tokens: z.array(z.string()).optional(),
 					sticky: z.boolean().optional(),
+					repo: z.union([ // GitHub repo in the format "owner/repo"
+						z.string().array(), 
+						z.string()
+					]).optional()
 				})
 			},
 			assetsPath: "./public/projects/"

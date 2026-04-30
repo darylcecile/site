@@ -1,6 +1,7 @@
 import type { Metadata, ResolvingMetadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { getAllProjectsDataSorted, getProjectData } from "@/lib/repo/projectsRepo";
+import { getAggregatedRepoStats } from "@/lib/repo/githubRepo";
 import MarkdownRenderer from '@/components/utils/renderers/MarkdownRenderer';
 import { cn } from "@/lib/utils";
 import { ViewTransition } from 'react';
@@ -72,6 +73,22 @@ export default async function SingleProjectPage(props: ProjectPageProps) {
 		URL.canParse(project.image) ? project.image : `/images/projects/${project.image}`
 	);
 
+	const repoStats = project.repo ? await getAggregatedRepoStats(project.repo) : null;
+	const singleRepo = repoStats && repoStats.repos.length === 1 ? repoStats.repos[0] : null;
+	const repoLabel = singleRepo
+		? singleRepo.repo
+		: repoStats
+			? `${repoStats.repos.length} repos`
+			: null;
+	const repoHref = singleRepo?.htmlUrl ?? null;
+	const lastUpdatedLabel = repoStats?.lastUpdated
+		? new Date(repoStats.lastUpdated).toLocaleDateString("en-US", {
+			year: "numeric",
+			month: "short",
+			day: "numeric",
+		})
+		: null;
+
 	return (
 		<article className="content px-8">
 			<div className="max-w-2xl mx-auto w-full pt-20">
@@ -100,6 +117,34 @@ export default async function SingleProjectPage(props: ProjectPageProps) {
 				<MFPostContent className="max-w-2xl mx-auto w-full text-foreground/85">
 					<MarkdownRenderer content={project.summary} />
 				</MFPostContent>
+
+				{repoStats && (
+					<div className="max-w-2xl mx-auto w-full mt-8 not-prose">
+						<div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-foreground/70 border-t border-foreground/10 pt-4">
+							{repoHref ? (
+								<Link
+									href={repoHref}
+									className="hover:text-foreground hover:underline underline-offset-2"
+								>
+									{repoLabel} ↗
+								</Link>
+							) : (
+								<span className="text-foreground/85">{repoLabel}</span>
+							)}
+							{repoStats.commitsCount != null && (
+								<span>
+									<span className="text-foreground/85 font-medium">{repoStats.commitsCount.toLocaleString()}</span>{" "}
+									commit{repoStats.commitsCount === 1 ? "" : "s"}
+								</span>
+							)}
+							{lastUpdatedLabel && (
+								<span>
+									Last updated <span className="text-foreground/85">{lastUpdatedLabel}</span>
+								</span>
+							)}
+						</div>
+					</div>
+				)}
 
 				<div className='max-w-2xl mx-auto w-full mb-10 flex items-center justify-end'>
 					<p className='text-sm pt-4'>

@@ -14,6 +14,7 @@ export type Project = {
 	link: string;
 	sticky?: boolean;
 	tokens: string[];
+	repo?: string | string[];
 };
 
 const projectsDirectory = path.join(process.cwd(), "src/projects_markdown");
