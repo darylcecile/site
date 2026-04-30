@@ -10,6 +10,19 @@ Sakoa is a progressive systems and application language designed to be approacha
 
 The repository ships a complete toolchain in a single binary: a Rust-based compiler frontend with trait/generic/effect/ownership checking, an MIR interpreter, a deterministic package manager with workspace lockfiles, a formatter, linter, test runner with property-based tests and snapshots, a markdown docs generator, structured phase profiling, an LSP server, and a VSCode extension. Build targets include native, JavaScript, WebAssembly, and embedded artifacts.
 
+```sakoa
+type Counter = {
+  name: String
+  value: Int
+}
+
+fn main() -> Void {
+  mut counter = Counter { name: "docs", value: 1 }
+  counter.value = counter.value + 1
+  println("${counter.name}: ${counter.value}")
+}
+```
+
 ### Motivation
 
 Most languages either optimise for ergonomics at the cost of safety, or for safety at the cost of approachability. With Sakoa, I wanted to explore a middle path — a language where you can write a small script in a few lines, but that scales up to services and systems code without changing tools or rewriting in a "real" language later. Effects, ownership, and unsafety should be visible in the source, not hidden behind conventions, so that the cost of a piece of code is something you can read off the page.

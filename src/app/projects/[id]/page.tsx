@@ -115,7 +115,7 @@ export default async function SingleProjectPage(props: ProjectPageProps) {
 				)}
 
 				<MFPostContent className="max-w-2xl mx-auto w-full text-foreground/85">
-					<MarkdownRenderer content={project.summary} />
+					<MarkdownRenderer content={project.content} />
 				</MFPostContent>
 
 				{repoStats && (
