@@ -15,9 +15,9 @@ type H = `h${1 | 2 | 3 | 4 | 5 | 6}`;
 
 export function Heading({ level = 1, ...props }: HeadingProps) {
 	const HeadingTag = `h${level}` as H;
-	const sectionId = generateIdFromText(props.children as string);
+	const sectionId = generateIdFromText(props.children);
 
-	const isActive = useScrollHintHeading(sectionId, props.children.toString());
+	const isActive = useScrollHintHeading(sectionId, sectionId);
 
 	return (
 
