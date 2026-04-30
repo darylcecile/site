@@ -5,6 +5,7 @@ startYear: 2025
 link: https://sideloop.io
 sticky: true
 tokens: [web, platform]
+repo: darylcecile/sideloops
 ---
 
 

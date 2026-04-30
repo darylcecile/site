@@ -5,6 +5,7 @@ startYear: 2024
 link: https://knosh.app
 sticky: true
 tokens: [platform, mobile]
+repo: ["knosh-app/mobile", "knosh-app/dashboard", "knosh-app/g-reviews", "knosh-app/landing", "knosh-app/ai-research-worker"]
 ---
 
 Knosh is a socially-driven restaurant discovery app designed to make dining out inclusive, effortless, and fun. It helps users find and organise meals with friends based on everyone’s dietary needs—whether allergies, intolerances, or lifestyle preferences. By combining personalised recommendations, verified allergen data, and group planning tools, Knosh empowers people to enjoy shared dining experiences without compromise. It's not just about eating out—it’s about making everyone feel welcome at the table.

@@ -8,12 +8,14 @@ export type Project = {
 	name: string;
 	id: string;
 	summary: string;
+	content: string;
 	startYear: number;
 	endYear?: number;
 	image?: string;
 	link: string;
 	sticky?: boolean;
 	tokens: string[];
+	repo?: string | string[];
 };
 
 const projectsDirectory = path.join(process.cwd(), "src/projects_markdown");
@@ -47,30 +49,26 @@ export const getAllProjectsDataSorted = cache(async () => {
 			id,
 			...matterResult,
 			summary: matterResult.renderedContent,
+			content: matterResult.content,
 		};
 	});
-	// Sort notes by date
-	return allProjectsData
-		.sort((a, b) => {
-			// if (!a.endYear || !b.endYear) return 0;
-			const ae = a.endYear ?? new Date().getUTCFullYear();
-			const be = b.endYear ?? new Date().getUTCFullYear();
-			if (ae < be) {
-				return 1;
-			}
-			return -1;
-		})
-		.sort((a, b) => {
-			// sort by start year
-			if (a.endYear) return 0;
-			if (a.startYear < b.startYear) return 1;
-			return -1;
-		})
-		.sort((a, b) => {
-			if (a.sticky && !b.sticky) return -1;
-			if (!a.sticky && b.sticky) return 1;
-			return 0;
-		});
+	return allProjectsData.sort((a, b) => {
+		// Sticky projects first.
+		if (!!a.sticky !== !!b.sticky) return a.sticky ? -1 : 1;
+
+		// Ongoing projects (no endYear) before completed ones.
+		const aOngoing = a.endYear == null;
+		const bOngoing = b.endYear == null;
+		if (aOngoing !== bOngoing) return aOngoing ? -1 : 1;
+
+		// More recently started projects first.
+		if (a.startYear !== b.startYear) return b.startYear - a.startYear;
+
+		// Tiebreak: more recently ended first.
+		const ae = a.endYear ?? Number.POSITIVE_INFINITY;
+		const be = b.endYear ?? Number.POSITIVE_INFINITY;
+		return be - ae;
+	});
 });
 
 export const getAllProjectIds = cache(() => {
@@ -101,5 +99,6 @@ export const getProjectData = cache((id: string) => {
 		id,
 		...project,
 		summary: project.renderedContent,
+		content: project.content,
 	} as Project;
 });
