@@ -1,0 +1,444 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Sakoa",
+  "scopeName": "source.sakoa",
+  "fileTypes": [
+    "sakoa"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#declarations"
+    },
+    {
+      "include": "#syntax-invocations"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#types"
+    },
+    {
+      "include": "#effects"
+    },
+    {
+      "include": "#module-paths"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#operators"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.documentation.sakoa",
+          "match": "//[/!]\\s?.*$"
+        },
+        {
+          "include": "#comment-block-doc"
+        },
+        {
+          "name": "comment.line.double-slash.sakoa",
+          "match": "//.*$"
+        },
+        {
+          "include": "#comment-block"
+        }
+      ]
+    },
+    "comment-block-doc": {
+      "name": "comment.block.documentation.sakoa",
+      "begin": "/\\*\\*",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.comment.begin.sakoa"
+        }
+      },
+      "end": "\\*/",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.comment.end.sakoa"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-block-doc"
+        },
+        {
+          "include": "#comment-block"
+        }
+      ]
+    },
+    "comment-block": {
+      "name": "comment.block.sakoa",
+      "begin": "/\\*",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.comment.begin.sakoa"
+        }
+      },
+      "end": "\\*/",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.comment.end.sakoa"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comment-block"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.sakoa",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.sakoa"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.sakoa"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#escape"
+            },
+            {
+              "include": "#interpolation"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.char.sakoa",
+          "begin": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.char.begin.sakoa"
+            }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.char.end.sakoa"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#escape"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.backtick.template.sakoa",
+          "begin": "`",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.template.begin.sakoa"
+            }
+          },
+          "end": "`",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.template.end.sakoa"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#escape"
+            },
+            {
+              "include": "#interpolation"
+            }
+          ]
+        }
+      ]
+    },
+    "escape": {
+      "name": "constant.character.escape.sakoa",
+      "match": "\\\\(?:[\\\\\"'`nrt0{}]|u\\{[0-9A-Fa-f_]+\\})"
+    },
+    "interpolation": {
+      "name": "meta.interpolation.sakoa",
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.interpolation.begin.sakoa"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.interpolation.end.sakoa"
+        }
+      },
+      "patterns": [
+        {
+          "include": "$self"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.float.sakoa",
+          "match": "\\b(?:[0-9][0-9_]*\\.[0-9][0-9_]*(?:[eE][+-]?[0-9][0-9_]*)?|[0-9][0-9_]*[eE][+-]?[0-9][0-9_]*)\\b"
+        },
+        {
+          "name": "constant.numeric.hex.sakoa",
+          "match": "\\b0x[0-9A-Fa-f][0-9A-Fa-f_]*\\b"
+        },
+        {
+          "name": "constant.numeric.binary.sakoa",
+          "match": "\\b0b[01][01_]*\\b"
+        },
+        {
+          "name": "constant.numeric.integer.sakoa",
+          "match": "\\b[0-9][0-9_]*\\b"
+        }
+      ]
+    },
+    "declarations": {
+      "patterns": [
+        {
+          "name": "meta.function.declaration.sakoa",
+          "match": "\\b(fn)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.function.sakoa"
+            },
+            "2": {
+              "name": "entity.name.function.sakoa"
+            }
+          }
+        },
+        {
+          "name": "meta.type.declaration.sakoa",
+          "match": "\\b(type|trait|actor)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.type.sakoa"
+            },
+            "2": {
+              "name": "entity.name.type.sakoa"
+            }
+          }
+        },
+        {
+          "name": "meta.syntax.declaration.sakoa",
+          "match": "\\b(syntax)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.syntax.sakoa"
+            },
+            "2": {
+              "name": "entity.name.function.macro.sakoa"
+            }
+          }
+        },
+        {
+          "name": "meta.syntax.collection-clause.sakoa",
+          "match": "\\b(collect)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.syntax.collect.sakoa"
+            },
+            "2": {
+              "name": "entity.name.variable.collection.sakoa"
+            }
+          }
+        },
+        {
+          "name": "meta.impl.declaration.sakoa",
+          "match": "\\b(impl)\\b",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.impl.sakoa"
+            }
+          }
+        },
+        {
+          "name": "meta.component.declaration.sakoa",
+          "match": "\\b(component)\\s+(\"(?:\\\\.|[^\"\\\\])*\")",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.component.sakoa"
+            },
+            "2": {
+              "name": "string.quoted.double.component.sakoa"
+            }
+          }
+        },
+        {
+          "name": "meta.extern.declaration.sakoa",
+          "match": "\\b(extern)\\s+(\"(?:\\\\.|[^\"\\\\])*\")",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.extern.sakoa"
+            },
+            "2": {
+              "name": "string.quoted.double.extern.sakoa"
+            }
+          }
+        },
+        {
+          "name": "meta.test.declaration.sakoa",
+          "match": "\\b(test|property|bench)\\s+(\"(?:\\\\.|[^\"\\\\])*\")",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.test.sakoa"
+            },
+            "2": {
+              "name": "string.quoted.double.test-name.sakoa"
+            }
+          }
+        },
+        {
+          "name": "meta.package.declaration.sakoa",
+          "match": "\\b(package|workspace|target)\\s+(?:(\"(?:\\\\.|[^\"\\\\])*\")|([A-Za-z_][A-Za-z0-9_]*))",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.package.sakoa"
+            },
+            "2": {
+              "name": "string.quoted.double.package-name.sakoa"
+            },
+            "3": {
+              "name": "entity.name.namespace.sakoa"
+            }
+          }
+        }
+      ]
+    },
+    "syntax-invocations": {
+      "patterns": [
+        {
+          "name": "meta.syntax.invocation.template.sakoa",
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)(?=\\s*`)",
+          "captures": {
+            "1": {
+              "name": "entity.name.function.macro.sakoa"
+            }
+          }
+        },
+        {
+          "name": "meta.syntax.collection.builtin.sakoa",
+          "match": "\\b(collected)(?=\\s*<)",
+          "captures": {
+            "1": {
+              "name": "support.function.builtin.sakoa"
+            }
+          }
+        },
+        {
+          "name": "meta.syntax.invocation.block.sakoa",
+          "match": "^\\s*([A-Za-z_][A-Za-z0-9_]*)(?=\\s+[A-Za-z_][A-Za-z0-9_]*\\s+(?:\"|`))",
+          "captures": {
+            "1": {
+              "name": "entity.name.function.macro.sakoa"
+            }
+          }
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "support.type.builtin.sakoa",
+          "match": "\\b(?:Void|Bool|Int|Int8|Int16|Int32|Int64|UInt|UInt8|UInt16|UInt32|UInt64|Float|Float32|Float64|String|StaticString|TemplateBlock|Block|Identifier|Char|Result|Option|List|Map|Set|Array|Self|Never)\\b"
+        },
+        {
+          "name": "entity.name.type.sakoa",
+          "match": "\\b[A-Z][A-Za-z0-9_]*\\b"
+        }
+      ]
+    },
+    "effects": {
+      "patterns": [
+        {
+          "name": "support.function.effect.sakoa",
+          "match": "\\b(?:fs(?:\\.(?:read|write))?|net|db|env(?:\\.read)?|time|compileTime|io|random|panic)\\b"
+        }
+      ]
+    },
+    "module-paths": {
+      "patterns": [
+        {
+          "name": "entity.name.namespace.sakoa",
+          "match": "\\b[A-Za-z_][A-Za-z0-9_]*(?:\\.[A-Za-z_][A-Za-z0-9_]*)+\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.sakoa",
+          "match": "\\b(?:true|false)\\b"
+        },
+        {
+          "name": "constant.language.void.sakoa",
+          "match": "\\bvoid\\b"
+        },
+        {
+          "name": "keyword.control.sakoa",
+          "match": "\\b(?:if|else|match|for|in|return|try|await|task|using|discard|panic|comptime|unsafe)\\b"
+        },
+        {
+          "name": "keyword.declaration.sakoa",
+          "match": "\\b(?:fn|type|trait|impl|actor|component|extern|syntax|collect|test|property|bench|derive|package|workspace|target|native|dependencies|import|export|module|pub|let|mut|const|get|set|drop|repr|version|members|path|git|rev|exact|safe|async|borrow|lend|dyn|where|uses|forAll)\\b"
+        },
+        {
+          "name": "keyword.other.sakoa",
+          "match": "\\b(?:actor|as|async|await|bench|borrow|box|collect|comptime|component|const|dependencies|derive|discard|drop|dyn|else|exact|export|extern|false|fn|for|forAll|get|git|if|impl|import|in|lend|let|match|members|module|mut|native|package|panic|path|property|pub|repr|return|rev|safe|set|shared|syntax|target|task|test|trait|true|try|type|unsafe|uses|using|version|void|where|workspace)\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.arrow.sakoa",
+          "match": "=>|->"
+        },
+        {
+          "name": "keyword.operator.assignment.sakoa",
+          "match": "\\+=|-=|\\*=|/=|="
+        },
+        {
+          "name": "keyword.operator.comparison.sakoa",
+          "match": "==|!=|<=|>=|<|>"
+        },
+        {
+          "name": "keyword.operator.logical.sakoa",
+          "match": "&&|\\|\\||!|\\?\\?|\\?\\."
+        },
+        {
+          "name": "keyword.operator.arithmetic.sakoa",
+          "match": "[+\\-*/%]"
+        },
+        {
+          "name": "punctuation.separator.sakoa",
+          "match": "[.,:;]"
+        },
+        {
+          "name": "punctuation.bracket.sakoa",
+          "match": "[{}()\\[\\]<>|]"
+        }
+      ]
+    }
+  }
+}
