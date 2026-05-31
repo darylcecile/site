@@ -37,17 +37,23 @@ const components: MDXComponents = {
 	'img': ResponsiveImgRenderer,
 	'a': FancyLink,
 	'p': (props: any) => {
-		if (typeof props.children !== "string" && "type" in props.children) {
-			if (["ResponsiveImgRenderer", "TweetRenderer"].includes(props.children.type.name)) {
-				return props.children;
+		const child = props.children;
+		if (child && typeof child === "object" && !Array.isArray(child) && "type" in child) {
+			const typeName = typeof child.type === "function" ? child.type.name : undefined;
+			if (typeName && ["ResponsiveImgRenderer", "TweetRenderer"].includes(typeName)) {
+				return child;
 			}
 		}
-		return <p>{props.children}</p>;
+		return <p>{child}</p>;
 	},
-	'pre': (props) => {
-		if (props.children.type === 'code' || props.children.type.name === 'code') {
-			const language = props.children.props.className.replace('language-', '');
-			const code = props.children.props.children;
+	'pre': (props: any) => {
+		const child = props.children;
+		const childType = child && typeof child === "object" ? child.type : undefined;
+		const childTypeName = typeof childType === "function" ? childType.name : undefined;
+		if (childType === 'code' || childTypeName === 'code') {
+			const className: string = child.props?.className ?? '';
+			const language = className.replace('language-', '');
+			const code = child.props?.children;
 			return <CodeRenderer lang={language} withIntellisense={props.twoslash}>{code}</CodeRenderer>;
 		}
 		return <pre {...props} />;
