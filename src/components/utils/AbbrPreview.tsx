@@ -99,13 +99,36 @@ async function getMetadata(url: string) {
 
 	try {
 		const qualifiedUrl = new URL(url, 'https://darylcecile.net');
-		const response = await fetch(qualifiedUrl, { method: "GET" }).catch(e => {
-			console.log("Error fetching URL:", url, e);
-			throw e;
-		});
-		if (!response.ok) return null;
 
-		const text = await response.text();
+		const controller = new AbortController();
+		const timeout = setTimeout(() => controller.abort(), 5000);
+
+		let response: Response;
+		try {
+			response = await fetch(qualifiedUrl, {
+				method: "GET",
+				signal: controller.signal,
+			});
+		} catch (fetchError) {
+			console.warn(`[AbbrPreview] Skipping ${url} — fetch failed:`, fetchError instanceof Error ? fetchError.message : fetchError);
+			return null;
+		} finally {
+			clearTimeout(timeout);
+		}
+
+		if (!response.ok) {
+			console.warn(`[AbbrPreview] Skipping ${url} — HTTP ${response.status}`);
+			return null;
+		}
+
+		let text: string;
+		try {
+			text = await response.text();
+		} catch (readError) {
+			console.warn(`[AbbrPreview] Skipping ${url} — failed to read body:`, readError instanceof Error ? readError.message : readError);
+			return null;
+		}
+
 		const DOC = parse(text);
 
 		return {
@@ -123,7 +146,7 @@ async function getMetadata(url: string) {
 		}
 	}
 	catch (error) {
-		console.error("Error parsing HTML:", error);
+		console.warn(`[AbbrPreview] Skipping ${url} — unexpected error:`, error instanceof Error ? error.message : error);
 		return null;
 	}
 }
