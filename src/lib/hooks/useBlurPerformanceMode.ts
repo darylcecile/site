@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 export type BlurPerformanceMode = "blur" | "gradient";
 
@@ -25,6 +25,9 @@ const JANK_RATIO = 0.25;
 /** Stop a sampling burst this long (ms) after the last scroll event. */
 const SCROLL_IDLE_MS = 150;
 
+const useIsomorphicLayoutEffect =
+	typeof window === "undefined" ? useEffect : useLayoutEffect;
+
 /**
  * Decides whether the live `backdrop-filter` blur is smooth enough on the
  * current device, by measuring real frame times *while the user scrolls*.
@@ -43,7 +46,7 @@ const SCROLL_IDLE_MS = 150;
 export default function useBlurPerformanceMode(): BlurPerformanceMode {
 	const [mode, setMode] = useState<BlurPerformanceMode>("blur");
 
-	useEffect(() => {
+	useIsomorphicLayoutEffect(() => {
 		if (typeof window === "undefined") return;
 
 		// Use a cached verdict from earlier in the session if we have one.

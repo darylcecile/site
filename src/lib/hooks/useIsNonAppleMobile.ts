@@ -42,8 +42,8 @@ export default function useIsNonAppleMobile() {
 		if (typeof nav.userAgentData?.mobile === "boolean") {
 			isMobile = nav.userAgentData.mobile;
 		} else {
-			// "Mobile" token is present on phone UAs (incl. iPhone, Android phones).
-			isMobile = /Mobi|Android/i.test(ua);
+			// "Mobile"/"Mobi" is present on phone UAs; Android tablets omit it.
+			isMobile = /Mobi/i.test(ua);
 		}
 
 		setIsNonAppleMobile(isMobile && !isApple);
