@@ -9,6 +9,7 @@ import { GeistSans } from "geist/font/sans";
 import { cn } from '@/lib/utils';
 import { Analytics } from "@vercel/analytics/react"
 import { Metadata, Viewport } from 'next';
+import BottomBlur from '@/components/effects/BottomBlur';
 
 export async function generateViewport(): Promise<Viewport[]> {
 	return [{ minimumScale: 1, initialScale: 1, width: "device-width" }];
@@ -129,13 +130,7 @@ export default function RootLayout({
 					className='fixed top-0 left-0 w-full h-[100px] z-10 pointer-events-none'
 				/> */}
 
-				<div
-					className="w-full h-[100px] bottom-0 fixed pointer-events-none z-40"
-					style={{
-						mask: 'linear-gradient(transparent, black, black)',
-						backdropFilter: 'blur(4px) saturate(180%)',
-					}}
-				/>
+				<BottomBlur />
 				<ThemeProvider attribute={'class'}>
 					{/* <ClientTheme /> */}
 					<NavProvider>
