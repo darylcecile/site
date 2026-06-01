@@ -61,3 +61,8 @@
 .dark .jumbo::after {
     background-image: var(--stripesDark), var(--rainbow);
 }
+
+/* Disable the animated background gradient on non-Apple mobiles (perf). */
+.reduce-bg-motion .jumbo::after {
+    animation: none;
+}

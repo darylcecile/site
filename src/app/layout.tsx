@@ -9,6 +9,8 @@ import { GeistSans } from "geist/font/sans";
 import { cn } from '@/lib/utils';
 import { Analytics } from "@vercel/analytics/react"
 import { Metadata, Viewport } from 'next';
+import BottomBlur from '@/components/effects/BottomBlur';
+import BackgroundMotionGate from '@/components/effects/BackgroundMotionGate';
 
 export async function generateViewport(): Promise<Viewport[]> {
 	return [{ minimumScale: 1, initialScale: 1, width: "device-width" }];
@@ -102,6 +104,7 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning>
 			<body className={cn(GeistSans.className, 'bg-background w-full min-h-screen')}>
 				<Analytics />
+				<BackgroundMotionGate />
 				<Rays className="w-full min-w-7xl -top-1/2 bg-center h-screen fixed opacity-50 pointer-events-none z-0" />
 				{/* TOP PROGRESSIVE BLUR */}
 				{/* <div
@@ -129,13 +132,7 @@ export default function RootLayout({
 					className='fixed top-0 left-0 w-full h-[100px] z-10 pointer-events-none'
 				/> */}
 
-				<div
-					className="w-full h-[100px] bottom-0 fixed pointer-events-none z-40"
-					style={{
-						mask: 'linear-gradient(transparent, black, black)',
-						backdropFilter: 'blur(4px) saturate(180%)',
-					}}
-				/>
+				<BottomBlur />
 				<ThemeProvider attribute={'class'}>
 					{/* <ClientTheme /> */}
 					<NavProvider>
