@@ -37,13 +37,16 @@ export default function useIsNonAppleMobile() {
 			/iPhone|iPad|iPod/.test(ua) ||
 			(/Macintosh/.test(ua) && maxTouchPoints > 1);
 		const isApple = isIOS || /Apple/i.test(nav.vendor || "");
+		const hasMobileToken = /Mobile|Mobi/i.test(ua);
+		const isAndroidPhoneUA = /Android/i.test(ua) && hasMobileToken;
 
 		let isMobile: boolean;
 		if (typeof nav.userAgentData?.mobile === "boolean") {
-			isMobile = nav.userAgentData.mobile;
+			// UA-CH can be missing or inaccurate on some Android builds/browser modes.
+			isMobile = nav.userAgentData.mobile || isAndroidPhoneUA;
 		} else {
-			// "Mobile"/"Mobi" is present on phone UAs; Android tablets omit it.
-			isMobile = /Mobi/i.test(ua);
+			// Android phone UAs include "Android" + "Mobile"; tablets omit "Mobile".
+			isMobile = hasMobileToken;
 		}
 
 		setIsNonAppleMobile(isMobile && !isApple);
