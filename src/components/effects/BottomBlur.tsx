@@ -24,12 +24,14 @@ export default function BottomBlur() {
 		);
 	}
 
+	const maskGradient = "linear-gradient(transparent, black, black)";
+
 	return (
 		<div
 			className="w-full h-[100px] bottom-0 fixed pointer-events-none z-40"
 			style={{
-				mask: "linear-gradient(transparent, black, black)",
-				WebkitMaskImage: "linear-gradient(transparent, black, black)",
+				mask: maskGradient,
+				WebkitMaskImage: maskGradient,
 				backdropFilter: "blur(4px) saturate(180%)",
 				WebkitBackdropFilter: "blur(4px) saturate(180%)",
 			}}
