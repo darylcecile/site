@@ -20,12 +20,7 @@ export type Project = {
 
 const projectsDirectory = path.join(process.cwd(), "src/projects_markdown");
 
-export const getAllProjectsDataSorted = cache(async () => {
-	"use cache";
-
-	cacheTag("projects-data");
-	cacheLife('minutes');
-
+export const getAllProjectsDataSorted_UnCached = () => {
 	// Get file names under /notes
 	const fileNames = fs.readdirSync(projectsDirectory);
 	const allProjectsData: Project[] = fileNames.filter(fileName => {
@@ -69,6 +64,15 @@ export const getAllProjectsDataSorted = cache(async () => {
 		const be = b.endYear ?? Number.POSITIVE_INFINITY;
 		return be - ae;
 	});
+};
+
+export const getAllProjectsDataSorted = cache(async () => {
+	"use cache";
+
+	cacheTag("projects-data");
+	cacheLife('minutes');
+
+	return getAllProjectsDataSorted_UnCached();
 });
 
 export const getAllProjectIds = cache(() => {

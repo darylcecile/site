@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://darylcecile.net</id>
     <title>Daryl Cecile</title>
-    <updated>2026-05-31T14:45:22.278Z</updated>
+    <updated>2026-08-07T11:57:26.157Z</updated>
     <generator>mFeed</generator>
     <author>
         <name>Daryl Cecile</name>
@@ -16,10 +16,22 @@
     <icon>https://darylcecile.net/images/core/profile-256.ico</icon>
     <rights>Daryl Cecile © 2026</rights>
     <entry>
+        <title type="html"><![CDATA[The Speed of Prototyping in the Age of AI]]></title>
+        <id>speed-of-prototyping-age-of-ai</id>
+        <link href="https://darylcecile.net/notes/speed-of-prototyping-age-of-ai"/>
+        <updated>2026-05-30T16:00:00.000Z</updated>
+        <content type="html"><![CDATA[<div class="p-4 rounded-lg not-prose bg-blue-500/10 text-blue-500 dark:bg-[deepskyblue]/20 dark:text-[deepskyblue]" data-format="info"><div class="m-0"><p><strong>Note:</strong> These are personal ref<br /> Read more at <a href="https://darylcecile.net/notes/speed-of-prototyping-age-of-ai">darylcecile.net</a>]]></content>
+        <author>
+            <name>Daryl Cecile</name>
+            <email>darylcecile@gmail.com</email>
+            <uri>https://darylcecile.net</uri>
+        </author>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Rediscovering the Internet]]></title>
         <id>rediscovering-the-internet</id>
         <link href="https://darylcecile.net/notes/rediscovering-the-internet"/>
-        <updated>2025-12-07T00:00:00.000Z</updated>
+        <updated>2025-12-06T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<link rel="preload" as="image" href="/images/hml-nekoweb-webring.png"/><link rel="preload" as="image" href="/images/itsvaeav-nekoweb-webring.png"/><link rel="preload" as="image" href="/images/qswitch-<br /> Read more at <a href="https://darylcecile.net/notes/rediscovering-the-internet">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
@@ -31,7 +43,7 @@
         <title type="html"><![CDATA[GitHub Copilot Agent: Actually Useful AI?]]></title>
         <id>github-copilot-agent-actually-useful-ai</id>
         <link href="https://darylcecile.net/notes/github-copilot-agent-actually-useful-ai"/>
-        <updated>2025-12-06T00:00:00.000Z</updated>
+        <updated>2025-12-05T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<div class="p-4 rounded-lg not-prose bg-blue-500/10 text-blue-500 dark:bg-[deepskyblue]/20 dark:text-[deepskyblue]" data-format="info"><div class="m-0"><p><strong>Note:</strong> These are just my pers<br /> Read more at <a href="https://darylcecile.net/notes/github-copilot-agent-actually-useful-ai">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
@@ -43,7 +55,7 @@
         <title type="html"><![CDATA[Committing to Change: Joining the Octocats]]></title>
         <id>committing-to-change</id>
         <link href="https://darylcecile.net/notes/committing-to-change"/>
-        <updated>2025-03-28T00:00:00.000Z</updated>
+        <updated>2025-03-27T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<link rel="preload" as="image" href="/daryl-octocat.png"/><p>The past year and a half has been a whirlwind in my career. There were many ups, but towards the end of 2024, I found myself in a bit of a <br /> Read more at <a href="https://darylcecile.net/notes/committing-to-change">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
@@ -55,7 +67,7 @@
         <title type="html"><![CDATA[When it all falls into place 🍊]]></title>
         <id>when-it-all-falls-into-place-2025</id>
         <link href="https://darylcecile.net/notes/when-it-all-falls-into-place-2025"/>
-        <updated>2025-01-01T00:00:00.000Z</updated>
+        <updated>2024-12-31T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<h3>New Horizons</h3>
 <p>As we step into the new year, I find myself brimming with energy and excitement for what lies ahead. Last year was not the easiest; it was marked by stagnation and challenges,<br /> Read more at <a href="https://darylcecile.net/notes/when-it-all-falls-into-place-2025">darylcecile.net</a>]]></content>
         <author>
@@ -68,7 +80,7 @@
         <title type="html"><![CDATA[Next-level Pursuit 🐣]]></title>
         <id>next-level-pursuit</id>
         <link href="https://darylcecile.net/notes/next-level-pursuit"/>
-        <updated>2023-10-08T23:00:00.000Z</updated>
+        <updated>2023-10-08T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<link rel="preload" as="image" href="/images/mauritius-beach-profile-2023.jpg"/><p>So it&#x27;s been officially 3 years and 8 months (give or take) since I last wrote <abbr title="Futuristic Pursuit" <br /> Read more at <a href="https://darylcecile.net/notes/next-level-pursuit">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
@@ -80,7 +92,7 @@
         <title type="html"><![CDATA[Throwaway Prototypes]]></title>
         <id>throwaway-prototypes</id>
         <link href="https://darylcecile.net/notes/throwaway-prototypes"/>
-        <updated>2023-06-21T23:00:00.000Z</updated>
+        <updated>2023-06-21T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<p>For the past couple of years I have grown fond of prototyping as a way of getting my ideas across to other developers. As part of my role at CapitalOne (Software Engineer - Internal Tooling), I&#x2<br /> Read more at <a href="https://darylcecile.net/notes/throwaway-prototypes">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
@@ -92,7 +104,7 @@
         <title type="html"><![CDATA[Building in public]]></title>
         <id>building-in-public</id>
         <link href="https://darylcecile.net/notes/building-in-public"/>
-        <updated>2022-11-11T00:00:00.000Z</updated>
+        <updated>2022-11-10T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<link rel="preload" as="image" href="/images/figma-inkly.png"/><div class="p-4 rounded-lg not-prose bg-amber-500/10 text-amber-500 dark:bg-[gold]/20 dark:text-[gold]" data-format="warn"><div class="m-<br /> Read more at <a href="https://darylcecile.net/notes/building-in-public">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
@@ -104,7 +116,7 @@
         <title type="html"><![CDATA[November life update]]></title>
         <id>november-life-updates</id>
         <link href="https://darylcecile.net/notes/november-life-updates"/>
-        <updated>2022-11-05T00:00:00.000Z</updated>
+        <updated>2022-11-04T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<link rel="preload" as="image" href="/images/mastoo-and-panther-stairs.png"/><link rel="preload" as="image" href="/images/aira-cat.jpg"/><p>So im pulling this from <a href="https://carol.gg/">Carol</a<br /> Read more at <a href="https://darylcecile.net/notes/november-life-updates">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
@@ -116,7 +128,7 @@
         <title type="html"><![CDATA[Project Spotlight: Campus LMS]]></title>
         <id>project-spotlight-campus</id>
         <link href="https://darylcecile.net/notes/project-spotlight-campus"/>
-        <updated>2022-09-02T23:00:00.000Z</updated>
+        <updated>2022-09-02T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<link rel="preload" as="image" href="/images/spotlight/campus/campus_login_page.png"/><div class="p-4 rounded-lg not-prose bg-blue-500/10 text-blue-500 dark:bg-[deepskyblue]/20 dark:text-[deepskyblue]<br /> Read more at <a href="https://darylcecile.net/notes/project-spotlight-campus">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
@@ -128,7 +140,7 @@
         <title type="html"><![CDATA[Moving out]]></title>
         <id>moving-out-notts</id>
         <link href="https://darylcecile.net/notes/moving-out-notts"/>
-        <updated>2022-07-02T23:00:00.000Z</updated>
+        <updated>2022-07-02T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<link rel="preload" as="image" href="/images/nottingham-memory.jpeg"/><p>This post has been a long time in the making. I&#x27;ve been scratching my head, wondering how to announce this
 major milestone<br /> Read more at <a href="https://darylcecile.net/notes/moving-out-notts">darylcecile.net</a>]]></content>
         <author>
@@ -141,7 +153,7 @@ major milestone<br /> Read more at <a href="https://darylcecile.net/notes/moving
         <title type="html"><![CDATA[Burning bright without burning out]]></title>
         <id>burning-bright-without-burning-out</id>
         <link href="https://darylcecile.net/notes/burning-bright-without-burning-out"/>
-        <updated>2022-06-11T23:00:00.000Z</updated>
+        <updated>2022-06-11T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<link rel="preload" as="image" href="https://images.unsplash.com/photo-1517026575980-3e1e2dedeab4?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;<br /> Read more at <a href="https://darylcecile.net/notes/burning-bright-without-burning-out">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
@@ -153,7 +165,7 @@ major milestone<br /> Read more at <a href="https://darylcecile.net/notes/moving
         <title type="html"><![CDATA[Adding RSS Autodiscovery to your site]]></title>
         <id>rss-autodiscovery</id>
         <link href="https://darylcecile.net/notes/rss-autodiscovery"/>
-        <updated>2022-06-04T23:00:00.000Z</updated>
+        <updated>2022-06-04T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<p>Recently, I&#x27;ve discovered a new-found love for <abbr title="Really Simple Syndication" link="https://rss.com/blog/how-do-rss-feeds-work/">RSS</abbr>. It gives
 me the best of both worlds; fast <br /> Read more at <a href="https://darylcecile.net/notes/rss-autodiscovery">darylcecile.net</a>]]></content>
         <author>
@@ -166,7 +178,7 @@ me the best of both worlds; fast <br /> Read more at <a href="https://darylcecil
         <title type="html"><![CDATA[Exploring the Chrome Extension context gaps]]></title>
         <id>excom-chrome-extension</id>
         <link href="https://darylcecile.net/notes/excom-chrome-extension"/>
-        <updated>2022-06-03T23:00:00.000Z</updated>
+        <updated>2022-06-03T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<link rel="preload" as="image" href="/images/chrome-extension-architecture.png"/><p>A couple of weeks ago, a conversation at work with my manager prompted me to revisit an old chrome extension I creat<br /> Read more at <a href="https://darylcecile.net/notes/excom-chrome-extension">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
@@ -178,7 +190,7 @@ me the best of both worlds; fast <br /> Read more at <a href="https://darylcecil
         <title type="html"><![CDATA[Doc Journey: ▲Vercel Edition]]></title>
         <id>vercel-doc-journey</id>
         <link href="https://darylcecile.net/notes/vercel-doc-journey"/>
-        <updated>2022-02-16T00:00:00.000Z</updated>
+        <updated>2022-02-15T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<link rel="preload" as="image" href="/images/campus-deploy1.png"/><link rel="preload" as="image" href="/images/vercel-docs-response-interface.png"/><link rel="preload" as="image" href="/images/Github-<br /> Read more at <a href="https://darylcecile.net/notes/vercel-doc-journey">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
@@ -190,7 +202,7 @@ me the best of both worlds; fast <br /> Read more at <a href="https://darylcecil
         <title type="html"><![CDATA[useReact: My go-to React Hooks]]></title>
         <id>hooked-on-react</id>
         <link href="https://darylcecile.net/notes/hooked-on-react"/>
-        <updated>2022-02-01T00:00:00.000Z</updated>
+        <updated>2022-01-31T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<div class="p-4 rounded-lg not-prose bg-amber-500/10 text-amber-500 dark:bg-[gold]/20 dark:text-[gold]" data-format="warn"><div class="m-0"><p><strong>WIP:</strong> This post is WIP. I plan to continu<br /> Read more at <a href="https://darylcecile.net/notes/hooked-on-react">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
@@ -202,7 +214,7 @@ me the best of both worlds; fast <br /> Read more at <a href="https://darylcecil
         <title type="html"><![CDATA[Something needs a Rejig 👀]]></title>
         <id>something-needs-a-rejig</id>
         <link href="https://darylcecile.net/notes/something-needs-a-rejig"/>
-        <updated>2020-05-26T23:00:00.000Z</updated>
+        <updated>2020-05-26T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<div class="p-4 rounded-lg not-prose bg-amber-500/10 text-amber-500 dark:bg-[gold]/20 dark:text-[gold]" data-format="warn"><div class="m-0"><p><strong>Edit:</strong> This post was scheduled to be publ<br /> Read more at <a href="https://darylcecile.net/notes/something-needs-a-rejig">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
@@ -214,7 +226,7 @@ me the best of both worlds; fast <br /> Read more at <a href="https://darylcecil
         <title type="html"><![CDATA[PF February Update ⚡️🧙🏽‍♂️]]></title>
         <id>pf-february-update</id>
         <link href="https://darylcecile.net/notes/pf-february-update"/>
-        <updated>2020-02-29T00:00:00.000Z</updated>
+        <updated>2020-02-28T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<link rel="preload" as="image" href="/images/business_card_1.jpeg"/><p>This month&#x27;s entry is comparatively short to the last, as it is not what I had initially planned to post. This is due to me <br /> Read more at <a href="https://darylcecile.net/notes/pf-february-update">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
@@ -226,7 +238,7 @@ me the best of both worlds; fast <br /> Read more at <a href="https://darylcecil
         <title type="html"><![CDATA[Futuristic Pursuit 🐣]]></title>
         <id>futuristic-pursuit</id>
         <link href="https://darylcecile.net/notes/futuristic-pursuit"/>
-        <updated>2020-01-31T00:00:00.000Z</updated>
+        <updated>2020-01-30T16:00:00.000Z</updated>
         <content type="html"><![CDATA[<link rel="preload" as="image" href="/images/pantherCat.jpg"/><p>For the past 4 years, I&#x27;ve been telling myself that I will be ready for adult life when it comes - and until recently, that was tr<br /> Read more at <a href="https://darylcecile.net/notes/futuristic-pursuit">darylcecile.net</a>]]></content>
         <author>
             <name>Daryl Cecile</name>
