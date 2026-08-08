@@ -11,12 +11,24 @@
     },
     "items": [
         {
+            "id": "speed-of-prototyping-age-of-ai",
+            "content_html": "<div class=\"p-4 rounded-lg not-prose bg-blue-500/10 text-blue-500 dark:bg-[deepskyblue]/20 dark:text-[deepskyblue]\" data-format=\"info\"><div class=\"m-0\"><p><strong>Note:</strong> These are personal ref<br /> Read more at <a href=\"https://darylcecile.net/notes/speed-of-prototyping-age-of-ai\">darylcecile.net</a>",
+            "url": "https://darylcecile.net/notes/speed-of-prototyping-age-of-ai",
+            "title": "The Speed of Prototyping in the Age of AI",
+            "image": "https://darylcecile.net/og?slug=speed-of-prototyping-age-of-ai",
+            "date_modified": "2026-05-30T16:00:00.000Z",
+            "author": {
+                "name": "Daryl Cecile",
+                "url": "https://darylcecile.net"
+            }
+        },
+        {
             "id": "rediscovering-the-internet",
             "content_html": "<link rel=\"preload\" as=\"image\" href=\"/images/hml-nekoweb-webring.png\"/><link rel=\"preload\" as=\"image\" href=\"/images/itsvaeav-nekoweb-webring.png\"/><link rel=\"preload\" as=\"image\" href=\"/images/qswitch-<br /> Read more at <a href=\"https://darylcecile.net/notes/rediscovering-the-internet\">darylcecile.net</a>",
             "url": "https://darylcecile.net/notes/rediscovering-the-internet",
             "title": "Rediscovering the Internet",
             "image": "https://darylcecile.net/og?slug=rediscovering-the-internet",
-            "date_modified": "2025-12-07T00:00:00.000Z",
+            "date_modified": "2025-12-06T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -28,7 +40,7 @@
             "url": "https://darylcecile.net/notes/github-copilot-agent-actually-useful-ai",
             "title": "GitHub Copilot Agent: Actually Useful AI?",
             "image": "https://darylcecile.net/og?slug=github-copilot-agent-actually-useful-ai",
-            "date_modified": "2025-12-06T00:00:00.000Z",
+            "date_modified": "2025-12-05T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -40,7 +52,7 @@
             "url": "https://darylcecile.net/notes/committing-to-change",
             "title": "Committing to Change: Joining the Octocats",
             "image": "https://darylcecile.net/og?slug=committing-to-change",
-            "date_modified": "2025-03-28T00:00:00.000Z",
+            "date_modified": "2025-03-27T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -52,7 +64,7 @@
             "url": "https://darylcecile.net/notes/when-it-all-falls-into-place-2025",
             "title": "When it all falls into place 🍊",
             "image": "https://darylcecile.net/og?slug=when-it-all-falls-into-place-2025",
-            "date_modified": "2025-01-01T00:00:00.000Z",
+            "date_modified": "2024-12-31T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -64,7 +76,7 @@
             "url": "https://darylcecile.net/notes/next-level-pursuit",
             "title": "Next-level Pursuit 🐣",
             "image": "https://darylcecile.net/og?slug=next-level-pursuit",
-            "date_modified": "2023-10-08T23:00:00.000Z",
+            "date_modified": "2023-10-08T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -76,7 +88,7 @@
             "url": "https://darylcecile.net/notes/throwaway-prototypes",
             "title": "Throwaway Prototypes",
             "image": "https://darylcecile.net/og?slug=throwaway-prototypes",
-            "date_modified": "2023-06-21T23:00:00.000Z",
+            "date_modified": "2023-06-21T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -88,7 +100,7 @@
             "url": "https://darylcecile.net/notes/building-in-public",
             "title": "Building in public",
             "image": "https://darylcecile.net/og?slug=building-in-public",
-            "date_modified": "2022-11-11T00:00:00.000Z",
+            "date_modified": "2022-11-10T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -100,7 +112,7 @@
             "url": "https://darylcecile.net/notes/november-life-updates",
             "title": "November life update",
             "image": "https://darylcecile.net/og?slug=november-life-updates",
-            "date_modified": "2022-11-05T00:00:00.000Z",
+            "date_modified": "2022-11-04T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -112,7 +124,7 @@
             "url": "https://darylcecile.net/notes/project-spotlight-campus",
             "title": "Project Spotlight: Campus LMS",
             "image": "https://darylcecile.net/og?slug=project-spotlight-campus",
-            "date_modified": "2022-09-02T23:00:00.000Z",
+            "date_modified": "2022-09-02T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -124,7 +136,7 @@
             "url": "https://darylcecile.net/notes/moving-out-notts",
             "title": "Moving out",
             "image": "https://darylcecile.net/og?slug=moving-out-notts",
-            "date_modified": "2022-07-02T23:00:00.000Z",
+            "date_modified": "2022-07-02T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -136,7 +148,7 @@
             "url": "https://darylcecile.net/notes/burning-bright-without-burning-out",
             "title": "Burning bright without burning out",
             "image": "https://darylcecile.net/og?slug=burning-bright-without-burning-out",
-            "date_modified": "2022-06-11T23:00:00.000Z",
+            "date_modified": "2022-06-11T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -148,7 +160,7 @@
             "url": "https://darylcecile.net/notes/rss-autodiscovery",
             "title": "Adding RSS Autodiscovery to your site",
             "image": "https://darylcecile.net/og?slug=rss-autodiscovery",
-            "date_modified": "2022-06-04T23:00:00.000Z",
+            "date_modified": "2022-06-04T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -160,7 +172,7 @@
             "url": "https://darylcecile.net/notes/excom-chrome-extension",
             "title": "Exploring the Chrome Extension context gaps",
             "image": "https://darylcecile.net/og?slug=excom-chrome-extension",
-            "date_modified": "2022-06-03T23:00:00.000Z",
+            "date_modified": "2022-06-03T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -172,7 +184,7 @@
             "url": "https://darylcecile.net/notes/vercel-doc-journey",
             "title": "Doc Journey: ▲Vercel Edition",
             "image": "https://darylcecile.net/og?slug=vercel-doc-journey",
-            "date_modified": "2022-02-16T00:00:00.000Z",
+            "date_modified": "2022-02-15T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -184,7 +196,7 @@
             "url": "https://darylcecile.net/notes/hooked-on-react",
             "title": "useReact: My go-to React Hooks",
             "image": "https://darylcecile.net/og?slug=hooked-on-react",
-            "date_modified": "2022-02-01T00:00:00.000Z",
+            "date_modified": "2022-01-31T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -196,7 +208,7 @@
             "url": "https://darylcecile.net/notes/something-needs-a-rejig",
             "title": "Something needs a Rejig 👀",
             "image": "https://darylcecile.net/og?slug=something-needs-a-rejig",
-            "date_modified": "2020-05-26T23:00:00.000Z",
+            "date_modified": "2020-05-26T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -208,7 +220,7 @@
             "url": "https://darylcecile.net/notes/pf-february-update",
             "title": "PF February Update ⚡️🧙🏽‍♂️",
             "image": "https://darylcecile.net/og?slug=pf-february-update",
-            "date_modified": "2020-02-29T00:00:00.000Z",
+            "date_modified": "2020-02-28T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"
@@ -220,7 +232,7 @@
             "url": "https://darylcecile.net/notes/futuristic-pursuit",
             "title": "Futuristic Pursuit 🐣",
             "image": "https://darylcecile.net/og?slug=futuristic-pursuit",
-            "date_modified": "2020-01-31T00:00:00.000Z",
+            "date_modified": "2020-01-30T16:00:00.000Z",
             "author": {
                 "name": "Daryl Cecile",
                 "url": "https://darylcecile.net"

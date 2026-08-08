@@ -1,6 +1,9 @@
 import { writeFileSync } from "node:fs";
 import { Feed } from "feed";
+import Fuse from "fuse.js";
 import { getAllNotesDataSorted_UnCached, Note } from "@/lib/repo/notesRepo";
+import { getAllProjectsDataSorted_UnCached } from "@/lib/repo/projectsRepo";
+import { SEARCH_KEYS, toSearchText, type SearchDoc, type SearchIndexBundle } from "@/lib/search/config";
 import dayjs from "dayjs";
 import { renderToStaticMarkup } from 'react-dom/server'
 import { compileMDX } from 'next-mdx-remote/rsc';
@@ -106,4 +109,33 @@ writeFileSync("./public/rss.xml", feed.rss2());
 writeFileSync("./public/atom.xml", feed.atom1());
 writeFileSync("./public/rss.json", feed.json1());
 writeFileSync("./public/notes.json", JSON.stringify(notes));
+
+// Search index. Building this here means the nav never has to re-read and
+// re-render markdown per keystroke — it fetches a static file once and matches
+// locally.
+const searchDocs: SearchDoc[] = [
+	...notesList
+		.filter((note) => !note.hidden)
+		.map((note): SearchDoc => ({
+			type: "note",
+			slug: note.slug,
+			title: note.title ?? note.slug,
+			keywords: [],
+			body: toSearchText(note.content),
+		})),
+	...getAllProjectsDataSorted_UnCached().map((project): SearchDoc => ({
+		type: "project",
+		slug: project.id,
+		title: project.name ?? project.id,
+		keywords: project.tokens ?? [],
+		body: toSearchText(project.content),
+	})),
+];
+
+const searchBundle: SearchIndexBundle = {
+	docs: searchDocs,
+	index: Fuse.createIndex(SEARCH_KEYS, searchDocs).toJSON(),
+};
+
+writeFileSync("./public/search-index.json", JSON.stringify(searchBundle));
 

@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { createContext, type Dispatch, type SetStateAction, use, useCallback, useRef, useState, type PropsWithChildren, useId, useEffect, useTransition } from "react";
+import { createContext, type Dispatch, type SetStateAction, use, useCallback, useRef, useState, type PropsWithChildren, useId, useEffect } from "react";
 import * as motion from "motion/react-client";
 import { usePathname, useRouter } from 'next/navigation';
 import { ArrowLeftIcon, FolderGit2, FolderGit2Icon, Loader2, PenToolIcon, SearchIcon } from "lucide-react";
@@ -10,8 +10,7 @@ import { useResize } from "@/lib/hooks/useResize";
 import { createPortal } from 'react-dom';
 import { useMounted } from "@/lib/hooks/useMounted";
 import { AnimatePresence } from "motion/react";
-import { useDebounce } from '@/lib/hooks/useDebounce';
-import { search } from '@/app/(actions)/search';
+import { useSearchIndex, type SearchResult } from '@/lib/hooks/useSearchIndex';
 import { Suspense } from "react";
 
 type NavContextType = {
@@ -29,13 +28,7 @@ type NavContextSearchState = {
 	setSearchTerm: Dispatch<SetStateAction<string>>;
 
 	isPending: boolean;
-	results?: Array<{
-		type: 'note' | 'project';
-		title: string;
-		slug: string;
-		content: string;
-		keywords: string[];
-	}>,
+	results?: SearchResult[],
 	error?: Error;
 	state: 'idle' | 'pending' | 'success' | 'empty';
 	selectionIndex: number;
@@ -50,10 +43,11 @@ export function NavProvider({ children }: PropsWithChildren) {
 	const [searchTerm, setSearchTerm] = useState('');
 	const portalId = useId();
 
-	const [isSearchPending, startSearchTransition] = useTransition();
+	const [isSearchPending, setIsSearchPending] = useState(false);
 	const [results, setResults] = useState<NavContextSearchState['results']>(undefined);
 	const [selectionIndex, setSelectionIndex] = useState(0);
-	const text = useDebounce(searchTerm, 300);
+	const { searchSync, search, preload } = useSearchIndex();
+	const searchRequestRef = useRef(0);
 
 	const useBackButton = useCallback(() => {
 		useEffect(() => {
@@ -69,17 +63,39 @@ export function NavProvider({ children }: PropsWithChildren) {
 		}
 	}, []);
 
+	// Matching runs against a prebuilt index in the browser, so once that index
+	// is loaded this resolves synchronously — no debounce, no round trip.
 	useEffect(() => {
-		setResults(undefined);
+		const requestId = ++searchRequestRef.current;
 
-		if (text.length > 0) {
-			startSearchTransition(async () => {
-				const result = await search(text);
-				setResults(result);
-				setSelectionIndex(0);
-			});
+		if (searchTerm.trim().length === 0) {
+			setResults(undefined);
+			setIsSearchPending(false);
+			return;
 		}
-	}, [text]);
+
+		const immediate = searchSync(searchTerm);
+		if (immediate) {
+			setResults(immediate);
+			setSelectionIndex(0);
+			setIsSearchPending(false);
+			return;
+		}
+
+		setResults(undefined);
+		setIsSearchPending(true);
+		search(searchTerm).then((result) => {
+			if (searchRequestRef.current !== requestId) return;
+			setResults(result);
+			setSelectionIndex(0);
+			setIsSearchPending(false);
+		});
+	}, [searchTerm, searchSync, search]);
+
+	// Warm the index as soon as the user shows intent to search.
+	useEffect(() => {
+		if (isSearchActive) preload();
+	}, [isSearchActive, preload]);
 
 	return (
 		<NavContext.Provider value={{
