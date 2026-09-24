@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { IdeaMarkdown } from '@/components/ideas/IdeaMarkdown';
+import FancyLink from '@/components/utils/FancyLink';
 import { getIdea, getIdeas, getIdeaSections } from '@/lib/repo/ideasRepo';
 import '../ideas.css';
 
@@ -54,7 +55,7 @@ export default async function IdeaPage({ params }: Props) {
 				<nav aria-label="In this idea" className="mb-12 rounded-xl border border-border bg-background/60 p-5 sm:p-6">
 					<p className="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">In this idea</p>
 					<ol className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
-						{sections.map((section, i) => <li key={section.id}><a href={`#${section.id}`} className="flex gap-3 text-sm hover:text-emerald-700 dark:hover:text-emerald-300"><span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, '0')}</span>{section.title}</a></li>)}
+						{sections.map((section, i) => <li key={section.id}><FancyLink href={`#${section.id}`} className="flex gap-3 text-sm whitespace-normal!"><span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, '0')}</span>{section.title}</FancyLink></li>)}
 					</ol>
 				</nav>
 				<div className="idea-prose prose dark:prose-invert max-w-none text-foreground/85">
