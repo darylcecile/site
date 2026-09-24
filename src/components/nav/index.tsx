@@ -5,7 +5,7 @@ import Link from "next/link";
 import { createContext, type Dispatch, type SetStateAction, use, useCallback, useRef, useState, type PropsWithChildren, useId, useEffect } from "react";
 import * as motion from "motion/react-client";
 import { usePathname, useRouter } from 'next/navigation';
-import { ArrowLeftIcon, FolderGit2, FolderGit2Icon, Loader2, PenToolIcon, SearchIcon } from "lucide-react";
+import { ArrowLeftIcon, FolderGit2, FolderGit2Icon, LightbulbIcon, Loader2, PenToolIcon, SearchIcon } from "lucide-react";
 import { useResize } from "@/lib/hooks/useResize";
 import { createPortal } from 'react-dom';
 import { useMounted } from "@/lib/hooks/useMounted";
@@ -202,7 +202,7 @@ type NavItemProps = PropsWithChildren<{
 export function NavItem(props: NavItemProps) {
 	const navContext = useNav();
 	const pathName = usePathname();
-	const isActive = !navContext.isSearchActive && (props.active || pathName === props.href);
+	const isActive = !navContext.isSearchActive && (props.active || pathName === props.href || (props.href === '/ideas' && pathName.startsWith('/ideas/')));
 	const ref = useRef<HTMLLIElement>(null);
 
 	const clickHandler = useCallback(() => {
@@ -243,6 +243,8 @@ export function NavItem(props: NavItemProps) {
 		>
 			<Link
 				href={props.href}
+				aria-label={props.label}
+				aria-current={isActive ? 'page' : undefined}
 				className={cn(
 					`rounded-full py-1 ${isActive ? 'gap-1 px-3' : 'gap-0 px-1'} w-full justify-center inline-flex flex-row items-center overflow-hidden min-w-8 transition-all`,
 					// "focus-visible:outline-amber-300 outline-1 outline-transparent",
@@ -476,10 +478,10 @@ export function NavSearchPanel() {
 					>
 						<AnimatePresence>
 							{results.map((result, i) => {
-								const Icon = result.type === 'project' ? FolderGit2Icon : PenToolIcon;
+								const Icon = result.type === 'idea' ? LightbulbIcon : result.type === 'project' ? FolderGit2Icon : PenToolIcon;
 								return (
 									<motion.li
-										key={result.slug}
+										key={`${result.type}-${result.slug}`}
 										className={cn(
 											"text-xs opacity-50 hover:bg-muted rounded-lg p-2 hover:opacity-100 hover:text-foreground transition-all duration-300 ease-in-out",
 											{ 'rounded-t-3xl': i === 0, 'rounded-b-3xl': i === results.length - 1 },

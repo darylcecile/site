@@ -10,6 +10,22 @@ export default defineStudioConfig({
 	}),
 	collections: [
 		Collection.define({
+			name: "ideas",
+			path: "./src/ideas_markdown",
+			schema: {
+				metadata: z.object({
+					title: z.string().min(1),
+					snippet: z.string(),
+					date: z.iso.date(),
+					lastUpdated: z.iso.date().optional(),
+					status: z.enum(["Exploring", "Prototyping", "Revisited"]),
+					topics: z.array(z.string()),
+					repository: z.url().optional(),
+					hidden: z.boolean().optional(),
+				})
+			}
+		}),
+		Collection.define({
 			name: "notes",
 			path: "./src/notes_markdown",
 			schema: {
@@ -46,5 +62,4 @@ export default defineStudioConfig({
 		})
 	]
 });
-
 
