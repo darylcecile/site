@@ -19,7 +19,7 @@ export default defineStudioConfig({
 					date: z.iso.date(),
 					lastUpdated: z.iso.date().optional(),
 					status: z.enum(["Exploring", "Prototyping", "Revisited"]),
-					icon: z.enum(["sprout", "fish"]).optional(),
+					icon: z.enum(["sprout", "fish", "database", "package"]).optional(),
 					topics: z.array(z.string()),
 					repository: z.url().optional(),
 					hidden: z.boolean().optional(),

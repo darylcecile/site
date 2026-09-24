@@ -23,10 +23,6 @@
 	overflow-wrap: anywhere;
 }
 
-.idea-prose a:hover {
-	color: var(--color-emerald-600);
-}
-
 .idea-prose pre {
 	font-size: 0.8rem;
 	line-height: 1.8;

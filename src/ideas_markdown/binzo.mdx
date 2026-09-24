@@ -1,0 +1,254 @@
+---
+title: "Binzo: from a release download to a command"
+snippet: "A project publishes a binary. I want to run it and keep it updated. Exploring the small decisions between those two things, from choosing a download to recovering an interrupted update."
+date: "2026-09-24"
+status: "Prototyping"
+icon: "package"
+topics: ["Developer tools", "Distribution", "Command line"]
+repository: "https://github.com/darylcecile/binzo"
+---
+
+A project publishes a command-line tool. I open its releases page and find a list of downloads: different operating systems, different processors, a few compressed formats, and perhaps some files whose purpose is less obvious.
+
+Somewhere in that list is the program I want. I need to choose it, unpack it, find the executable, put it somewhere my terminal can find it, and remember how I installed it when an update arrives.
+
+None of those steps is especially remarkable on its own. Together, they are a repeated little maintenance job.
+
+**Binzo** is my attempt to turn that job into a consistent workflow. Give it a repository, let it resolve a published release, and install a command from the release’s downloads. Later, ask it to update the tools it remembers.
+
+The surface is small:
+
+```bash
+binzo add darylcecile/jsql
+jsql --help
+binzo update darylcecile/jsql
+```
+
+The interesting question is what Binzo has to know, and what it should ask me, for those commands to be dependable.
+
+## Start with the files a project already publishes
+
+A source-code repository and an installable program are different things. The repository may contain everything needed to build a tool, but I may just want the already-built result.
+
+On GitHub, a **release** is a published version with notes and downloadable **assets**. An asset might be a ready-to-run executable, an archive containing one, or a checksum file. GitHub also provides source-code archives. [Its release documentation](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) explains the distinction.
+
+Package managers can already handle installation and updates well. The gap I wanted to explore is a tool that has suitable release downloads, where I want to use those downloads directly without first writing a package definition for each project.
+
+For the built-in GitHub provider, `binzo add owner/repo` goes to GitHub’s release API. With no tag specified, it asks for GitHub’s latest published stable release. An explicit tag selects that release instead, including a prerelease:
+
+```bash
+binzo install darylcecile/jsql@v0.0.1
+```
+
+`add` and `install` are aliases. The tag has to correspond to a published release; the existence of a Git tag alone doesn’t imply there is a binary available to install.
+
+That removes the first manual step: finding the release. Choosing a file from it is a separate problem.
+
+## Work out which download fits this machine
+
+Take a release with these filenames. These are the platform names used by jsql’s downloads:
+
+```text
+jsql-macos-arm64.tar.gz
+jsql-macos-x64.tar.gz
+jsql-linux-arm64.tar.gz
+jsql-linux-x64.tar.gz
+SHA256SUMS
+```
+
+On an Apple Silicon Mac, the intended download is `jsql-macos-arm64.tar.gz`. `macos` describes the operating system, `arm64` describes the processor architecture, and `.tar.gz` describes the archive format. `SHA256SUMS` contains checksums; it is not the program.
+
+The difficulty is that projects don’t all use those words. Another project might write `darwin` for macOS or `aarch64` for ARM64. An Intel or AMD 64-bit build might be labelled `x64`, `amd64`, or `x86_64`.
+
+I built the matcher around common aliases and filename tokens. It checks the operating system and architecture, excludes known incompatible candidates, and prefers a clearly matching download. Longer aliases are recognised first so that `arm64` isn’t also mistaken for the shorter `arm` label.
+
+Linux adds another wrinkle. Some binaries target **glibc**, while others target **musl**—different implementations of a basic system library programs can depend on. On a musl system, Binzo excludes downloads it recognises as glibc-only. The processor name alone is not always enough to choose a runnable program.
+
+These checks use the filenames supplied by the publisher. They reduce the work of choosing, but they cannot establish every runtime requirement from a name. The project still needs to publish an appropriate binary for the machine.
+
+## Let uncertainty become a question
+
+Suppose a project publishes both a standard build and a specialised build for the same platform. Or the filename says only `tool.zip`, with no platform information at all.
+
+Picking the first file in the list would turn an unclear situation into an invisible guess. I made Binzo ask when the choice is ambiguous or the target is uncertain.
+
+Some differences don’t need a question. If the same filename stem appears as both `.tar.gz` and `.zip`, Binzo treats those as equivalent packaging choices and prefers `.tar.gz`. Different variants still remain separate choices.
+
+For unattended use, the same decisions can be made explicit. Here is an illustrative command for a project whose release contains that archive and executable:
+
+```bash
+binzo add owner/tool \
+  --asset tool-aarch64-apple-darwin.tar.gz \
+  --binary release/bin/tool \
+  --name tool \
+  --no-interactive
+```
+
+Each option answers a different question:
+
+- `--asset` names the exact uploaded file to download.
+- `--binary` names the executable’s relative path inside the unpacked archive.
+- `--name` chooses the command I will type.
+
+The asset option is an exact filename, not a URL or pattern. If an unattended run can’t make the necessary choices, it reports what is available and which option would resolve the ambiguity. It should not hang waiting for a menu nobody can see.
+
+This is a recurring design choice in Binzo: make the ordinary path short, but keep the underlying decisions available when the automatic answer is incomplete.
+
+## Find the program inside the download
+
+Downloading the right archive still doesn’t tell me which file to run.
+
+A release might contain a README, licences, supporting data, and more than one executable. Treating every file without an extension as a program would make ordinary documentation look installable.
+
+Binzo inspects files for executable headers or a Unix **shebang**, the first line that tells the system which interpreter should run a script. It does this without running the downloaded code. Desktop application bundles are excluded from command-line discovery.
+
+If the archive has one suitable executable, the choice is straightforward. If it has several, Binzo asks which one I want. On an update, it first tries to find the executable path I used before, then an unambiguous filename match.
+
+I keep the extracted support files alongside the executable. Copying only the apparent main program out of an archive can break a tool that expects data beside it.
+
+The current implementation accepts standalone executables and common archives such as tar, gzip, and ZIP. XZ and bzip2 formats need their corresponding extraction utilities. It excludes operating-system installer packages such as `.dmg`, `.deb`, and `.msi`; running a full system installer is a different workflow.
+
+It also doesn’t resolve an installed tool’s native library dependencies. If a release needs system libraries that aren’t present, that remains part of the project’s installation requirements.
+
+## Give the command a stable place to live
+
+Once the files are ready, I need to be able to type the command without remembering its full path.
+
+The shell finds commands through **PATH**: a list of directories it searches. Binzo keeps the installations in one place and exposes commands through another:
+
+```text
+~/.binzo/
+  packages/        downloaded installations and their support files
+  bin/             commands the shell can find
+  installed.json   what each installed command came from
+```
+
+On Unix systems, the command is a symlink—a filesystem link—to the executable inside its installation. On Windows, Binzo creates a `.cmd` launcher, so exposing the command doesn’t require administrator permission to make symlinks.
+
+The tracking record ties together the registry, repository, release tag, asset, executable path, and chosen command name. That is the information an update needs. One executable is tracked for each repository within a registry.
+
+Command names can collide. If another tool already owns a name, Binzo asks for another name or reports the conflict. If the shell would find a different installation earlier on PATH, it reports that too. “The file was installed” and “typing the command runs this file” are not always the same thing.
+
+Binzo can configure zsh, bash, fish, or the Windows user PATH. But an installer cannot change the environment of the terminal that launched it. When necessary, it prints the command to update the current terminal; new terminals pick up the saved shell configuration. `--no-modify-path` keeps that configuration step manual.
+
+Those details are mundane, but they decide whether installation actually feels finished.
+
+## An update has to remember the original choice
+
+The reason to track installations becomes clearer when the next release appears:
+
+```bash
+binzo list
+binzo update darylcecile/jsql
+binzo update --all
+```
+
+Binzo remembers the asset variant and executable selected earlier, so a routine update can follow the same choice. If a release reorganises its downloads and that choice can no longer be identified unambiguously, it asks again.
+
+There is an important distinction around versions. Installing with `@v0.0.1` selects that initial version. It does **not** pin future updates to it. A normal update moves the installation to latest. To explicitly switch an already-installed tool to a particular release:
+
+```bash
+binzo update darylcecile/jsql@v0.0.1
+```
+
+For `update --all`, a download or selection failure in one tool does not have to prevent every other tool from being considered. Binzo reports totals and returns an unsuccessful exit status if any tool failed. If installation recovery itself is blocked, it stops before modifying more tools.
+
+That last case needs more than a helpful message. It needs a way to know what happened halfway through an update.
+
+## Prepare the replacement before switching over
+
+Imagine replacing the current executable in place while a new download is arriving. If the connection fails or the process stops at the wrong point, I might be left with neither a usable old version nor a complete new one.
+
+I made installation prepare a separate replacement first:
+
+```text
+Download into a temporary directory
+  → check and unpack the download
+  → choose the executable and command name
+  → move the complete installation into packages/
+  → record the intended switch
+  → switch the command and save its tracking record
+  → remove the old installation
+```
+
+For GitHub downloads, Binzo checks the expected size and verifies the SHA-256 digest when GitHub supplies one. A **digest** is a fingerprint of the downloaded contents; comparing it checks that the received file matches the expected bytes. It does not tell us whether the program itself is well behaved.
+
+The more subtle problem is that switching the command and saving `installed.json` are separate operations. An atomic rename can replace an individual file without exposing a half-written version, but it does not make the entire sequence one indivisible action.
+
+So I added a **recovery journal**: a small record describing the previous and proposed installations before the switch starts. Saving the new tracking state is the commit point—the point Binzo treats as completing the change.
+
+If interrupted before that state is saved, recovery restores the previous installation. If the new state was saved, recovery finishes the remaining cleanup. The previous package stays available until the replacement is committed.
+
+This is recovery from an interrupted change, not a permanent archive of all installed versions. After a successful update, Binzo normally cleans up the old installation.
+
+A lock also prevents two installs from overwriting each other’s tracking changes. Binzo can wait for a running installation or recover an abandoned one. For scripts, those choices are available as `--wait` and `--recover`; neither terminates a running process.
+
+These are the parts that make an installer more than a download shortcut. The useful promise is being able to explain which installation owns the command, including after something goes wrong.
+
+## Keep release lookup separate from installation
+
+GitHub is the built-in source, but I didn’t want every installation step to depend on GitHub’s particular API response.
+
+The code separates a **provider**—the part that resolves releases and downloads assets—from the common pipeline for matching, extraction, selection, and tracking.
+
+A release provider supplies a small set of useful facts: the tag, release page, asset names, download references, and available size or digest information. Once Binzo has those facts, it can use the same installation machinery.
+
+There is also an adapter for declarative registries. A configuration can point at a definition describing how to find versions and assets in another JSON API. For example:
+
+```json
+{
+  "version": "1.0.0",
+  "registries": [
+    {"url": "/absolute/path/to/registry.yaml"}
+  ]
+}
+```
+
+Then an installation can select that registry by its configured name:
+
+```bash
+binzo add organization/tool --registry 'Example registry'
+```
+
+Custom definitions use `jq` expressions to turn API responses into versions and assets, so that adapter requires `jq`. The built-in GitHub provider does not. Definitions need to return versions newest first; Binzo doesn’t assume every project uses the same version-number scheme.
+
+This gives other release services a way in without making each of them reimplement command ownership, updates, and recovery.
+
+## Make Binzo itself straightforward to install
+
+There is a slightly circular problem in building an installer: people still need to install the installer.
+
+I added an npm distribution path:
+
+```bash
+npm install --global binzo-cli
+```
+
+This requires Node.js 20 or newer during installation. npm selects the platform-specific binary package, including the Linux library variant. A one-time install script places that executable at the command path.
+
+Running `binzo` then launches the standalone executable directly. There is no separate Node launcher process on every invocation, and the user does not need Bun installed. Binzo’s development and executable build use Bun; the downloaded tools keep their own implementation and runtime requirements.
+
+The [release workflow](https://github.com/darylcecile/binzo/blob/e9c4b5acd9035166c79a7fc1baaf34cca70712c5/.github/workflows/release.yml) builds macOS, Linux, and Windows variants for x64 and ARM64, including both glibc and musl Linux variants. The small npm wrapper and the binary packages are published separately, with matching versions.
+
+I like that this connects to the other tools I’m building. [jsql](/ideas/jsql) can publish a compact executable and let Binzo handle choosing and placing it. [Tuna](/ideas/tuna) can use the same installation route. Neither needs Binzo to understand its internal implementation.
+
+## What I want to keep learning
+
+The current tool implements GitHub release lookup, platform matching, interactive selection, tracked installation, updates, recovery, and custom registry support. My [tests](https://github.com/darylcecile/binzo/blob/e9c4b5acd9035166c79a7fc1baaf34cca70712c5/src/helpers/store.test.ts) exercise failures after a command link has changed, interrupted transactions, and cases where an unrelated file occupies a command path. Other tests cover matching and archive handling without downloading or executing third-party tools.
+
+The open-ended part is the variety of real release layouts. How often can Binzo make a confident choice? When does a question save time, and when is it asking about a packaging detail it should handle itself? How well do remembered choices survive a project changing its release process?
+
+I also want failure messages to leave me with a clear next step. A missing release, an ambiguous asset, an unavailable system dependency, and a blocked recovery are different situations. Treating all of them as “installation failed” would leave most of the original maintenance job with the user.
+
+The idea remains a practical one: take the release files a project already publishes and make installing and updating them an understandable, repeatable operation.
+
+## Notes and further reading
+
+This write-up describes [my implementation at 24 September 2026](https://github.com/darylcecile/binzo/tree/e9c4b5acd9035166c79a7fc1baaf34cca70712c5). The jsql filenames come from its published release; the `owner/tool` and custom-registry examples are illustrative.
+
+- [Installation and command reference](https://github.com/darylcecile/binzo/blob/e9c4b5acd9035166c79a7fc1baaf34cca70712c5/README.md)
+- [Platform matching and ambiguous assets](https://github.com/darylcecile/binzo/blob/e9c4b5acd9035166c79a7fc1baaf34cca70712c5/src/helpers/assets.ts)
+- [Selecting and installing an executable](https://github.com/darylcecile/binzo/blob/e9c4b5acd9035166c79a7fc1baaf34cca70712c5/src/commands/install.ts)
+- [Tracking, the commit point, and recovery](https://github.com/darylcecile/binzo/blob/e9c4b5acd9035166c79a7fc1baaf34cca70712c5/src/helpers/store.ts)
+- [GitHub release lookup and digest verification](https://github.com/darylcecile/binzo/blob/e9c4b5acd9035166c79a7fc1baaf34cca70712c5/src/providers/github.ts)
+- [The npm installation bridge](https://github.com/darylcecile/binzo/blob/e9c4b5acd9035166c79a7fc1baaf34cca70712c5/install.cjs)

@@ -1,0 +1,300 @@
+---
+title: "jsql: asking SQL questions of JSON"
+snippet: "A small, fast way for me—and the coding agents I work with—to ask SQL questions of JSON. Exploring a predictable shell interface, native execution, and the choices that connect the two formats."
+date: "2026-09-24"
+status: "Prototyping"
+icon: "database"
+topics: ["Developer tools", "Data", "SQL"]
+repository: "https://github.com/darylcecile/jsql"
+---
+
+Imagine downloading a JSON export of some orders. You want to know which region brought in the most paid revenue. The data is already on your computer. You don’t need to build an application around it; you just want an answer.
+
+I can picture the SQL almost immediately: keep the paid orders, group them by region, and add up their amounts. But the data is sitting in a JSON file, not a database table.
+
+**jsql** is my experiment in closing that gap. Feed it JSON, give it a SQL query, and get JSON back. It is a small command-line tool built around SQLite, with a TypeScript entry point compiled into a standalone executable.
+
+I wanted it to be easy for coding agents to use too. An agent often needs to inspect data before deciding what to do next. A familiar query language and a predictable result format give it a direct way to ask for what it needs. That was one of the motivations alongside making my own shell work easier and keeping the command fast.
+
+The command looks simple. Most of the design work sits underneath it: deciding what counts as a row, what happens to nested values, and how to get from the input to a useful result without unnecessary preparation.
+
+## Start with a question about some data
+
+JSON is a way to represent structured data as text. An **object** groups named values, such as an order’s ID and amount. An **array** is a list of values. A list of objects often looks a lot like a table waiting to happen.
+
+Here is the example we’ll use. Save it as `orders.json`:
+
+```json
+[
+  {"id": 101, "region": "north", "amount": 120, "paid": true, "customer": {"city": "Leeds"}},
+  {"id": 102, "region": "south", "amount": 80, "paid": true, "customer": {"city": "Brighton"}},
+  {"id": 103, "region": "north", "amount": 40, "paid": false, "customer": {"city": "York"}},
+  {"id": 104, "region": "north", "amount": 60, "paid": true, "customer": {"city": "Leeds"}}
+]
+```
+
+We could read four records by eye. The same approach becomes tedious with thousands of them, especially when the question changes: which orders are large, how many are paid, or what is the total for each region?
+
+**SQL** is a language for asking questions of tables. `SELECT` chooses the values to return, `WHERE` chooses the rows, and `ORDER BY` chooses the result order. If I already know those operations, I want to use that knowledge directly.
+
+With jsql installed, I can ask for paid orders worth at least 100:
+
+```bash
+jsql 'SELECT id, region, amount
+      FROM data
+      WHERE paid = 1 AND amount >= 100
+      ORDER BY amount DESC' < orders.json
+```
+
+The result is:
+
+```json
+[{"id":101,"region":"north","amount":120}]
+```
+
+`data` is the name jsql gives the input. The shell’s `< orders.json` sends the file to the program. There is no database connection string or import command to arrange first.
+
+The `paid = 1` deserves an explanation: jsql exposes JSON `true` and `false` as SQLite’s integer values `1` and `0`. That is one of the choices needed to make the two data models meet.
+
+## Keep the command small enough to compose
+
+There are already good ways to work with JSON. [jq](https://jqlang.org/manual/) has a language built around transforming it. [DuckDB can query JSON directly](https://duckdb.org/docs/current/data/json/overview.html) and supports much broader analytical workflows. SQLite itself has extensive [JSON functions](https://www.sqlite.org/json1.html).
+
+I’m exploring a particular shape of tool: one SQL query as an argument, one JSON document on input, and a JSON array on output. The convenience is in that small contract.
+
+The original revenue question becomes:
+
+```bash
+jsql 'SELECT region, sum(amount) AS total
+      FROM data
+      WHERE paid = 1
+      GROUP BY region
+      ORDER BY total DESC' < orders.json
+```
+
+```json
+[{"region":"north","total":180},{"region":"south","total":80}]
+```
+
+`GROUP BY region` gathers each region’s rows together. `sum(amount)` adds their amounts. `AS total` gives the result a useful name. The unpaid order is left out before the totals are calculated.
+
+Because the answer is JSON too, another invocation can consume it. Here is a deliberately simple two-stage pipeline: select the paid orders, then count them.
+
+```bash
+jsql 'SELECT * FROM data WHERE paid = 1' < orders.json \
+  | jsql 'SELECT count(*) AS paid_orders FROM data'
+```
+
+```json
+[{"paid_orders":3}]
+```
+
+The `|` connects one program’s output to the next program’s input. I could express that count in one query, but the example shows why the output format matters. The result stays usable as data rather than becoming a decorated table intended only for a person to read.
+
+Normal output goes to standard output, the stream a pipe consumes. Error messages go to standard error, and failures return exit code `1`. Successful results are compact JSON followed by a newline. Those small choices make the tool fit into a shell workflow.
+
+## Make the interface useful to an agent
+
+An agent investigating those orders has the same question I do, but I don’t want it to need the entire export in its conversation. It can ask the query engine to do the filtering and arithmetic, then read the small result it needs for the next decision.
+
+In the revenue example, that means two totals come back instead of every order. SQL supplies the vocabulary for the question; JSON supplies a structured answer. The agent can inspect it, refine the query, or pass it to another command without first producing a separate data-processing script.
+
+That influenced the command’s shape. It has one query argument, a known input name, machine-readable output, and an exit status that says whether execution succeeded. An agent must check that status before treating the output as a result. A syntax error should lead to correcting the query, not interpreting an error message as data.
+
+The query still needs to express the right question. Forgetting `WHERE paid = 1` would produce a valid answer to the wrong revenue calculation. Likewise, `SELECT *` can still return far more data than the agent needs. The useful behavior comes from selecting the relevant columns and rows, not merely from placing a tool between the model and a file.
+
+Ease of use here is something I can evaluate: can an agent get to the correct answer with a short, understandable sequence of commands? Query speed matters too, especially when that sequence starts the executable repeatedly.
+
+## Decide what a row means
+
+The first mapping is straightforward: each element of an input array becomes a row, and object keys become columns. A single object becomes one row.
+
+But JSON objects do not all have to contain the same keys. If the first record has a name and the second also has a team, looking only at the first record would lose a column.
+
+So jsql discovers keys across the input. Consider:
+
+```json
+[
+  {"name":"Ada"},
+  {"name":"Lin","team":"platform"}
+]
+```
+
+For `SELECT name, team FROM data ORDER BY name`, the result is:
+
+```json
+[{"name":"Ada","team":null},{"name":"Lin","team":"platform"}]
+```
+
+Missing fields become SQL `NULL`, meaning an absent or unknown value. An explicit JSON `null` maps to the same SQL value. That makes a useful rectangular view of uneven records, but it also means the exposed column alone does not distinguish “missing” from “explicitly null.”
+
+For a field that can be missing, the SQL test is `IS NULL`. For example, given this separate input:
+
+```json
+[{"id":1,"discount":null},{"id":2},{"id":3,"discount":10}]
+```
+
+The query `SELECT id, discount FROM data WHERE discount IS NULL ORDER BY id` returns:
+
+```json
+[{"id":1,"discount":null},{"id":2,"discount":null}]
+```
+
+Column names need care as well. JSON permits names containing spaces or words SQL uses for other purposes. Quoting the name lets me ask for it directly:
+
+```bash
+printf '%s\n' '[{"display name":"Ada"}]' \
+  | jsql 'SELECT "display name" FROM data'
+```
+
+```json
+[{"display name":"Ada"}]
+```
+
+And an array doesn’t have to contain objects at all. For a list of scalar values—individual numbers, strings, or booleans—jsql provides a column called `value`:
+
+```bash
+printf '%s\n' '[3,1,2]' \
+  | jsql 'SELECT value FROM data ORDER BY value'
+```
+
+```json
+[{"value":1},{"value":2},{"value":3}]
+```
+
+An empty array produces no rows. The goal of these conventions is that small differences in input shape have explainable consequences, without requiring a schema file alongside every export.
+
+## Keep nested data explicit
+
+Our orders include a `customer` object. What should a table column contain when the original value has a structure of its own?
+
+I chose to expose nested objects and arrays as JSON text. The top level becomes columns; deeper structure stays available through SQLite’s JSON functions.
+
+To extract the city from the first two orders:
+
+```bash
+jsql "SELECT id, json_extract(customer, '$.city') AS city
+      FROM data ORDER BY id LIMIT 2" < orders.json
+```
+
+```json
+[{"id":101,"city":"Leeds"},{"id":102,"city":"Brighton"}]
+```
+
+The path `$.city` means “the `city` property at the root of this JSON value.” `json_extract` reads it and returns the corresponding SQL value.
+
+There is an important consequence when selecting the entire nested value:
+
+```bash
+jsql 'SELECT customer FROM data WHERE id = 101' < orders.json
+```
+
+```json
+[{"customer":"{\"city\":\"Leeds\"}"}]
+```
+
+That result contains a **string holding JSON**, not a nested object. The escaped quotation marks show the difference. Likewise, selecting `paid` directly returns `1` or `0`, not a JSON boolean.
+
+This is a query result expressed as JSON, with SQLite’s value types in between. It is not a promise that `SELECT *` will round-trip every aspect of the original document unchanged. Keeping that distinction visible is more useful than making the interface appear lossless when it isn’t.
+
+## Let SQLite do the querying
+
+At this point, the temptation might be to implement a small SQL-like language over JavaScript arrays. A basic filter would be easy enough. Grouping, sorting, null handling, expressions, and all the interactions between them would quickly become their own project.
+
+I used SQLite as the query engine. It runs inside jsql’s process, so the person using the command does not need to start a database server.
+
+The current implementation has three parts:
+
+```text
+TypeScript entry point
+  reads the SQL argument and JSON input
+             ↓
+Small C bridge + embedded SQLite
+  exposes the document as a view called data
+  prepares and runs the query
+             ↓
+JSON output
+  writes the result rows to stdout
+```
+
+The TypeScript entry point is intentionally small. It checks the arguments, handles help, reads standard input, and passes the document and query to the bridge.
+
+Inside the bridge, SQLite first validates the input as one strict JSON document and retains it in its **JSONB** representation. That is SQLite’s internal binary representation of parsed JSON. It lets JSON operations work with the parsed structure without repeatedly converting the same text. It is not the JSONB format used by PostgreSQL.
+
+jsql then discovers the row keys and creates a **view** called `data`. A view is a query exposed under a table-like name. Here it reads from SQLite’s `jsonb_each` function and extracts the named fields; jsql does not first insert every input row into a separate ordinary table.
+
+I also kept the discovery pass focused on keys. After SQLite has validated the document, a small scanner finds the top-level property names used by its rows. Each distinct spelling is decoded through SQLite, including escaped names. That avoids asking SQLite’s general-purpose row machinery to repeatedly rediscover the same schema across a large input.
+
+There is still work proportional to the input. A `LIMIT 1` query does not eliminate the initial read and schema discovery. The benefit is removing unnecessary work between “I have JSON” and “SQLite can query it.”
+
+## Make the executable easy to carry
+
+Using TypeScript for the entry point does not mean the installed command needs a JavaScript runtime alongside it.
+
+I used [scriptc](https://scriptc.dev) to compile the entry point into a native executable, with a small foreign-function interface to the C bridge. That interface is the connection that lets the TypeScript function call reach the SQLite code. SQLite is included in the build.
+
+The build uses Node.js, Bun, Clang, and a pinned SQLite source archive. It verifies that archive against a recorded checksum before compiling it, so the query engine is a deliberate build input rather than whichever SQLite happens to be installed on the machine. Those are build requirements. The resulting jsql executable runs without a separate Node.js, Bun, SQLite installation, or npm dependency tree. The size I recorded for the macOS ARM64 build is about 1.1 MiB.
+
+This fits the kind of tool I wanted: something small enough to install and reach for when a file lands in my terminal.
+
+With [Binzo](/ideas/binzo) installed, the release can be installed with:
+
+```bash
+binzo install darylcecile/jsql
+jsql --help
+```
+
+The release downloads cover macOS and Linux on x64 and ARM64. The [contributor guide](https://github.com/darylcecile/jsql/blob/c1eb8da635aabb84097d6730787d2e696afedbe3/CONTRIBUTING.md) explains building it locally.
+
+## Turn a working binary into a usable tool
+
+Getting an answer on my own machine was only part of the job. The TypeScript entry point, the native bridge, and SQLite have to agree about the data crossing between them. Then someone else has to be able to obtain an executable that works on their machine too.
+
+I made the tests run the compiled command. The [test helper](https://github.com/darylcecile/jsql/blob/c1eb8da635aabb84097d6730787d2e696afedbe3/test/run.ts) starts a child process, pipes JSON into it, and reads the output. That exercises the interface a user actually sees, including argument handling and the trip through the native bridge.
+
+The cases are small but deliberate: a key appearing only in a later record, a property name containing a quotation mark, nested JSON returning as text, and strings containing newlines or an emoji. These are places where “JSON in, JSON out” needs a more precise definition. I wanted the tests focused on those choices rather than trying to retest SQLite’s entire SQL language.
+
+The [first implementation commit](https://github.com/darylcecile/jsql/commit/0d84cd2c0550d8927fc6bd88b3a22b12e1f71c43), on 14 September, included those tests, the benchmark, and the release workflow together. The workflow builds on the target operating systems and architectures and runs checks before publishing the four platform archives. A locally successful build is not treated as proof that the other targets work.
+
+The next step was making the route into the tool shorter. Later that day, I [added the Binzo installation instructions](https://github.com/darylcecile/jsql/commit/06dda8da4d129ea4ac76fc0c74db4f58223bf97d). Instead of starting every reader with Node, Bun, and a C compiler, the README could lead with downloading a suitable release and running a query. That connects the two projects neatly: jsql concentrates on querying the data; Binzo handles getting the right executable onto the machine.
+
+On 15 September, I [added the MIT licence and updated the archive packaging to include it](https://github.com/darylcecile/jsql/commit/c1eb8da635aabb84097d6730787d2e696afedbe3). The permission to use and redistribute the tool belongs alongside the distributed binary, not only on its repository page.
+
+Those follow-up changes didn’t add another SQL feature. They made the thing I had built easier to try, check, and share. For a small command-line tool, that is part of whether the idea becomes useful.
+
+## Measure the whole command
+
+For a short-lived shell tool, the query engine’s execution time is only part of the experience. Starting the program, reading the input, and writing the answer all count.
+
+I also tested and benchmarked jsql against jq. In many of the cases I tried, jsql was faster. That was an encouraging part of the experiment: the SQL-shaped interface I wanted for myself and for agents could also perform well on those workloads. The result depends on the operation and input, so I treat it as a finding from those comparisons rather than a claim about every JSON task.
+
+The [benchmark script I checked into the repository](https://github.com/darylcecile/jsql/blob/c1eb8da635aabb84097d6730787d2e696afedbe3/bench/bench.ts) measures jsql itself. It launches fresh processes with piped input and output, and checks each answer against an expected result outside the timed section. It measures startup, filtering, grouping, sorting, and full output separately. The contributor notes also make the comparison conditions explicit: run on the same machine, account for warm caches, and look at the child process’s peak memory as well as elapsed time.
+
+The figures I recorded in the README were measured on an Apple M4 Max running macOS ARM64, using scriptc 0.0.36. They are medians of seven runs after two warmups:
+
+- For **100,000 rows, 7.22 MiB of input**, filtering with a limit took 23 ms, grouping and summing took 58 ms, and returning the full data took 80 ms.
+- For **1,000,000 rows, 74.07 MiB of input**, those measurements were 193 ms, 821 ms, and 794 ms respectively.
+
+These timings are for jsql alone; they do not quantify its advantage over jq. A wide record, a large nested value, or a different query can change what dominates the run.
+
+Output is buffered in 64 KiB chunks, so jsql does not need to construct one enormous result string before writing it. Input is different: the original JSON and its binary representation are held in memory, and sorting or grouping can need additional memory. This is not a streaming-input engine for an arbitrarily large file.
+
+The number model has limits too. SQLite uses signed 64-bit integers and double-precision floating-point values. That matters if the input contains numbers whose precision needs to be preserved beyond those representations.
+
+## What I want to keep simple
+
+The current boundary is deliberately small: one JSON document, one query argument, and one JSON array result. Newline-delimited JSON—separate JSON documents on successive lines—is not the same input format.
+
+I want to learn where that boundary is useful and where it becomes an obstacle. How often do the straightforward top-level columns answer the question? When does nested JSON need more help? Are the type conversions obvious enough from the output? Can an agent recognise and recover from a query error without a long detour? Does a faster command translate into a better overall investigation?
+
+There are much larger data tools available, and I don’t need jsql to grow into all of them. The useful outcome here is smaller: when I have JSON and can already express my question in SQL, the step between the two should be short.
+
+## Notes and further reading
+
+This article describes [my implementation at 24 September 2026](https://github.com/darylcecile/jsql/tree/c1eb8da635aabb84097d6730787d2e696afedbe3), which embeds SQLite 3.51.0. The orders are invented example data; the query outputs shown here were checked against the macOS ARM64 release.
+
+- [The command-line entry point](https://github.com/darylcecile/jsql/blob/c1eb8da635aabb84097d6730787d2e696afedbe3/src/cli.ts)
+- [JSON mapping, the SQLite bridge, and output buffering](https://github.com/darylcecile/jsql/blob/c1eb8da635aabb84097d6730787d2e696afedbe3/src/bridge.c)
+- [Tests for uneven records, nested values, and scalar rows](https://github.com/darylcecile/jsql/blob/c1eb8da635aabb84097d6730787d2e696afedbe3/test/query.test.ts)
+- [The pinned build and native compilation](https://github.com/darylcecile/jsql/blob/c1eb8da635aabb84097d6730787d2e696afedbe3/build.ts)
+- [SQLite’s JSON functions and JSONB format](https://www.sqlite.org/json1.html)

@@ -113,9 +113,9 @@ topics: ["Developer tools"]
 ```
 
 Statuses are `Exploring`, `Prototyping`, and `Revisited`. Optional metadata:
-`lastUpdated` (ISO date), `repository` (URL), `icon` (`sprout` or `fish`, defaults
-to `sprout`), and `hidden` (boolean). Hidden ideas
-are excluded from listings, search, and article routes. Use unique plain-text
+`lastUpdated` (ISO date), `repository` (URL), `icon` (`sprout`, `fish`, `database`,
+or `package`, defaults to `sprout`), and `hidden` (boolean). Hidden ideas are
+excluded from listings, search, and article routes. Use unique plain-text
 `##` headings for the automatically generated contents. Fenced code blocks use
 the site's syntax highlighting and copy button.
 
