@@ -1,0 +1,291 @@
+---
+title: "Tuna: making feedback outlast the conversation"
+snippet: "I correct an agent, it adjusts, and next time I may have to explain it again. Exploring how those corrections could become useful instructions across the coding tools I use."
+date: "2026-09-24"
+status: "Prototyping"
+icon: "fish"
+topics: ["Developer tools", "Coding agents", "Memory"]
+repository: "https://github.com/darylcecile/tuna"
+---
+
+Imagine asking a coding agent to fix a small bug. It fixes the bug, but also renames a few files and tidies up code you weren’t asking it to change.
+
+You explain: “Please stop tidying unrelated files. Keep edits focused on the task I asked for.” The agent adjusts. You get the smaller change you wanted and carry on.
+
+That correction did something useful. It explained how you want to work together. I want that effort to keep being useful when I start another conversation, open another project, or use a different coding tool.
+
+That is the idea behind **Tuna**: turn useful corrections into preferences that can travel between my coding agents. I’ve built an early version for OpenCode, Copilot CLI, Codex, and Claude Code. It listens for new messages, identifies feedback worth keeping, and maintains shared instructions those tools can read.
+
+The interesting part is deciding what deserves to survive. Remembering every sentence would create a different problem. A useful memory has to preserve what I meant, including when it applies, and let me change my mind.
+
+## A correction has two jobs
+
+The immediate job of our correction is to fix the current interaction: undo the unrelated changes and finish the bug fix.
+
+Its second job could be to improve the next interaction: when I ask for a small change, keep the work focused.
+
+For a coding agent, those jobs happen through different mechanisms. During a conversation, the model receives messages and other information the application supplies. That information is its **context**. A correction included in that context can influence what it does next.
+
+For a future session to benefit, something needs to carry the useful part forward. That could be a saved instruction, a memory feature, or a tool the agent calls to retrieve a preference. The model agreeing with me in one reply doesn’t, by itself, establish which of those things happened.
+
+This distinction shaped what I wanted to build. Tuna saves guidance that can be supplied in later sessions. It does not retrain the underlying model. The mechanism is closer to keeping a small set of working agreements and bringing them to the next conversation.
+
+In our example, the agreement might be:
+
+```text
+Keep edits focused on the requested task.
+```
+
+That sentence is much more useful to a future agent than replaying the whole argument about which files should have been renamed.
+
+## Put the agreement somewhere it survives
+
+The obvious first step is to write the agreement down myself.
+
+Coding tools already have places for persistent instructions. [Codex reads AGENTS.md files](https://developers.openai.com/codex/agent-configuration/agents-md), for example, combining personal guidance with instructions from the project. A simple file could contain:
+
+```markdown
+# How I like to work
+
+- Keep edits focused on the requested task.
+- Explain important trade-offs.
+```
+
+This is a good foundation: plain text I can read, edit, and keep. But it leaves me with a maintenance job. I have to recognise which corrections are reusable, remember to write them down, avoid repeating myself, and update them when they stop being useful.
+
+There is existing work here too. [Claude Code’s auto memory](https://code.claude.com/docs/en/memory) can save preferences and feedback between sessions. [Copilot Memory](https://docs.github.com/en/copilot/concepts/agents/copilot-memory) includes both repository facts and personal preferences. Persistent memory is already part of how coding tools are evolving.
+
+The question I wanted to explore with Tuna is what happens across those tools. If I explain how I like an agent to work in one application, I would like that preference to be available when I use another. I also want to inspect the particular correction behind it and remove it without needing to remember where each tool stores its own notes.
+
+That gave me a concrete direction: a shared collection of personal preferences, with a readable instruction file as one way to deliver them.
+
+It also set a boundary. Tuna’s shared preferences are about how I want agents to work. A particular project’s architecture, a task’s acceptance criteria, and someone else’s preferences do not automatically belong in that collection.
+
+## Decide which messages are actually feedback
+
+Once I start listening to conversations, I have a selection problem. Most messages are not lasting preferences.
+
+“Add a settings page” is a new task. “The app crashes when I click Save” is a bug report. “Use a blue background for this demo” is a requirement for one piece of work. Turning those into global instructions would make later sessions worse.
+
+Even frustration isn’t enough. “This is frustrating” tells me the result was disappointing, but doesn’t tell me what the agent should do differently next time.
+
+On the other hand, a polite correction can be precise: “For small bug fixes, skip the long recap. Give me a short summary.” There is a useful preference there, and its condition matters. A detailed architecture review might still be exactly what I want.
+
+I made this distinction the first job of Tuna’s analysis. It asks a model to identify durable, actionable corrections about **how** the agent should work. It asks it to leave ordinary requests, quoted complaints, and one-off requirements alone.
+
+Quotation is another easy trap. If I ask what someone meant by “never write tests,” I’m discussing their words. That sentence should not become my preference.
+
+These examples are deliberately small, but they expose a difficult judgment. The same words can mean different things depending on what happened before them. “Keep it short” might refer to a reply, a function, or a timeout. Tuna includes recent assistant context when the integration can provide it, so the analyst has more than an isolated sentence to work with.
+
+That context helps interpret the correction. It doesn’t get to become evidence that I said something I never said.
+
+## Keep the reason beside the rule
+
+A list of instructions without their origins would be hard to trust. If Tuna decides that I dislike a certain approach, I want to be able to ask: *what did I actually say?*
+
+So a learned note contains both a short instruction and an exact quotation supporting it. It also records where the feedback came from: the coding tool, session, time, and source model when that information is available.
+
+A simplified example of a stored note looks like this. The ID and conversation details are illustrative:
+
+```json
+{
+  "id": 12,
+  "rule": "Keep edits focused on the requested task.",
+  "category": "scope",
+  "evidence": "Keep edits focused on the task I asked for.",
+  "harness": "opencode",
+  "model": "unknown",
+  "session": "example-session",
+  "status": "active"
+}
+```
+
+A **harness** is the application running the coding agent: the part that manages the conversation, tools, and model calls. OpenCode and Copilot CLI are examples. The model that responds inside the harness is a separate choice.
+
+The distinction matters in the note above. `model: "unknown"` means the integration did not provide the model’s identity. Tuna doesn’t ask its analyst to guess one. The model doing the analysis might also be different from the model that originally received my feedback.
+
+I added a concrete check around the quotation: it must occur exactly in the user’s message. An invented quotation causes analysis to fail, and the messages stay queued for another attempt. The implementation also checks that the referenced message exists and that the category is recognised.
+
+This helps make the result inspectable, but it doesn’t prove the interpretation is right. A model could quote me accurately and still turn a narrow request into an overbroad rule. Retaining the words makes that mistake easier to find and correct.
+
+There is another distinction worth preserving: **where feedback came from is not automatically where it applies**. A preference expressed in Codex might be useful everywhere. If I explicitly limit it to a certain situation or model, that condition needs to stay in the instruction itself.
+
+## Get it into the next conversation
+
+Now I have a message and a possible preference. How does it reach the next agent?
+
+I split the work into capture, analysis, and publishing instructions.
+
+**Capture** happens through a hook: a small integration the coding tool calls when I submit a prompt. Its job is to pass the message to Tuna’s local queue and let the coding session continue. It does not wait for a model to decide what the message means.
+
+**Analysis** happens in the background. By default, Tuna checks for a batch every 30 seconds. It asks a supported, already-installed coding harness to run the preference analysis, using that harness’s authentication and model. A useful correction becomes a stored note. A message with no reusable preference produces no note.
+
+**Publishing instructions** happens separately. Tuna gathers the relevant notes, reconciles them, and refreshes the shared instruction file. It calls this step **consolidation**. It runs daily at 23:00 local time while the service is running, or I can request it immediately:
+
+```bash
+tuna consolidate
+```
+
+This distinction is useful when inspecting the tool. A preference can already exist in the local database and be available to query before it has been written into the shared file. “Tuna saved a note” and “my next session loaded that note as an instruction” are different events.
+
+The default shared file is `~/.agents/AGENTS.md`. Tuna links each configured tool’s global instruction path to it. A **symlink** is a filesystem link: several paths lead to the same file, rather than separate copies that need to be kept in sync.
+
+Following our opening correction through to the file, suppose I already have one hand-written instruction: “Explain important trade-offs.” After consolidation, the file could look like this:
+
+```markdown
+# How I like to work
+
+- Explain important trade-offs.
+
+<!-- tuna:preferences:start -->
+## Learned preferences
+
+- Keep edits focused on the requested task. <!-- tuna:12 -->
+<!-- tuna:preferences:end -->
+```
+
+The original instruction stays. The correction becomes a line in Tuna’s marked section, linked to the note we saw earlier by `tuna:12`. When another configured tool loads this file, that guidance is available alongside my hand-written instructions.
+
+For example, these default paths lead to that shared file after setup:
+
+```text
+~/.config/opencode/AGENTS.md
+~/.copilot/copilot-instructions.md
+~/.codex/AGENTS.md
+~/.claude/CLAUDE.md
+              ↓
+       ~/.agents/AGENTS.md
+```
+
+During setup, Tuna preserves and merges existing instruction contents, and backs up the files it replaces with links. New sessions pick up the configured hooks and instructions according to the tool’s own loading behavior. Updating a file doesn’t imply that every already-open conversation immediately rereads it.
+
+The shared file is also guidance, not an enforcement mechanism. A project can have more specific instructions, a tool can have overriding configuration, and a model can still misapply what it reads. Tuna makes the preference available; whether that improves the work remains something to evaluate.
+
+## A memory needs to change with me
+
+Saving every useful correction still isn’t enough. Over time, I will repeat myself. “Keep edits focused on the requested task” and “avoid unrelated changes” express the same preference. Keeping a newer representative is more useful than accumulating every phrasing. I may also change my mind.
+
+Suppose I first ask for completion summaries in paragraphs, then later say that I prefer bullet points. Keeping both instructions leaves the next agent with an avoidable contradiction.
+
+But “the newest instruction wins” is too crude. “Keep small bug-fix summaries short” and “explain architectural trade-offs in detail” can both be right. They describe different situations.
+
+This is why consolidation does more than append a new line. I ask the analyst to keep distinct preferences, choose the newer representative of a duplicate, and resolve genuine conflicts using the latest applicable correction. Different conditions and model-specific guidance should stay separate.
+
+The model returns the IDs of notes to keep, and Tuna rebuilds the learned section from those notes. Each published line keeps its note marker. That connection lets Tuna remove the particular rule later, instead of having to guess which sentence came from which correction.
+
+Existing hand-written instructions need attention too. If the file already says “write paragraph summaries” and the newest correction says “use bullet points,” appending another section hasn’t resolved the disagreement.
+
+The implementation lets the analyst propose exact-text edits to existing instructions when a retained preference justifies reconciling a duplicate or conflict. It asks the analyst to preserve unrelated text. Tuna checks that each edit names a retained note and that the text being replaced occurs exactly once. It also checks whether the file changed while analysis was running, so a concurrent manual edit causes it to stop and retry rather than overwrite that newer file.
+
+Changed instruction files are backed up. These checks make the operation more controlled, but the meaning of a proposed edit is still a model judgment. Inspecting the result remains part of understanding whether the idea works.
+
+## Make forgetting an ordinary operation
+
+I don’t want a mistaken inference to become a permanent working agreement. Inspecting and removing preferences need to be normal parts of using Tuna.
+
+I can look at recent notes or search for a particular subject:
+
+```bash
+tuna list today
+tuna list 'week ago'
+tuna query 'tests'
+tuna query --category scope --json
+```
+
+The category narrows the kind of preference; `--json` gives an agent or script structured results. The example notes in this article use invented IDs. In a real session I would use the ID shown by my own `list` or `query` output:
+
+```bash
+tuna remove 12
+```
+
+Removal clears that note’s supporting quotation and removes its published line. The ID and removed status remain available in the history. It does not erase previous file backups or reverse an earlier edit to a hand-written instruction, so those are separate things to inspect if I need to undo more than the learned line.
+
+Tuna also has an age limit. By default, notes older than 180 days are excluded during consolidation. An old preference doesn’t necessarily stay useful forever, and repeating a correction can supply a newer note. I can change the age limit, or turn it off:
+
+```bash
+tuna setup --stale-days 90
+tuna setup --stale-days 0
+```
+
+This is an age-based policy, not evidence that a preference became wrong on a particular birthday. Choosing a good default—and making stale guidance visible—is part of the design I still want to learn from.
+
+Agents can retrieve preferences directly too. Tuna exposes `preferences`, `list`, and `remove` through **MCP**, a standard way for an agent application to call external tools. They can also use the command line. That makes the note collection available on demand as well as through the instruction file.
+
+## Keep the listener out of the way
+
+For this to be useful, remembering feedback must not make every conversation feel slower or more fragile.
+
+I made capture bounded and silent. If Tuna is stopped, the hook does nothing useful and the coding session can continue. If a model call fails after a message has reached the queue, that message stays pending. `tuna status` reports the problem, with diagnostics in the service log.
+
+There is a subtle loop to avoid as well: Tuna uses a coding harness to analyse messages from coding harnesses. Without a boundary, its analysis prompts could look like more material to capture.
+
+The analysis runs in its own working directory, carries an internal marker, and sets a flag that capture recognises and skips. The harness-specific invocation restricts tools and disables Tuna integrations where supported. The analyst’s task is to return structured data about the supplied messages.
+
+The current implementation is a Go command-line program with a background service and a local SQLite database. Communication with the service uses a user-private Unix socket—a local connection on the machine—rather than a public listening network port.
+
+“Local” here describes the queue, notes, and instruction files. The selected harness sends analysis to its model provider using the normal authentication and usage allowance. It does not mean the inference happens offline.
+
+After successful analysis, Tuna clears the queued raw message payloads. Retained notes keep the relevant supporting quotation. It starts observing new prompts after setup; it does not go back through all my historical conversations. It also only sees what the integrations expose, so a thumbs-down reaction in a UI is not automatically captured as feedback.
+
+Those limits matter to the experience. The tool should make it possible to explain what it saw, what it retained, and how that became an instruction.
+
+## What I have built so far
+
+The capture, analysis, query, consolidation, and removal paths described here are implemented. The current release targets macOS and Linux on ARM64 and AMD64, and expects an installed, authenticated supported coding harness to provide the analysis model.
+
+The [installation instructions](https://github.com/darylcecile/tuna/blob/2ca1970e1603a2ab9bec47505b68e7d3f10b3291/README.md) cover direct downloads and installation through my [Binzo tool](https://github.com/darylcecile/binzo). Once the binary is installed:
+
+```bash
+tuna start
+tuna status
+```
+
+`start` installs integrations for supported tools it finds on the executable search path, links their global instructions, and starts the background service. Codex requires trusting the new hook in `/hooks`. The integrations need hooks-capable versions; the OpenCode integration targets V2.
+
+If I want an installed and signed-in Copilot CLI to provide the analysis, I can choose it explicitly. I can also change the daily refresh time:
+
+```bash
+tuna setup --analyzer copilot
+tuna setup --at 22:30
+```
+
+Without an explicit choice, Tuna selects the first installed CLI in the order Copilot, OpenCode, Claude, then Codex. Installed doesn’t necessarily mean signed in, so `status` is useful when the first available tool cannot complete analysis.
+
+The service runs until I stop it or the machine shuts down. I currently need to start it again after a reboot. Reads of the saved notes work while it is stopped; capture, removal, and consolidation need the running service.
+
+```bash
+tuna stop
+tuna list today
+tuna start
+tuna consolidate
+```
+
+I added [tests](https://github.com/darylcecile/tuna/blob/2ca1970e1603a2ab9bec47505b68e7d3f10b3291/internal/tuna/tuna_test.go) around things I want to remain dependable: rejecting invented quotations, retaining messages after failed analysis, preserving existing setup, removing published rules, and refusing to overwrite an instruction file that changed during consolidation.
+
+Those tests use fake analysis outputs. They check what the program does with an answer; they don’t establish how often a real model interprets a correction correctly. That is a different question, and probably the most important one.
+
+## What I want to find out next
+
+The question I care about is whether this reduces the effort of working with agents over time. More stored notes would be a poor measure on its own.
+
+I want to find out whether the next agent actually makes fewer of the mistakes I have already corrected. Whether switching tools preserves useful working agreements. Whether the saved rule still means what I meant when I gave the feedback.
+
+There are several ways this could go wrong. A project-specific request could become a global preference. A conditional rule could lose its condition. A new correction could be treated as a contradiction when it really describes an exception. A preference could be saved correctly but never loaded by the session that needs it.
+
+That is why I keep coming back to the link between a message, a note, and a published instruction. Each step should be understandable, and each retained preference should be something I can inspect and change.
+
+Tuna is an experiment in making that loop useful: I explain how I want to work, the tool keeps the reusable part, and a later conversation starts with a little more of that understanding already available.
+
+## Notes and further reading
+
+This write-up describes [my implementation at 24 September 2026](https://github.com/darylcecile/tuna/tree/2ca1970e1603a2ab9bec47505b68e7d3f10b3291). The conversations and note IDs are illustrative examples.
+
+I’ve linked the parts of the code behind the main design decisions:
+
+- [Capture and the context passed with a message](https://github.com/darylcecile/tuna/blob/2ca1970e1603a2ab9bec47505b68e7d3f10b3291/internal/tuna/capture.go)
+- [The analysis instructions and evidence checks](https://github.com/darylcecile/tuna/blob/2ca1970e1603a2ab9bec47505b68e7d3f10b3291/internal/tuna/analyzer.go)
+- [Consolidation, instruction updates, and removal](https://github.com/darylcecile/tuna/blob/2ca1970e1603a2ab9bec47505b68e7d3f10b3291/internal/tuna/consolidate.go)
+- [Linking instructions and installing integrations](https://github.com/darylcecile/tuna/blob/2ca1970e1603a2ab9bec47505b68e7d3f10b3291/internal/tuna/setup.go)
+- [Building and contributing](https://github.com/darylcecile/tuna/blob/2ca1970e1603a2ab9bec47505b68e7d3f10b3291/CONTRIBUTING.md)
+
+The [Claude Code memory documentation](https://code.claude.com/docs/en/memory), [Copilot Memory overview](https://docs.github.com/en/copilot/concepts/agents/copilot-memory), and [Codex instruction-file guide](https://developers.openai.com/codex/agent-configuration/agents-md) provide useful context for the existing approaches I’m working alongside.
