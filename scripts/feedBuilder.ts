@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import { renderToStaticMarkup } from 'react-dom/server'
 import { compileMDX } from 'next-mdx-remote/rsc';
 import InfoBox from '@/components/utils/InfoBox';
+import { getIdeas } from '@/lib/repo/ideasRepo';
 
 // parses using dayjs
 function parseISO(dateString: string) {
@@ -114,6 +115,13 @@ writeFileSync("./public/notes.json", JSON.stringify(notes));
 // re-render markdown per keystroke — it fetches a static file once and matches
 // locally.
 const searchDocs: SearchDoc[] = [
+	...(await getIdeas()).map((idea): SearchDoc => ({
+		type: "idea",
+		slug: idea.slug,
+		title: idea.metadata.title,
+		keywords: idea.metadata.topics,
+		body: toSearchText(`${idea.metadata.snippet} ${idea.content}`),
+	})),
 	...notesList
 		.filter((note) => !note.hidden)
 		.map((note): SearchDoc => ({
@@ -138,4 +146,3 @@ const searchBundle: SearchIndexBundle = {
 };
 
 writeFileSync("./public/search-index.json", JSON.stringify(searchBundle));
-

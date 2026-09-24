@@ -13,13 +13,14 @@ import { InlineCodeRenderer } from './InlineCodeRenderer';
 
 type Props = {
 	content: string;
+	components?: MDXComponents;
 }
 
 export default function MarkdownRenderer(props: Props) {
 	return (
 		<MDXRemote
 			source={props.content}
-			components={components}
+			components={{ ...components, ...props.components }}
 			options={{
 				mdxOptions: {
 					rehypePlugins: [rehypeMdxCodeProps],

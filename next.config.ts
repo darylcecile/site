@@ -1,10 +1,18 @@
 import { type NextConfig } from "next";
 import { join } from "node:path";
 
+const ideaContent = ['./src/ideas_markdown/**/*', './src/ideas_markdown/.gitkeep'];
+
 export default {
 	transpilePackages: ["next-mdx-remote"],
 	serverExternalPackages: ["@shikijs/twoslash"],
 	output: "standalone",
+	// Studio resolves collection paths at runtime, beyond automatic file tracing.
+	outputFileTracingIncludes: {
+		'/': ideaContent,
+		'/ideas': ideaContent,
+		'/ideas/*': ideaContent,
+	},
 	experimental: {
 		viewTransition: true,
 	},

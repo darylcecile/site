@@ -1,7 +1,7 @@
-import type { FuseIndexRecords, FuseOptionKey, IFuseOptions } from "fuse.js";
+import type { FuseIndex, FuseOptionKey, IFuseOptions } from "fuse.js";
 
 export type SearchDoc = {
-	type: "note" | "project";
+	type: "note" | "project" | "idea";
 	slug: string;
 	title: string;
 	keywords: string[];
@@ -10,10 +10,7 @@ export type SearchDoc = {
 
 export type SearchIndexBundle = {
 	docs: SearchDoc[];
-	index: {
-		keys: ReadonlyArray<string>;
-		records: FuseIndexRecords;
-	};
+	index: ReturnType<FuseIndex<SearchDoc>['toJSON']>;
 };
 
 export const SEARCH_INDEX_URL = "/search-index.json";
