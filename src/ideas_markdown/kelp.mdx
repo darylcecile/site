@@ -1,0 +1,386 @@
+---
+title: "Kelp: imagining what comes after Git"
+snippet: "Start with a folder full of code. Give it a history, invite other people to work on it, then let it outgrow one machine. Following the questions that led to an experiment in a Git successor."
+date: "2026-09-24"
+status: "Prototyping"
+topics: ["Developer tools", "Version control", "Distributed systems"]
+repository: "https://github.com/darylcecile/kelp"
+---
+
+What would a successor to Git look like if we could design it around how we work today?
+
+That is the question behind **Kelp**. It grew out of my own experience using Git and the questions that experience left me with: how could recovering and revising work feel simpler, and what would it take for one project to grow beyond one machine? I started researching those questions and writing down the design that became Kelp.
+
+I’ve started turning that design into a working prototype. But the commands make more sense once you understand the questions that shaped them. So I want to start further back: with a folder, a few files, and the problem Git solves. Then we can follow the reasoning towards something different, one decision at a time.
+
+## Give a folder a history
+
+Imagine we’re building an online shop. Its files live in a folder on our computer. One of them, `checkout.ts`, contains this setting:
+
+```typescript
+const checkoutTimeoutSeconds = 1;
+```
+
+It tells checkout to wait one second for a response before giving up. We decide to try three seconds instead. Then we change the error message. A few days later, checkout stops working properly. Which edit caused it? What did the working version look like?
+
+We could keep copying the folder: `shop`, `shop-backup`, `shop-before-checkout-fix`. That works for a while. Eventually we forget which copy contains what, and why we made it.
+
+**Git gives the folder a history.** We choose points worth recording, attach descriptions, and can return to those recorded versions later. Git calls the folder and its recorded history a **repository**.
+
+In our existing shop folder, these commands create a repository and save the first version of `checkout.ts`:
+
+```bash
+git init
+git add checkout.ts
+git commit -m "Add the original checkout settings"
+```
+
+`git add` selects the file contents we want to record. `git commit` makes the record. A **commit** says what the recorded project looked like, who recorded it, why, and which earlier commit it follows.
+
+After editing the timeout to three seconds, we can record another point:
+
+```bash
+git add checkout.ts
+git commit -m "Give checkout more time"
+```
+
+Now we have a history with two entries. Each identifies a **snapshot**: the files as recorded at that point. Git can compare those snapshots to show what changed.
+
+Importantly, this doesn’t require making another physical copy of every file. Unchanged contents can be reused. Git gives stored contents a fingerprint calculated from those contents, so it can recognise the same data and refer to it again. The [official explanation of Git’s data model](https://git-scm.com/docs/gitdatamodel) describes this foundation in detail.
+
+That is the first thing I wanted to keep. Being able to name an exact version of the files is enormously useful. It lets us recover work, investigate mistakes, and know what went into a release.
+
+## Let other people work on it too
+
+Now Maya joins the project. She wants to improve checkout while Leo works on discount codes. They need a way to make progress separately and bring their work together.
+
+Git lets a history split into **branches**. A branch is a name that follows one line of development. We might call the team’s agreed line `main` and Maya’s line `checkout-fix`.
+
+```text
+Original shop
+  ├── main: add discount codes
+  └── checkout-fix: allow a longer wait
+```
+
+The diagram shows two lines of work starting from the same recorded project. When we bring them together, Git can often combine the edits. If both people changed the same setting in incompatible ways, it asks us to resolve the disagreement. That is a **merge conflict**.
+
+Git also lets people keep their own repositories. With an ordinary full **clone**, Maya gets the files and the available history, so she can make commits without staying connected to a server. Later, she can **push** her work to another repository and **fetch** work from it.
+
+This is what makes Git **distributed**: our computers can each hold a history and exchange work. Many teams choose a shared host such as GitHub or GitLab as their meeting place. Git is the version-control tool; those services add things such as discussions, reviews, permissions, and automation around it.
+
+So far, this is a powerful arrangement. We have exact saved versions, independent work, and a way to collaborate. A successor has quite a lot to live up to.
+
+The interesting questions begin when we look at the work surrounding those saved versions.
+
+## Which version did I just save?
+
+Let’s go back to the timeout. We edit it from one second to three, run `git add`, then think of another improvement and change it to five. Now we run `git commit`.
+
+Which timeout did we record?
+
+**Three seconds.** `git add` selected the file’s contents when we ran it. The later five-second edit is still in our working folder, but we haven’t selected it for that commit.
+
+That selection has a name: the **staging area**, also called the **index**. It is useful because it lets us choose what belongs in a commit. If we accidentally fix a bug and make an unrelated cleanup at the same time, we can record them separately.
+
+But it also means there can be three versions of a file to keep in mind: the one in our editor, the one selected for the next commit, and the one in the latest commit.
+
+<GitSnapshots />
+
+Git has behaved correctly throughout that example. The difficulty is that “I saved my work” can mean several different things. Even running tests can be misleading: tests in our working folder would see five seconds, while the commit we made contains three.
+
+This kind of mismatch appears throughout the [Gitless research](https://sdg.csail.mit.edu/project/gitless), which examined how Git’s concepts line up with the things users want to do. It is older research, rather than a verdict on every current Git workflow, but the question remains useful: how much state must a person track to carry out an ordinary task?
+
+Julia Evans’s [2024 notes on Git’s error messages](https://jvns.ca/blog/2024/04/10/notes-on-git-error-messages/) make the problem tangible. Messages talk about references, branch tips, and “ours” or “theirs,” sometimes with meanings that depend on the operation underway. The user is trying to answer something much more immediate: *what happened to my work, and what should I do next?*
+
+A simpler interface is an obvious response. But it needs to preserve the useful abilities underneath. Removing the staging step would be a poor trade if it also removed the ability to share only the bug fix, or to test exactly the files being shared.
+
+That gave me a constraint for Kelp: **simplify the bookkeeping while keeping deliberate selection and recovery possible.**
+
+## A piece of work lasts longer than one commit
+
+There is another mismatch hiding in the same checkout fix.
+
+Maya shares a three-second timeout. A reviewer suggests five seconds. She edits the code. Someone else changes the surrounding checkout implementation, so she adjusts her fix to fit that too.
+
+To everyone involved, this is still “Give checkout more time.” Its code has changed, but its purpose and conversation continue.
+
+A Git commit identifies a particular historical record. Its fingerprint includes its file snapshot, message, and the earlier commits it follows. If we amend that record, Git creates a different commit. If we **rebase** work—reapply it after a newer starting point—the resulting commits also have different identities.
+
+That precision is valuable. A commit should never quietly come to mean different code. But an exact historical record and an ongoing task are two different things.
+
+GitHub’s pull requests already provide a place for a task’s discussion to continue across updates. I wanted to explore making the task and its sequence of versions part of version control itself, with review history that could eventually travel with the project.
+
+This was also a reason to look at existing alternatives. [Jujutsu](https://docs.jj-vcs.dev/latest/git-comparison/) explores a different working-copy model, recoverable operations, and changes that can keep their identity when rewritten. It can work with Git repositories. A better workflow clearly does not require throwing everything away.
+
+At this point, a reasonable answer might be: use Jujutsu, or build a friendlier interface over Git. The next question is what made the exploration larger than the command line.
+
+## A distributed tool still needs somewhere to run
+
+Let our shop grow. The repository now contains the website, mobile apps, shared libraries, and years of assets. Hundreds of people contribute. Automated test jobs repeatedly download code. Agents open more work and produce more updates.
+
+We can give a server more memory, a faster processor, and a larger disk. That is **vertical scaling**: making one machine bigger. Eventually there is a limit, or the next machine becomes disproportionately expensive.
+
+**Horizontal scaling** means adding machines and sharing the work. But what exactly are we sharing?
+
+If we host a thousand small repositories, we can put different repositories on different servers. If lots of people read one repository, we can keep several copies and send readers to them. Those are useful forms of scaling, and Git hosts already do them.
+
+The harder question is a single large, busy project. Another complete copy gives us another place to serve readers. It does not, by itself, divide the project’s stored history into smaller portions, or remove the need to agree on which updates have been accepted.
+
+There is work involved in serving the files, too. Git often compresses stored data into bundles called **packfiles**. To answer a request, a server may need to determine which historical contents the caller is missing and prepare a suitable bundle. Those bundles also need maintenance as new work arrives.
+
+GitHub’s [Scaling monorepo maintenance](https://github.blog/open-source/git/scaling-monorepo-maintenance/) describes a concrete example: repacking entire repositories was becoming too expensive, so the team developed ways to index multiple packs and focus more maintenance on recent additions. This is substantial engineering, much of it contributed back to Git.
+
+GitLab documents another pressure in [Gitaly Cluster’s distributed reads](https://docs.gitlab.com/administration/gitaly/praefect/#distributed-reads): if a heavily updated repository changes faster than its secondary copies can catch up, the primary can end up serving most or all of the reads. Having more machines does not help as much as we hoped when they cannot safely answer the requests.
+
+That helped me make the question more precise. **Could one project’s storage and independent work be spread across machines as a normal part of the design?** Git’s distributed model gives developers independent repositories; the hosting problem asks how machines cooperate to serve one of those repositories efficiently.
+
+## What a write-ahead log changes
+
+Recent work on Git hosting makes this particularly interesting. The limits are being actively pushed, and the solutions help show where a successor might be useful.
+
+One approach starts with a different answer to “where is the authoritative history kept?”
+
+Suppose a serving machine disappears. If its disk held an essential repository copy, the hosting system must protect and repair that copy. Instead, we could keep a durable record of accepted updates elsewhere and treat the serving machine’s repository as a copy we can rebuild.
+
+A **write-ahead log**, or **WAL**, is a record written durably before an operation is treated as complete. Think of writing an update into a durable journal before telling the caller it succeeded. The journal and the saved data let another machine catch up or recover.
+
+In [Git at any scale](https://cursor.com/blog/git-at-any-scale), published on **18 August 2026**, Vicent Martí describes Cursor’s Continuity system. It stores pushes as WAL entries in S3-compatible object storage. A separate index records which entries have been published. Updating that index conditionally prevents two competing writers from silently replacing each other’s decisions.
+
+In simplified form:
+
+```text
+Receive a push
+  → store its data durably
+  → record it in the accepted sequence
+  → report success
+
+A serving machine
+  → checks how far it has caught up
+  → retrieves anything missing
+  → serves the request from its local repository
+```
+
+The important change is that serving copies become replaceable. More copies can help with reading without every one of them taking part in each write. Continuity also records compaction results—the reorganised storage bundles—so other copies can download that work rather than all repeating it.
+
+The log still needs an agreed order, and the data still needs maintenance. Object storage supplies part of the coordination and durability that the host previously had to manage itself. A WAL is a useful building block, not an escape from those requirements.
+
+There are other routes towards the same separation. GitLab’s **June 2026** [Scaling Git proposal](https://handbook.gitlab.com/handbook/engineering/architecture/design-documents/scaling-git/) would make object storage authoritative and local disks caches. It proposes publishing a manifest—a list identifying the files that make up one consistent repository state—as a coordinated update. It is explicitly a proposal, not a description of a completed rollout.
+
+[Netlify’s account of building Git storage for millions of projects](https://www.netlify.com/blog/how-we-built-git-storage-for-millions/) describes keeping durable Git data in S3 while running Git against local copies. Its writes upload the required data before conditionally updating branch records. And [East River Source Control’s September 2026 article](https://ersc.io/blog/what-comes-after-git) describes a further step: a non-Git storage engine behind a Git-compatible interface, with a future path for Jujutsu.
+
+These examples change the premise. Git hosting can be re-engineered substantially while existing clients keep working. “Git cannot scale” would miss precisely the work worth learning from.
+
+With Kelp, I want to explore what happens if the everyday workflow, the way projects are stored, and the rules for exchanging work are designed together. That is a larger experiment, and I have more to prove as a result.
+
+## Decide what a successor should keep
+
+Before inventing commands, I wanted to be clear about what I was trying to improve. My experience with Git gave me the starting questions; [researching and writing them down](https://github.com/darylcecile/kelp/blob/94eb6f41bdd5b330b5890bfef93b093ea4ad0c7d/PRD/01-research.md) helped me turn those questions into design decisions. I wanted to keep several of Git’s strongest properties: exact saved files, verifiable contents, useful local work, and history people can take elsewhere.
+
+I also had a lot to learn from other projects. Jujutsu helped me think about revising work and undoing operations. Meta’s [Mononoke storage architecture](https://github.com/facebook/sapling/blob/main/eden/mononoke/docs/2.4-storage-architecture.md) separates saved contents from changing records such as branch positions, allowing them to be stored and handled differently. Radicle’s [protocol](https://radicle.network/guides/protocol) explores portable identity and collaboration between peers. Each informed a different part of the design I was putting together.
+
+There are tempting, more radical directions. What if every edit combined automatically? What if history understood functions and classes instead of files?
+
+The difficulty is that combining edits and producing a correct program are different achievements. Two people can make changes that fit together as text but disagree in meaning. [Pijul’s conflict model](https://pijul.org/manual/conflicts.html) is useful here: disagreement can be represented and retained, rather than wished away. A universal syntax-aware system would also need to cope with broken code, generated files, multiple languages, and images.
+
+So I chose to keep ordinary file contents as the foundation. Smarter tools can help suggest a resolution; the saved result remains the actual files we chose.
+
+That gave me a more specific design to work towards: keep dependable records underneath, organise collaboration around named pieces of work, and let a project’s contents be stored in separately retrievable pieces. That combination is what I’m exploring with Kelp.
+
+## First, give the work a lasting identity
+
+Let’s build up the idea using our checkout fix.
+
+We need two answers that Git commits alone don’t keep separate: *which piece of work is this?* and *which version of that work are we discussing?*
+
+Kelp calls the named piece of work a **change**. Ours is “Give checkout more time.” A saved version of that work is a **revision**. The three-second implementation is one revision; the five-second improvement is another. Both belong to the same change.
+
+This suggests a small everyday loop. Edit the files, then share the first version with a name:
+
+```bash
+kelp publish -m "Give checkout more time"
+```
+
+After feedback, edit the files and publish again:
+
+```bash
+kelp publish
+```
+
+The tool remembers the active piece of work. The new version joins its history, and the old version is still available. A later review could follow the task while referring to the particular version somebody inspected.
+
+<ChangeIdentity />
+
+We also still need the **snapshot** from our Git explanation: the exact saved files. The task, its version, and its files answer different questions. Correcting a task description creates a different record without necessarily changing any files. Adjusting the timeout changes the files while remaining part of the same task.
+
+The names matter less than the separation. A reader should see “Give checkout more time” and its successive versions; the implementation can use precise identifiers underneath.
+
+An immediate consequence is that the tool must know when we have started unrelated work. If the next edit is about discount codes, we tell it:
+
+```bash
+kelp change new "Add discount codes"
+```
+
+The prototype starts that task from the current files. More flexible switching and choosing different starting points belong to the wider proposal. The boundary needs to be explicit so that “publish” has an understandable destination.
+
+## Then, separate keeping work from sharing it
+
+That loop leaves something unanswered. What happens to the experiments made before the first publication?
+
+We might spend an afternoon trying three implementations, then decide the first one was best. It would be frustrating if recovery depended on having chosen the right moments to make public-looking records.
+
+This leads to a second decision: **keep local recovery history automatically, and make sharing a separate action.** Kelp calls a saved local point a **checkpoint**.
+
+With Kelp installed, starting in an existing project folder looks like this:
+
+```bash
+kelp init
+```
+
+The prototype starts a background process that captures tracked files saved by the editor. It works without a server or an account. Unsaved editor buffers and writes not yet captured are outside that recovery guarantee. `kelp status` reports whether capture is running.
+
+We can also mark a point deliberately:
+
+```bash
+kelp checkpoint -m "Checkout works before my rewrite"
+kelp log
+```
+
+If the checkpoint we want is listed as number `1`, we can restore its files into a neighbouring folder:
+
+```bash
+kelp restore 1 --to ../recovered-shop
+```
+
+The current folder stays available for comparison. Newly created files need to be included with `kelp track`, while supported existing files are tracked during setup, respecting the project’s ignore files.
+
+Sharing still needs somewhere to send the work. In the prototype, a **remote** is a server running Kelp. We configure its address and an access token supplied by its operator; these are placeholders:
+
+```bash
+export KELP_TOKEN="<your access token>"
+kelp remote set https://code.example.com
+kelp publish -m "Give checkout more time"
+```
+
+Attaching the server doesn’t upload anything. Publication sends the chosen result and the required history, while the intermediate automatic checkpoints stay local.
+
+This is also where the earlier staging example comes back. A simpler default cannot make selecting part of a fix unnecessary. I’ve included choosing individual edits and testing a selected checkpoint in another folder in the design. I still need to build those features; today’s plain `publish` captures the current tracked-file state.
+
+There is another less visible edge: the network can fail halfway through sharing. The prototype records the exact version and the request locally before uploading. A retry resolves that pending publication before publishing newer edits. The tool needs to preserve the meaning of “the version I tried to share” even while I keep working.
+
+## Let disagreement remain visible
+
+Now give Maya and Leo their own copies of the three-second fix. Maya changes it to five seconds. Leo independently changes it to ten. They both publish.
+
+We have kept the task’s identity, but that introduces a new responsibility: two versions of the same task can be current at once.
+
+One tempting rule is to keep whichever arrived last. That is simple for the server and surprising for the person whose work disappears from view. A timestamp cannot tell us which timeout is the better product decision.
+
+Kelp therefore keeps both alternatives. Each person’s version records the earlier version they worked from. If neither knew about the other’s edit, neither gets to erase it merely by publishing later.
+
+<ConcurrentRevisions />
+
+The prototype can preserve those alternatives. Opening the work then requires choosing a particular version, currently through its identifier. There is still interface work to make that choice pleasant.
+
+I want to extend this so a later version can combine contributions and record both of their origins. I also want to save unresolved conflicts so someone can pause, ask for help, or work on something else without losing the disagreement’s context.
+
+That was one of the lessons I took from studying Jujutsu and Pijul: a conflict is information we need to retain. Keeping it does not imply the computer knows how to resolve it.
+
+## Accept the code that was actually tested
+
+Sharing a proposal also raises a different question: when does it become part of the team’s agreed project?
+
+This next part is **proposed behavior**. Review approvals and accepting work into a shared project are not implemented in the current prototype.
+
+Suppose a reviewer approves our three-second fix. Automated tests run with it included and pass. Before it is accepted, another teammate changes checkout’s error handling.
+
+We now have a combination of code that the old test run did not examine. The fix may still be fine, but a green result from earlier does not establish that.
+
+To make that distinction explicit, I separated two decisions in the design:
+
+- A reviewer approves a particular version of the proposal.
+- Tests check the project that would result from including it.
+
+If the surrounding project changes, the new combination needs checking. If the proposal itself changes, approval of the earlier version does not automatically cover it.
+
+<LandingExperiment />
+
+Kelp calls accepting work into the agreed project **landing**. A named line of accepted versions, such as `main`, is called a **channel** in the proposal.
+
+This gives the history two useful views: how one task evolved, and how the accepted project changed over time. Someone reviewing checkout can follow its successive attempts. Someone investigating a broken release can follow the sequence of accepted project versions.
+
+The storage decision comes last: first save the required files, then make one coordinated update that says “this is now the accepted version.” If somebody else advanced the project in the meantime, prepare and check the new combination before accepting it.
+
+That order will matter even more when the files live on several machines.
+
+## Let one project use more than one machine
+
+We can now return to the hosting problem with a clearer picture of the work being stored.
+
+Some data is saved content that never changes in place. Some records describe separate proposals that can evolve independently. A smaller set of decisions establishes the accepted version of a shared project.
+
+Treating all of that as one undifferentiated queue would recreate a bottleneck. In my [distribution design](https://github.com/darylcecile/kelp/blob/94eb6f41bdd5b330b5890bfef93b093ea4ad0c7d/PRD/04-distribution.md), I separated those responsibilities:
+
+1. **Spread saved contents across storage groups.** A group stores a portion of the data, with additional copies for resilience. Adding capacity can help the same large project.
+2. **Handle unrelated proposals independently.** Publishing a checkout draft should not need to wait for an unrelated reporting draft to be accepted.
+3. **Order decisions about one shared accepted version.** There still has to be an agreed answer to what `main` contains.
+
+<ProjectStorage />
+
+This is where the WAL work helps frame the ambition. Moving durable history away from serving disks can make Git hosting much more flexible. Kelp additionally proposes a built-in way to fetch portions of a project and handle its independent proposals, alongside the different user-facing model.
+
+A developer working on checkout would request the relevant files and the history they need. To make that safe, Kelp must first select one exact project snapshot, then retrieve all the requested contents from it. Combining Monday’s checkout with Tuesday’s shared library by accident would defeat version control’s purpose.
+
+For the larger storage design, I settled on a file listing built from reusable pages. Editing a few paths would replace the affected pages while leaving the others shared. Large files would be divided into reusable chunks. I chose both approaches to avoid making a small update rewrite or transfer unrelated data.
+
+The pages, file contents, and chunks can be located by their fingerprints without baking a particular server address into their identity. Moving storage should not change which version of the project we mean.
+
+There are costs. More separately retrievable pieces can mean more network requests. Compression may be worse than Git’s packs for some histories. Requests have to be batched and indexed sensibly; scattering every lookup across a network would just replace one problem with another. Mononoke’s separation of content, changing records, and derived indexes is important prior art here.
+
+There is also a limit that no storage layout removes: accepting updates into one agreed `main` requires coordination. More machines can prepare and test work in parallel; the final decisions still need an order. Kelp’s goal is to make that coordinated step small, not to promise unlimited simultaneous updates to one shared answer.
+
+## Turn the design into something we can try
+
+By this point, I had outlined much more than a new command-line tool: recovery, collaboration, storage, review decisions, and moving between providers. I needed something I could actually use to find out how the everyday workflow felt.
+
+I started by making a smaller set of those decisions concrete: a Rust command-line client, a self-hosted HTTP server, and a shared library defining the records both understand. I used SQLite to hold the data. A saved project is currently a straightforward ordered file listing, with whole-file contents stored by fingerprint.
+
+I kept the paged structures and chunked files in my design notes while building this simpler version first. Its server runs as a single instance per data directory. I still have distributed storage, partial project retrieval, and native review history ahead of me.
+
+Even this smaller piece had important behavior I needed to check. I added [workflow tests](https://github.com/darylcecile/kelp/blob/94eb6f41bdd5b330b5890bfef93b093ea4ad0c7d/apps/cli/tests/workflows.rs) for local recovery, publishing another version of the same change, retrieving the exact shared files, and retrying a failed publication after more edits. They give me concrete checks on those decisions. The broader scaling goals still need their own implementation and measurements.
+
+Once the initial code and research were in place, I also [rewrote the README as an end-user guide](https://github.com/darylcecile/kelp/commit/246da3d3d61ac72dc0e09a6278d3025345612c13). I put installing the tool, starting locally, recovering work, and sharing it on the first page, and moved the Rust workspace and build details into the contribution guide. The first thing someone trying Kelp needed was a way into the workflow.
+
+I also had to [fix the background watcher on Windows](https://github.com/darylcecile/kelp/commit/94eb6f41bdd5b330b5890bfef93b093ea4ad0c7d). The watcher could inherit extra handles to the command’s output pipes. A program calling Kelp and waiting for that output to close could keep waiting because the background process still held it open. I stopped that inheritance and added a timeout to the test helper.
+
+That is the distance between “keep history automatically” as an idea and making it behave like an ordinary, dependable tool. The background process has to let the foreground command finish. The recovery command has to preserve the current work. A failed upload has to remain understandable.
+
+One detail ties back to the earlier hosting discussion: [I use SQLite’s WAL mode in the prototype](https://github.com/darylcecile/kelp/blob/94eb6f41bdd5b330b5890bfef93b093ea4ad0c7d/crates/kelp-core/src/storage.rs). That is a log within its database implementation. It does not turn the prototype into a distributed, WAL-based hosting service like Continuity. The same technique can support very different layers of a system.
+
+## What would make this worth continuing?
+
+The useful outcome would be a tool where recovering an experiment, revising a task, and understanding what was accepted take less mental bookkeeping; where one project can grow across machines; and where moving hosts can preserve its meaningful history and collaboration.
+
+My own experience gave me reasons to explore this, but I still need to find out whether it helps other people. In my [validation plan](https://github.com/darylcecile/kelp/blob/94eb6f41bdd5b330b5890bfef93b093ea4ad0c7d/PRD/06-delivery-and-validation.md), I set out comparisons against well-configured Git and Jujutsu. Can people recover work? Can they predict what will be published? Can they separate two accidentally mixed tasks? Do they understand competing versions?
+
+For storage, adding machines needs to improve the workload we claimed it would improve. Serving more readers, storing more history, and accepting more independent proposals are different measurements. Disk use, slow requests, failure recovery, and operating costs matter alongside throughput.
+
+For portability, moving files is only the beginning. I want a project to retain its changes, reviews, and provenance—the record of where work came from—when its original host disappears. I’ll need to demonstrate that by restoring it elsewhere.
+
+I’m also keeping open the possibility of narrowing the project. Jujutsu combined with a scalable Git-compatible backend might achieve the goals with less migration cost. If it does, that would be a useful result of this exploration.
+
+Today, Kelp can keep and recover local checkpoints, publish named work, update it, and preserve competing versions. It cannot yet combine edits, approve or land work, import a Git history, select individual edits to publish, or distribute one project across servers. Regular files are limited to 16 MiB, and a checkpoint’s file listing to 2 MiB.
+
+That is where the idea stands: a small working piece of a much larger reimagining. Starting with Git made it clearer which strengths were worth keeping. Looking at its friction and the work happening around its hosting made the questions more precise. Building a prototype gives those questions something concrete to push against.
+
+## Reading and source notes
+
+I’ve kept my [research and design notes](https://github.com/darylcecile/kelp/tree/94eb6f41bdd5b330b5890bfef93b093ea4ad0c7d/PRD) alongside the code, including the sources I read and the reasoning behind these choices. The checkout story is an example I’m using to walk through that thinking. This article describes [my prototype as it stood on 24 September 2026](https://github.com/darylcecile/kelp/tree/94eb6f41bdd5b330b5890bfef93b093ea4ad0c7d); I’m still working towards the wider design.
+
+These recent hosting articles help put the questions I’m exploring in context:
+
+- **August 2026:** [Cursor — Git at any scale](https://cursor.com/blog/git-at-any-scale), on WAL-based hosting, replaceable serving copies, and coordination.
+- **June 2026 proposal:** [GitLab — Scaling Git](https://handbook.gitlab.com/handbook/engineering/architecture/design-documents/scaling-git/), on separating durable storage from the machines running Git.
+- **September 2026:** [East River Source Control — What comes after git](https://ersc.io/blog/what-comes-after-git), on a new storage engine and an incremental adoption path.
+- [Netlify — How we built Git storage for millions of projects](https://www.netlify.com/blog/how-we-built-git-storage-for-millions/), on object storage, local caches, and durable pushes.
+
+I collected the earlier work I drew on in an [annotated bibliography](https://github.com/darylcecile/kelp/blob/94eb6f41bdd5b330b5890bfef93b093ea4ad0c7d/PRD/sources.md), with notes on what each source helped me understand. If you want to try what I’ve built so far, start with the [README](https://github.com/darylcecile/kelp/blob/94eb6f41bdd5b330b5890bfef93b093ea4ad0c7d/README.md).
