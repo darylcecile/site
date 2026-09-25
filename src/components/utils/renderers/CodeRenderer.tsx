@@ -23,7 +23,7 @@ function getHighlighter() {
 		highlighterPromise = (async () => {
 			const hl = await getSingletonHighlighter({
 				themes: ['github-dark'],
-				langs: ['typescript', 'tsx', 'rust', 'html', 'bash', 'json'],
+				langs: ['typescript', 'tsx', 'rust', 'html', 'bash', 'json', 'diff'],
 			});
 			await hl.loadLanguage({
 				...(sakoaGrammar as any),

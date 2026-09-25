@@ -1,6 +1,6 @@
 ---
-title: "Kelp: version control for independent work"
-snippet: "What would version control look like if I could work on one part of a codebase, share changes independently, and still name an exact version of the whole project?"
+title: "Kelp: what if we designed Git today?"
+snippet: "A blank-slate exploration of version control: keep the history, diffs, and useful merges, but rethink what a checkout contains and how one repository can grow across machines."
 date: "2026-09-25"
 status: "Prototyping"
 icon: "sprout"
@@ -8,317 +8,369 @@ topics: ["Developer tools", "Version control", "Distributed systems"]
 repository: "https://github.com/darylcecile/kelp"
 ---
 
-The task is to stop a webhook handler from processing the same delivery twice. The fix belongs to one service, but that service lives in a repository containing a dashboard, background jobs, shared libraries, and deployment configuration.
+**What would Git look like if we designed it today, from scratch, without having to remain compatible with Git?**
 
-While I work on the handler, someone improves keyboard navigation in the dashboard. An agent updates the installation documentation. A background build wants a reproducible copy of the project so it can run tests.
+That is the question I’m exploring with Kelp.
 
-All of these activities belong to the same codebase. They do not all need the same files, and their edits do not necessarily depend on one another.
+I want the freedom to reconsider the foundations: what we download, what a commit represents, how independent contributions come together, and how a single repository can use more than one storage machine. At the same time, there is a lot I want to keep: useful diffs, intelligent merging, dependable history, local work, and the ability to recover a known state.
 
-That is the kind of workflow I’m thinking about with **Kelp**. I want to keep the benefits of one coherent project while making independent work easier to save, share, and store. The question reaches beyond the command line: what should a commit describe, what should a checkout download, and which decisions actually need agreement between machines?
+This is an exercise in imagining a successor, with an early working implementation to test the ideas. To make sense of the choices, it helps to first understand what Git was built to do—and why its model has worked so well.
 
-Kelp is an early implementation of an answer. To explain it, I’ll follow that service fix through the system and the design decisions it requires.
+## Why Git exists
 
-## One task in a larger codebase
+Software changes constantly. We need to know what the files looked like before an edit, compare one version with another, recover from mistakes, and combine contributions from people working separately. **Version control** gives that work a recorded history.
 
-Consider a repository organised something like this:
+Git grew out of a particularly demanding version of this problem: developing the Linux kernel. Contributors were spread across the world, and many lines of development had to proceed in parallel.
 
-```text
-commerce/
-  services/
-    webhooks/
-    exports/
-  apps/
-    dashboard/
-  packages/
-    event-types/
-  docs/
-  package.json
-  bun.lock
+The kernel project began using BitKeeper, a proprietary distributed version-control system, in 2002. In 2005, the relationship between its developer and the Linux community broke down and free use was withdrawn. Linus Torvalds began developing Git to meet the project’s needs. The [history in Pro Git](https://git-scm.com/book/en/v2/Getting-Started-A-Short-History-of-Git) describes the goals: speed, distributed work, strong support for parallel development, and efficient handling of a large project.
+
+So Git was never merely a way for one person to back up a few files. Collaboration and scale were part of the problem from the beginning. Its answer was to let people have their own repositories, work locally, and exchange recorded history.
+
+GitHub and other hosts later made a shared meeting place for that work convenient. Git is the version-control system underneath; a host adds things such as pull requests, discussions, permissions, and build automation.
+
+Now let’s put the machinery aside and picture how the basic idea works.
+
+## Imagine a handbook with many authors
+
+Suppose a team maintains a technical handbook. It has pages about installation, operating services, handling incidents, and deploying releases. Several people edit it, and the team needs to know which advice appeared in each published edition.
+
+Think of a **file as a page**, a **folder as a chapter**, and the **repository as the handbook together with its archive**.
+
+When we make a Git commit, we record an edition of the handbook. The record says which version of every included page belongs in that edition, who recorded it, why, and which earlier edition or editions it follows. The collection of recorded file contents is a **snapshot**.
+
+There is no need to reprint every unchanged page. If the installation page is identical to the one already in the archive, the new edition can refer to that same stored page. Git’s fingerprints of stored contents make that reuse possible.
+
+The analogy is about the logical record, not a claim that Git physically copies a whole book on every save. Underneath, it shares and compresses data very effectively.
+
+Suppose we clarify a page about retrying failed requests. A **diff** shows what changed:
+
+```diff
+--- a/operations/retries.md
++++ b/operations/retries.md
+@@ -1 +1 @@
+-Retry failed requests.
++Retry only transient failures.
 ```
 
-Keeping these components together has practical benefits. A change to an event format can update its producer, its consumers, and its shared types in one piece of work. Tests and releases can refer to a particular state of the whole codebase.
+The minus line was removed; the plus line was added. This tells a reviewer something much more useful than “there is a new edition.”
 
-But a small fix doesn’t necessarily need the whole codebase in the working folder. And a documentation edit should not acquire a dependency on my webhook handler merely because both changes happened around the same time.
-
-I want to preserve both kinds of relationship: work that genuinely belongs together, and work that can proceed independently. That starts with how the history describes a change.
-
-## What Git is protecting
-
-Git gives a folder a recorded history. I edit files, select the contents to save, and make a **commit**:
+To record that edit in Git:
 
 ```bash
-git add services/webhooks/src/handler.ts \
-        services/webhooks/test/redelivery.test.ts
-git commit -m "Ignore webhook deliveries already processed"
+git add operations/retries.md
+git commit -m "Clarify which failures should be retried"
 ```
 
-The commit identifies a **snapshot** of the recorded project: which files existed and what their contents were. It also records a message, authorship information, and the earlier commit or commits it follows.
+`git add` selects the contents for the next commit. In our handbook, it puts the chosen revised page on an editor’s tray. `git commit` records the edition assembled from that selection.
 
-Git does not need a fresh physical copy of every unchanged file to do this. Stored objects are identified by fingerprints of their contents and can be reused across snapshots. Its [data model](https://git-scm.com/docs/gitdatamodel) gives us exact records we can inspect, compare, and recover.
+This separation is useful: I can include a correction while leaving another unfinished edit on my desk. It also means the draft page, the page on the tray, and the last recorded page can differ. Git calls those the working copy, staging area, and committed version.
 
-A **branch** is a name pointing to a commit. As work is accepted, the branch moves forward. Developers can keep their own repositories, commit locally, and exchange work with a shared host.
+That is already a powerful tool: exact editions, explanations for changes, and a way to compare them.
 
-Now suppose my service fix and the documentation change both start from the same commit and are intended for the same shared branch. The documentation change reaches that branch first. My local commit does not include it in its ancestry, even though we edited different files.
+## Take a copy and try a different direction
 
-Git normally refuses to move the shared branch straight to my commit. Doing so would stop that branch from including the documentation change. This is a **non-fast-forward** rejection: a protection of the recorded history, rather than a report that our file edits conflict.
+A normal full clone is like taking home a copy of the handbook and its available archive. I can inspect the history and record new editions without staying connected to a central library.
 
-I can fetch and merge the histories, preserving the original commits. Or I can rebase my work onto the new starting point, creating a replacement commit. Separate branches also let us publish independently and integrate later. These are established, useful workflows; Git does not require every contributor to share one branch.
+A **branch** is a movable bookmark in that history. A bookmark called `main` might point to the edition the team works from, while another bookmark follows my unfinished revision. Moving a bookmark is cheap; making a branch does not require physically copying all the pages again.
 
-The question I wanted to explore is whether the underlying record could express the independence directly. My fix replaces particular versions of the handler and its test. Could those edits be shared and combined using just their file relationships, without needing another project-wide history step to join them to the documentation change?
+Two authors can start from the same edition and work independently. One improves the retry guidance, while another corrects the installation instructions. Git can compare both with their common starting edition and usually combine edits to different pages automatically.
 
-## Give a commit the dependencies it actually needs
+That is the basic idea of a **three-way merge**: look at the shared starting point and at what each person changed. If both replace the same sentence with incompatible instructions, the tool asks for a decision instead of guessing.
 
-In Kelp, a commit records a batch of file edits. Internally, I call this an **edit transaction**. Each edit identifies the earlier version or versions of that file it replaces, together with its new contents or an explicit deletion.
+We can send our recorded work to another repository with a **push**, and fetch work from it. In practice, teams often gather around a shared host, but the useful local copy remains ours.
 
-For the service fix, the relationship looks like this:
+I would want to retain all of this in a successor. These are not incidental conveniences. They are why version control makes experimentation and collaboration manageable.
+
+## What happens when the handbook becomes a library?
+
+Now imagine that handbook has grown into many volumes. Different teams maintain different chapters. The archive contains years of revisions and large diagrams. Some readers need the whole collection; others need one page to complete a small task.
+
+A modern codebase can have the same shape: applications, services, shared libraries, generated assets, infrastructure, and documentation kept in one repository. Keeping them together is useful when a change needs to update several parts at once.
+
+But it also exposes questions that are less noticeable in a small project.
+
+**How much do I need to take home?** A developer working on a single service may need only a small part of the repository. A short-lived build environment or coding agent may spend significant time acquiring data before doing a comparatively small amount of work.
+
+Git has real answers here. A **sparse checkout** limits which pages are laid out on the desk. A **partial clone** can leave some stored contents at the library and retrieve them when needed. Those are different choices: which files appear in the working folder, and which contents are stored locally. Git’s [partial-clone design](https://git-scm.com/docs/partial-clone) documents both the benefits and the consequences of needing missing data later.
+
+**Which version did I actually save?** If I put a revised page on the staging tray and then edit it again on my desk, the tray still holds the earlier contents. Tests may run against my latest draft while the next commit records the selected version. Each distinction has a purpose, but it is extra bookkeeping for a person—or an agent—trying to answer a simpler question: what am I about to share?
+
+**How much history needs to be reconciled?** Suppose two authors independently revise different pages and both want to update the shared `main` bookmark. One gets there first. The other cannot simply replace it with their own edition, because that edition doesn’t include the first person’s work.
+
+Git correctly [protects against that update](https://git-scm.com/docs/git-push#_note_about_fast_forwards). The second author can merge, keeping both original commits, or rebase their work onto the newer starting point. Separate branches let both publish independently, with integration happening later. But combining work is still expressed through relationships between project-wide recorded editions.
+
+**Where does the growing library live?** A host can put different repositories on different servers. It can keep several copies of a busy repository to serve more readers. Splitting the storage and write workload of one large repository is a further problem, requiring infrastructure beyond simply placing Git on another machine.
+
+AI makes these questions more immediate. Agents can create many parallel attempts, often in disposable workspaces. Continuous integration repeatedly needs exact source inputs. The cost of preparing a workspace or updating shared state can be paid far more often than an individual developer sees in their terminal.
+
+The point is not that Git cannot support these workflows. It does. The question is which assumptions we would choose if those workflows were central to a fresh design.
+
+## More shelves, more copies, and a lot of coordination
+
+There are two easy-to-confuse forms of distribution in the handbook analogy.
+
+Giving every author an independent copy is like Git’s distributed development model. Operating one library across several buildings is a hosting problem. Solving the first does not automatically solve the second.
+
+A bigger server is a taller bookcase: more capacity, eventually with physical or economic limits. **Horizontal scaling** means adding machines and sharing the storage or work among them.
+
+Extra complete copies can help more people read at once. But those copies need to stay sufficiently current, and somebody still has to determine which updates have been accepted. GitLab’s [Gitaly Cluster documentation](https://docs.gitlab.com/administration/gitaly/praefect/#distributed-reads) describes a case where replicas lag behind a heavily updated repository, leaving the primary to serve most or all of the reads.
+
+There is also maintenance. Git packages and compresses stored objects into **packfiles**. Serving history and keeping those packs efficient involves real computation. GitHub’s [work on monorepo maintenance](https://github.blog/open-source/git/scaling-monorepo-maintenance/) shows how much can be improved by indexing multiple packs and concentrating more maintenance on recent additions.
+
+Recent systems move the durable archive away from the serving machines. Cursor’s [Continuity design](https://cursor.com/blog/git-at-any-scale), published in August 2026, uses a **write-ahead log** in object storage: a durable journal of pushes, with an index governing which entries have been published. Local Git repositories become serving copies that can be rebuilt and brought up to date from that record.
+
+In our library, the journal and archived pages outlive any particular reading room. More reading rooms can be opened without making each one an irreplaceable source of truth. The published log still needs an agreed order, and the stored data still needs maintenance.
+
+GitLab’s [June 2026 scaling proposal](https://handbook.gitlab.com/handbook/engineering/architecture/design-documents/scaling-git/) explores a related separation between authoritative object storage and local caches. Meta’s [Mononoke architecture](https://github.com/facebook/sapling/blob/main/eden/mononoke/docs/2.4-storage-architecture.md) is another important example of separating saved contents from changing records.
+
+This is work I want to learn from. Git compatibility is valuable: existing clients and tools keep working. But maintaining that compatibility also constrains what can change underneath the interface.
+
+Kelp gives me permission to ask a different question: what if the editing model, checkout model, and storage model could all be designed together?
+
+## Start with a blank sheet
+
+For this experiment, I don’t have to preserve Git’s object model or speak its network protocol. I can keep the useful behavior while reconsidering how it is represented.
+
+Returning to the handbook: does every contribution need to be recorded as a new edition of the entire book? Or could the primary record describe the pages being changed and the earlier versions of those pages it replaces?
+
+Imagine an editor submitting a change slip:
 
 ```text
-“Ignore webhook deliveries already processed”
-  handler.ts
-    replaces the handler version I worked from
-  redelivery.test.ts
-    replaces the test version I worked from
-
-“Correct the installation instructions”
-  docs/installation.md
-    replaces the documentation version its author worked from
+Clarify retry guidance
+  Page: operations/retries.md
+  Based on: the retry page the editor worked from
+  New contents: the revised retry guidance
 ```
 
-These are descriptions for the example, not literal identifiers stored by the tool. Kelp uses hashes to identify the actual records.
+Someone correcting `installation.md` can submit another slip. Both refer to the earlier pages they actually used. Neither needs to be rewritten merely because the other slip arrived first.
 
-The two commits can share earlier history without depending on one another. Receiving the documentation commit first or the service commit first produces the same file state once both and their dependencies are available. Combining that independent work does not require another project-wide merge commit, and neither original commit is rewritten.
+That is the idea behind a Kelp **commit**. Internally, it is an **edit transaction**: one record containing a batch of file edits. Each edit identifies the preceding version or versions of that path and its new contents, or an explicit deletion. These are file-level relationships; the record is not just the displayed line diff.
 
-The implementation follows a simple rule: collect the versions written for each path, then remove versions that an included edit explicitly replaces. Whatever remains describes the current file or its unresolved alternatives. Arrival order does not pick a winner.
+When both independent commits are available, Kelp can include both. Their identities stay the same. It does not need to create a project-wide merge commit solely to join unrelated contributions into a history step.
 
-This draws on ideas explored by [Pijul and Darcs](https://pijul.org/manual/why_pijul.html): changes and their dependencies can be first-class records. My own design uses file-scoped transactions over ordinary saved contents. It does not infer every relationship in the program or reproduce every property of those other systems.
+This draws on a long line of work around changes and dependencies, including [Pijul and Darcs](https://pijul.org/manual/why_pijul.html). I’m exploring a particular combination of file-scoped transactions, local workflows, and partitioned storage. I’m not claiming that changes as a primary concept are new.
 
-That boundary is important. A handler can depend on a shared event type even if the two files have separate edit histories. Kelp does not discover that semantic relationship by reading the code. Tests and review still have work to do.
+## Keep related pages in the same envelope
 
-## Keep a coordinated change in one piece
+Some edits are independent; others need to travel together.
 
-Some work really does need to travel together. If I change the event format, I may need to update the producer, the handler, and the shared type declaration in one commit.
+Suppose the handbook’s installation page refers to a setup script, and we rename that script. Updating only the prose would leave a broken instruction. Updating only the script would leave readers following the old name.
 
-That is why a transaction contains a **batch**, rather than making every file an unrelated unit. The whole set of edits lives in one immutable record. Before the remote publishes it, it verifies that the required contents and earlier transactions exist.
-
-```text
-Commit: add the delivery identifier to the event format
-  ├── producer supplies the identifier
-  ├── shared type describes the identifier
-  └── handler uses the identifier
+```diff
+--- a/docs/installation.md
++++ b/docs/installation.md
+@@ -1 +1 @@
+-Run ./scripts/setup.sh to prepare the environment.
++Run ./scripts/bootstrap.sh to prepare the environment.
 ```
 
-A reader either includes that transaction or does not. It cannot include the producer half and silently discard the handler half while claiming to have included the commit.
+The change slip should contain the whole operation: the revised instruction, the old script’s removal, and the new script’s contents. In Kelp, one transaction can record all of those file edits together.
 
-The same rule applies to dependencies. If a later handler fix is based on the handler version from this batch, it depends on the complete earlier transaction. That preserves the relationship its author chose to express.
+Before the remote publishes that transaction, it checks that the required contents and earlier transactions are available. A reader includes the entire record, not whichever half happened to be easiest to download first.
 
-This gives me two useful properties together: unrelated edits can combine independently, and a deliberately coordinated change remains one unit.
+This also applies to later dependencies. If another edit builds on a file version created by that multi-file transaction, it needs that transaction’s complete logical context.
 
-The guarantee concerns the versioned state. Updating several files in an ordinary directory is still a sequence of filesystem operations. Protecting a local checkout during those operations requires recovery records as well.
+I can therefore preserve a coordinated change without requiring unrelated pages to acquire dependencies on it. In software, that matters for changes such as updating an API and its callers together.
 
-## Choose the part you need to work on
+The tool cannot discover every semantic relationship in the code. Two separate files can still interact badly at runtime. Choosing the right unit of work, reviewing it, and testing the result remain necessary.
 
-For the redelivery fix, I need the webhook service and its shared event types. I also need the relevant root configuration. With a project URL and token from the remote’s operator, I can create a selected-path checkout:
+## Take home one page, or one chapter
+
+Once work has explicit file-level dependencies, a small checkout becomes a natural part of the model.
+
+In the handbook, I want to take home the retry page and enough history to work on it correctly. I don’t need all the installation diagrams or every unrelated chapter’s changes.
+
+With a Kelp remote configured by its operator, I can select an individual file:
 
 ```bash
 export KELP_TOKEN="<your access token>"
-kelp clone https://code.example.com/commerce \
-  --paths services/webhooks,packages/event-types \
-  --paths package.json,bun.lock,.gitignore
-cd commerce
+kelp clone https://code.example.com/handbook \
+  --paths operations/retries.md
+cd handbook
 ```
 
-The address and repository layout here are illustrative. `--paths` accepts project-relative files and directory prefixes, not glob patterns. A prefix such as `services/webhooks` includes that directory’s descendants, not a similarly named sibling.
+Or I can select several files and directories:
 
-The selection is remembered by the checkout. When I edit the handler and its test, the ordinary workflow is:
+```bash
+kelp clone https://code.example.com/handbook \
+  --paths operations,scripts \
+  --paths .gitignore
+```
+
+These are alternative examples using a placeholder server. `--paths` accepts project-relative files and directory prefixes, not glob patterns.
+
+The selected scope is remembered for commits, pulls, and restores. The key rule is that a page absent from my desk is not a page I deleted from the handbook. Files outside the selection are not downloaded or treated as deletions. A file I create outside the selection stays local.
+
+Kelp retrieves relevant transactions and their complete dependencies, along with the historical contents for selected paths. A multi-file transaction retains its full description and original identity even when some of its file contents remain on the remote. Selection changes what is materialized, not what the original author’s commit meant.
+
+If I discover I need another chapter, I can expand the checkout:
+
+```bash
+kelp pull --paths docs
+kelp pull --paths .          # Expand to the full project.
+```
+
+In a software project, the selection must still include what its build and tests require. Kelp cannot infer all those dependencies for me. Nor is a partial checkout a complete backup or a permissions boundary. It is a deliberate choice about which data I need locally.
+
+## Save, inspect, and share deliberately
+
+The ordinary workflow can remain familiar even though the record underneath it is different.
+
+After editing the selected retry page:
 
 ```bash
 kelp diff
-kelp commit -m "Ignore webhook deliveries already processed"
+kelp commit -m "Clarify which failures should be retried"
 kelp push
 ```
 
-`commit` deliberately records the included files. New files inside the selection are included unless ignored; changes and deletions of already-included files remain known. There is no separate staging area. `push` sends committed work, leaving edits made after the commit on my machine.
+`diff` lets me inspect the edit. `commit` saves the included file changes locally. `push` shares committed work, leaving later unfinished edits on my machine.
 
-For a project that starts entirely locally, `kelp init` provides the same saving model without a server or account. A remote can be configured later. Committing and inspecting work do not require connectivity.
+New files within the selected scope are included automatically unless ignore rules exclude them. There is no separate staging tray in this workflow. Saving a version is an explicit decision, and sharing it is another.
 
-The most important partial-checkout rule is easy to say: **a file I didn’t download is not a file I deleted**. Kelp compares only the selected paths when constructing a commit. A file created outside them stays local.
+I can also start a project locally with `kelp init`, without an account or remote. A failed push leaves committed work queued under its original identity, so retrying doesn’t silently create a new commit from whatever is on my desk at that moment.
 
-That rule also has to hold in the history. The client fetches relevant transactions and their full dependencies, but only the historical file contents needed for the selected paths. If a transaction touched the service and a dashboard file, its complete record and identity are retained even when the dashboard’s contents stay remote.
+Meanwhile, another author can share an edit to the installation page. The remote validates each contribution’s actual dependencies. It does not reject my unrelated page correction because the other person advanced a project-wide bookmark first.
 
-When the investigation reaches another package, I can expand the checkout:
+That changes where coordination is needed. We can collect independent contributions while leaving the decision about which combined state to release as a separate concern.
 
-```bash
-kelp pull --paths packages/logging
-kelp pull --paths .             # Expand to the complete project.
+## Keep the useful intelligence in merging
+
+A new model should not make people manually combine changes that a tool can sensibly reconcile.
+
+Suppose the original retry page contains three paragraphs:
+
+```text
+Retry failed requests.
+
+Record the request ID in the logs.
+
+Use a fixed delay between attempts.
 ```
 
-Expansion preserves unfinished edits and reports conflicting local contents when necessary. A saved API-only recovery view keeps its original scope even after the checkout grows, so restoring it does not overwrite files fetched later.
+One author clarifies which failures should be retried. Another independently improves the delay guidance. A combined diff would include both edits:
 
-This is control over downloading, not an access-permission boundary. It also cannot choose my build dependencies for me. The selection has to include whatever the project’s build and tests need. A partial working copy is not automatically a complete project backup.
+```diff
+--- a/operations/retries.md
++++ b/operations/retries.md
+@@ -1 +1 @@
+-Retry failed requests.
++Retry only transient failures.
+@@ -5 +5 @@
+-Use a fixed delay between attempts.
++Use exponential backoff between attempts.
+```
 
-## Share a fix while other work continues
+Both can fit on the same page. Kelp uses the common file ancestor to attempt a three-way text merge, including when there are unfinished local edits to preserve. The original transactions remain available; the combined result is committed explicitly when ready.
 
-The service fix can now be pushed while the documentation work is arriving elsewhere. The remote checks the fix’s real dependencies, rather than comparing its starting point with one project-wide branch tip.
+Now imagine both authors replace the first paragraph, one with “Retry transient failures” and the other with “Never retry automatically.” That is a disagreement about policy. There is no correct answer hidden in which upload arrived last.
 
-If a connection drops, the local committed record stays available for retry with the same identity. Retrying does not create a new version from whatever happens to be in the working folder at that moment.
-
-I use `kelp pull` to obtain other contributions. Independent edits combine without rewriting either person’s commit. Unfinished local edits are handled separately, so pulling committed work does not implicitly publish my draft.
-
-But real teams eventually overlap. Suppose two people both change the handler’s retry behavior. Both contributions can be recorded, while their resulting file contents may need a decision.
-
-For non-overlapping text edits, Kelp uses the common file ancestor to attempt a three-way merge: compare both versions with the one they started from. The original transactions remain intact, and the merged result is committed explicitly.
-
-When both edits change the same logic incompatibly, no timestamp or arrival order can decide the right implementation. Kelp retains the competing versions. An existing contributor can choose a starting side, inspect the code, make the actual resolution, and test it:
+Kelp keeps both alternatives. An existing contributor can choose a starting side, edit it into the intended result, and record the resolution:
 
 ```bash
-kelp pull --keep-local
-# Resolve the handler and run the relevant tests.
-kelp commit -m "Resolve the webhook retry behavior"
+kelp pull --keep-local       # Or --keep-remote.
+# Inspect and resolve the competing contents.
+kelp commit -m "Resolve the retry policy"
 kelp push
 ```
 
-`--keep-remote` selects the other starting side. The flag changes local file contents; the subsequent commit records the decision and names both preceding alternatives. Even choosing one version unchanged acknowledges the competing work. Both original commits remain inspectable afterwards.
+The side choice changes the working file. The resolution commit records both preceding alternatives as parents, even if the final contents match one of them unchanged. Both original contributions remain inspectable.
 
-Binary alternatives and file/directory collisions also need explicit handling. A new clone cannot materialize an arbitrary winner for an unresolved conflict affecting the selected files. That makes richer conflict browsing an important piece of future interface work.
+This is also a limit of the promise. Competing binary files or a file-versus-directory collision need explicit handling, and an unresolved conflict affecting selected files can prevent a new clone from materializing them. Retaining disagreement is valuable, but the interface still has to help people make the decision.
 
-This is a deliberate trade-off. The remote can retain valid contributions without promising that every combination is immediately conflict-free or ready to release. A team that wants one protected, tested line of accepted work needs a coordinated policy for that decision.
+## Publish an exact edition when you need one
 
-## Name the exact project that passed the tests
+Our handbook still needs editions. A release cannot mean “whatever combination of pages each reader happened to collect.”
 
-Independent commits create an important question for the build system. My webhook commit might describe only two files. Which dashboard, documentation, and shared-library versions belong in the project being tested?
+Kelp constructs a **view** from a selected set of transactions and all the earlier work they require. In the analogy, this is an edition assembled from a specified collection of change slips. Given the same complete set, clients can derive the same file alternatives.
 
-Kelp represents a **view** by a selected set of transactions and all the earlier transactions they require. Given the same complete set, clients can derive the same file alternatives. A conflict-free result supplies an exact set of files to work with.
+A conflict-free result identifies exact project contents. A **saved view** records files and their transaction context for recovery. A release tag can give a complete, committed saved view a memorable name.
 
-This is where the distinction between a commit and a project version becomes useful. The commit says what work I contributed. The view says which contributions are included together.
-
-A **saved view** records exact files and their transaction context for local recovery. It may also capture unfinished files before an operation replaces them. That backup is not automatically another shared commit.
-
-The CLI exposes both histories:
-
-```bash
-kelp log             # Saved views and recovery points in this checkout
-kelp log --commits   # The included edit transactions
-```
-
-The entries have hashes, displayed as short unambiguous prefixes. `kelp show` can inspect either kind. Restoring a whole saved state requires a saved-view identifier; one independent file edit alone does not specify the rest of the project.
-
-For a complete, committed state, I can give a saved view a release name:
+From a full checkout of the committed state I want to identify:
 
 ```bash
 kelp tag v1.0
 kelp push
 ```
 
-The tag travels with the project and cannot later be moved onto a different view. If independent contributors create different views with the same name, both are retained and the exact view hash is needed to distinguish them.
+The name is immutable: it cannot later be moved to a different view. If separate contributors independently use the same name for different views, both are retained and the exact view identifier is needed to distinguish them.
 
-I can return to it with:
+This does not make a tag an approval or a test result. It gives those processes something exact to refer to. A team’s protected integration policy still needs coordination; Kelp does not claim that merely storing all contributions produces a tested release.
+
+History remains useful at two levels:
+
+```bash
+kelp log             # Local saved views and recovery points
+kelp log --commits   # Included edit transactions
+```
+
+One tells me which states this checkout saved. The other tells me which pieces of work it contains. `kelp show` can inspect either kind using its hash—a fingerprint, normally displayed as a short unambiguous prefix.
+
+To recover the tagged edition:
 
 ```bash
 kelp restore v1.0
 ```
 
-Restore saves a labelled backup of my current included files first, restores in place, and reports the backup’s view hash. Ignored files and Kelp metadata remain. If I want to share the restored contents, I commit and push them as new edits; I do not rewind everyone else’s history.
+Restore first records a labelled backup of the current included files, then restores in place. The output gives the backup’s view hash so I can get back to my previous work. A partial recovery view retains its original scope, even if I expanded the checkout afterwards.
 
-A release tag identifies code. It does not itself certify a test result or approval. Binding those decisions to exact views is the foundation I want review and CI policy to use, but that policy layer is not implemented as a mandatory gate on every push.
+These recovery records are not automatically shared commits. To share a restored result, I deliberately commit and push it. History journaling, inspection, and recovery remain part of the experience rather than being sacrificed to the different collaboration model.
 
-## Give the project room to grow
+## Put the archive across several buildings
 
-The same repository can become demanding for the machines hosting it. Developers and agents publish changes; build workers request source; file contents and history accumulate.
+The handbook can now be assembled from independent records while still supporting exact editions. That gives the hosting design different units to work with.
 
-There are different ways to add capacity. Putting different repositories on different servers helps a host serve more projects. Keeping extra copies of one repository helps with reading and failure recovery. Dividing one project’s contents and independent records across storage nodes addresses another part of the problem.
+In Kelp’s distributed deployment, **gateways** receive requests, validate contributions, and route them to **storage nodes**. The nodes hold portions of the same project’s contents and journals of its transactions.
 
-Git hosting already has substantial engineering in this area. Meta’s [Mononoke storage design](https://github.com/facebook/sapling/blob/main/eden/mononoke/docs/2.4-storage-architecture.md) separates immutable contents from changing records. Cursor’s [Continuity architecture](https://cursor.com/blog/git-at-any-scale) uses a durable write-ahead log in object storage, letting serving copies of Git repositories be rebuilt and scaled independently.
-
-A **write-ahead log** records work durably before treating it as complete. It is useful for recovery and replication. The further question I’m exploring with Kelp is whether unrelated contributions need one project-wide write position at all.
-
-Kelp’s distributed deployment separates gateways from storage nodes:
+Think of several library buildings, each storing part of the archive, with additional copies for resilience. A visitor uses a counter that knows how to find the records. The counter does not need to own the one master bookmark through which every independent correction must pass.
 
 ```text
-Developer or agent
-        ↓
-Any configured gateway
-  validates the commit and its dependencies
-        ↓
-Storage nodes
-  hold portions of the project’s contents and transaction journals
-  retain additional copies for resilience
+Clients and build workers
+          ↓
+Interchangeable gateways
+          ↓
+Partitioned storage nodes
+  • saved file contents and large-file chunks
+  • complete edit transactions
+  • journals for discovering new work
+  • pinned release views
 ```
 
-A gateway routes requests and validates the work. It does not hold an authoritative database of the project’s current head. Each storage node has a **journal**, its durable record of stored transactions.
+File contents are stored before the transaction describing their edits is published. The required dependencies and replicated contents are checked, then a complete transaction record makes the whole batch discoverable. Another gateway accepting an unrelated commit does not invalidate it.
 
-File contents are uploaded before the transaction is published. The gateway checks the required history and replicated contents; a complete transaction record then makes the entire batch discoverable. An unrelated transaction accepted through another gateway does not invalidate it.
+Pull combines records discovered from the nodes’ journals and retrieves missing dependencies before constructing a view. Duplicate records identify the same work and do not apply it twice. Journal positions help a client resume transfer; they are not a global ordering of everyone’s contributions.
 
-Pull reads the journals, combines the transaction IDs, and fetches any missing dependencies before constructing a view. Duplicate records from replicas identify the same immutable work and do not apply it twice.
+The result is an exact set of observed work, not a promise that every node was read at the same universal “latest instant.” An immutable view is how I state the particular edition I mean.
 
-This yields an exact set of observed contributions. It does not promise a globally synchronized “latest instant” across all nodes. That is another reason to use an immutable view when specifying what a build or release means.
+The distributed implementation defaults to two durable copies of objects, journal entries, and release pins on distinct storage nodes. With three nodes and two copies, reads and writes can continue with one node unavailable. Too many missing journals cause an error rather than a misleading claim that the absent data doesn’t exist.
 
-Distributed gateways default to two durable copies of each object, journal entry, and release pin on distinct storage nodes. With three nodes and two copies, the implementation supports continued reads and writes with one node unavailable. Receipts wait for the required copies. Missing too many journals is an error, not evidence that the missing portion of the project is empty.
+Repair and evacuation let operators restore replica placement or move data off a retiring node. Commit identities stay the same when storage placement changes. Gateways need a consistent membership configuration to discover the same nodes.
 
-Replica repair restores placement, and node evacuation drains a retiring node and copies its records to the remaining members. Adding storage changes placement and discovery without changing existing commit identities. Gateways must use a consistent membership configuration.
+The goal is for adding machines to help **one project**, rather than only making room for another repository. Physical partitioning and node-failure behavior are implemented and tested. Linear performance scaling is still something to measure, not something I can infer from the diagram. Each node still serializes its own database writes, and validation, discovery, and large views have costs.
 
-This removes a project-wide head from the contribution path. It does not remove every bottleneck: each node still serializes its own database writes, validation can contact dependency owners, and larger views cost more to process. Linear throughput growth and production failure-domain behavior need measurements of their own.
+## What the clean slate buys—and what it costs
 
-## Fit ordinary project files into that model
+The freedom to choose a new model lets these ideas fit together: take one page or chapter, record edits with narrow dependencies, combine independent work, preserve conflicts, name exact editions, and distribute the stored records.
 
-The project may include generated assets or other files much larger than source code. I want them to use the same commit, push, pull, and restore workflow.
+There are practical file concerns too. Large files use reusable chunks, symlinks retain their targets, and native filenames are preserved on filesystems that can represent them. `kelp gc` compacts physical storage while retaining logical commits, conflicts, saved views, and recovery backups.
 
-For regular files larger than 16 MiB, Kelp streams the contents into 4 MiB chunks, with a bounded tree describing how to reconstruct the file. Unchanged chunks can be reused. The current chunk boundaries are fixed, so inserting data near the beginning of a file can shift later boundaries and reduce reuse.
+But a clean slate is not a free upgrade. Git’s existing ecosystem is an enormous advantage. Kelp has its own format and protocol. Git import can preserve committed history, merge results, modes, symlinks, tags, and original commit information, but that is not the same thing as complete two-way Git compatibility. External LFS contents and submodule projects remain separate concerns.
 
-The chunks can be stored independently of the commit that refers to them. This makes large-file contents fit the partitioned storage model, while the transaction still describes one logical file edit.
+There are also measured costs. In a [recorded development fixture](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/benchmarks/results/compacted.json) with 1,000 repetitive 4 KiB files and 100 single-file edits, compaction left Kelp slightly smaller than maintained Git: 323,584 versus 330,148 bytes. Kelp’s status and initial capture were slower. The [benchmark notes](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/benchmarks/README.md) explain the workload, persistence differences, and trade-offs. Those development results are not a blanket claim about current-release performance.
 
-Symlinks retain their link targets rather than copying the target’s contents. Native filenames are preserved, including non-UTF-8 names on supporting Unix filesystems. A checkout first checks that the destination can represent the requested names and links.
+The current implementation is 0.0.4. Per-file and directory checkouts, independent transactions, text merging, saved views, large-file chunks, replicated storage, and Git import are working parts of it. There is more to do on very large histories, richer conflict tools, author signatures, finer-grained access control, and review or CI policy around selected views.
 
-There are still bounds. Transaction metadata is limited to 2 MiB, so a single commit cannot describe an unlimited number of paths. Very large maps and histories need further work on indexing and representation.
+The question that matters to me is whether the freedom to redesign those foundations can produce a better overall experience. Can a person—or an agent—work on the part they need, share it predictably, and recover confidently? Can a repository grow across machines while remaining one understandable project?
 
-Existing Git projects provide another practical test of the model:
-
-```bash
-kelp import ../commerce-git commerce-kelp --ref main
-```
-
-Import reads the selected committed ancestry, including merge results, file modes, symlinks, and reachable tags. It retains original Git commit bytes and author/committer information as provenance—the record of where the work came from. An old merge result should survive the conversion exactly, rather than be recomputed into different files.
-
-The source repository and its unfinished files stay untouched. Git is required for import. External Git LFS payloads and submodule projects remain external; converting the Git history is not enough to obtain those separate contents. A two-way Git bridge is a further feature beyond this import path.
-
-## Find out where the idea holds up
-
-For this design, a convincing demonstration needs more than two edits combining in a diagram.
-
-I added [workflow tests](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/apps/cli/tests/workflows.rs) where two clients push different-file commits without first pulling, a third client retrieves both, and unfinished local files remain unshared. Other tests retain overlapping alternatives and check that resolving them records both parents.
-
-The [partial-checkout tests](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/apps/cli/tests/partial.rs) check a less visible failure mode: excluded files must remain outside the checkout and must not become accidental deletions. Cross-directory commits keep their original metadata and identity. Recovery is also tested after the selected scope expands.
-
-The [distributed tests](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/apps/cli/tests/distributed.rs) use separate HTTP storage services and databases, multiple gateways, an added storage node, node loss, and evacuation. They establish concrete partitioning and recovery behavior. They do not establish production-scale performance merely because several nodes are involved.
-
-I’ve also recorded [local and network benchmarks](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/benchmarks/README.md). They exposed costs the architecture alone would not tell me: reading many files initially, repeated history processing, small network requests, and storing recovery data alongside transaction history.
-
-Caching current file state and batching transfers helped those workloads. Physical compaction matters too. `kelp gc` groups stored objects into bounded compressed packs while retaining all logical commits, conflicting alternatives, saved views, and recovery backups. The original hashes still identify the same contents.
-
-In the [recorded compaction run](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/benchmarks/results/compacted.json), the fixture had 1,000 repetitive 4 KiB files followed by 100 single-file commits. After maintenance, Kelp occupied 323,584 bytes and Git 330,148 bytes. But Kelp’s median status took 20.6 ms against Git’s 11.6 ms, and initial capture took about 23.4 seconds against half a second for Git.
-
-Those numbers are from a recorded development build, not a fresh benchmark of the entire current release. The fixture, warm-cache conditions, persistence policies, and retained recovery data matter. The small storage advantage does not cancel out the slower operations, and repetitive text does not predict how compressed assets will behave.
-
-That is the kind of evidence I want to keep alongside the idea: which properties the model demonstrates, which operations have improved, and which costs still make it harder to use.
-
-## What I want the workflow to feel like
-
-For the webhook fix, the desired experience is straightforward. I get the service and dependencies I need. I make an intentional commit. I can share it while unrelated work continues. When there is a real overlap, the competing work stays available. When I need a release or a recovery point, I can identify exact files.
-
-The implementation described here is Kelp 0.0.4. Its release records 49 passing local tests across the transaction model, scoped recovery, text merging, large files, import, tags, and storage failures. It is still an early system.
-
-There is more to do on conflict browsing, much larger maps and histories, cryptographic author identities and signatures, finer-grained access controls, and review or CI policy around selected views. The current authenticated gateway/storage deployment is not an untrusted peer-to-peer exchange system.
-
-I also need to find out how other people understand the workflow. Can they predict what will be committed and shared? Is choosing a saved view for recovery clear? Does working on part of a repository reduce the work they have to think about, or merely move it somewhere less obvious?
-
-The ambition is to let a shared codebase contain many independent streams of work without losing the ability to act on the project as a whole. File-scoped commits, exact views, and partitioned storage are the pieces I’m using to explore that. Their value has to show up in the ordinary work of fixing, testing, sharing, and recovering code.
+That is what I mean by reimagining Git today. Start with the job version control needs to do, keep the parts that make it valuable, and give ourselves permission to choose a different shape for the rest.
 
 ## Notes and sources
 
-This article describes [my 0.0.4 implementation](https://github.com/darylcecile/kelp/tree/f370c0741bebc4903de76f2cf4f2a0b1d1065f58), inspected on 25 September 2026. The commerce repository is an illustrative layout, not a claim about a particular production deployment. Local commit, saved-view, tag, restore, and compaction behavior was checked with the released CLI. The performance figures come from the linked recorded development run.
+The handbook is an analogy for files, snapshots, branches, dependencies, and storage. The diffs are illustrative editing examples. This article describes [my Kelp 0.0.4 implementation](https://github.com/darylcecile/kelp/tree/f370c0741bebc4903de76f2cf4f2a0b1d1065f58), inspected on 25 September 2026.
 
-- [Commands and current behavior](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/README.md)
-- [My transaction and saved-view design](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/PRD/03-data-model.md)
-- [The implemented dependency and view rules](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/crates/kelp-core/src/transactions.rs)
-- [Distribution, replication, and consistency](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/PRD/04-distribution.md)
-- [Benchmark method and interpretation](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/benchmarks/README.md)
-- [Research and the sources I drew on](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/PRD/sources.md)
+- [Pro Git: a short history of Git](https://git-scm.com/book/en/v2/Getting-Started-A-Short-History-of-Git)
+- [Pro Git: snapshots, local operations, and the staging area](https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F)
+- [Kelp’s commands and current behavior](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/README.md)
+- [My transaction and view design](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/PRD/03-data-model.md)
+- [Distribution and its consistency boundaries](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/PRD/04-distribution.md)
+- [Research and prior art](https://github.com/darylcecile/kelp/blob/f370c0741bebc4903de76f2cf4f2a0b1d1065f58/PRD/sources.md)
