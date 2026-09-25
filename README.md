@@ -119,6 +119,9 @@ excluded from listings, search, and article routes. Use unique plain-text
 `##` headings for the automatically generated contents. Fenced code blocks use
 the site's syntax highlighting and copy button.
 
+Use `diff` code fences for review-style diffs: file headers, line numbers, and
+highlighted additions and removals. Diffs use the code-block theme without a copy button.
+
 Interactive components live in `src/components/ideas/`. Register them in
 `IdeaMarkdown.tsx`, then embed them directly in MDX, e.g. `<MyExperiment />`.
 Keep state in a small client component so the surrounding essay renders on the
