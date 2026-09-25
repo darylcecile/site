@@ -139,11 +139,9 @@ Imagine an editor submitting a change slip: “replace the retry page I worked f
 
 That is the idea behind a Kelp **commit**. Internally, it is an **edit transaction**: one record containing a batch of file edits. Each edit identifies the preceding version or versions of that path and its new contents, or an explicit deletion. These are file-level relationships; the record is not just the displayed line diff.
 
-When both independent commits are available, Kelp can include both. Their identities stay the same. It does not need to create a project-wide merge commit solely to join unrelated contributions into a history step.
+With both corrections, the handbook contains the revised retry guidance and the corrected installation instructions. The same two saved edits produce that result whichever arrives first; neither edit needs to be rewritten.
 
-In the model below, share the edits in either order. Then make the second editor change the same retry paragraph instead: the file-parent rule will preserve both competing versions until you record a resolution.
-
-<IndependentEdits />
+The practical benefit is that I can finish and share my page correction without first integrating an unrelated correction just because it reached the shared host earlier. Work that actually overlaps still needs a decision, as we’ll see in the merging example.
 
 This draws on a long line of work around changes and dependencies, including [Pijul and Darcs](https://pijul.org/manual/why_pijul.html). I’m exploring a particular combination of file-scoped transactions, local workflows, and partitioned storage. I’m not claiming that changes as a primary concept are new.
 
@@ -357,7 +355,7 @@ That is what I mean by reimagining Git today. Start with the job version control
 
 ## Notes and sources
 
-The handbook is an analogy for files, snapshots, branches, dependencies, and storage. The diffs and diagrams are illustrative examples. The interactive model calculates file alternatives from named example records; it does not run Kelp or implement text merging. This article describes [my Kelp 0.0.4 implementation](https://github.com/darylcecile/kelp/tree/f370c0741bebc4903de76f2cf4f2a0b1d1065f58), inspected on 25 September 2026.
+The handbook is an analogy for files, snapshots, branches, dependencies, and storage. The diffs and diagrams are illustrative examples. This article describes [my Kelp 0.0.4 implementation](https://github.com/darylcecile/kelp/tree/f370c0741bebc4903de76f2cf4f2a0b1d1065f58), inspected on 25 September 2026.
 
 - [Pro Git: a short history of Git](https://git-scm.com/book/en/v2/Getting-Started-A-Short-History-of-Git)
 - [Pro Git: snapshots, local operations, and the staging area](https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F)
