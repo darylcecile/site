@@ -40,7 +40,7 @@ When we make a Git commit, we record an edition of the handbook. The record says
 
 There is no need to reprint every unchanged page. If the installation page is identical to the one already in the archive, the new edition can refer to that same stored page. Git’s fingerprints of stored contents make that reuse possible.
 
-The analogy is about the logical record, not a claim that Git physically copies a whole book on every save. Underneath, it shares and compresses data very effectively.
+<HandbookEditions />
 
 Suppose we clarify a page about retrying failed requests. A **diff** shows what changed:
 
@@ -76,6 +76,8 @@ A **branch** is a movable bookmark in that history. A bookmark called `main` mig
 Two authors can start from the same edition and work independently. One improves the retry guidance, while another corrects the installation instructions. Git can compare both with their common starting edition and usually combine edits to different pages automatically.
 
 That is the basic idea of a **three-way merge**: look at the shared starting point and at what each person changed. If both replace the same sentence with incompatible instructions, the tool asks for a decision instead of guessing.
+
+<HandbookBranches />
 
 We can send our recorded work to another repository with a **push**, and fetch work from it. In practice, teams often gather around a shared host, but the useful local copy remains ours.
 
@@ -133,20 +135,15 @@ For this experiment, I don’t have to preserve Git’s object model or speak it
 
 Returning to the handbook: does every contribution need to be recorded as a new edition of the entire book? Or could the primary record describe the pages being changed and the earlier versions of those pages it replaces?
 
-Imagine an editor submitting a change slip:
-
-```text
-Clarify retry guidance
-  Page: operations/retries.md
-  Based on: the retry page the editor worked from
-  New contents: the revised retry guidance
-```
-
-Someone correcting `installation.md` can submit another slip. Both refer to the earlier pages they actually used. Neither needs to be rewritten merely because the other slip arrived first.
+Imagine an editor submitting a change slip: “replace the retry page I worked from with these revised contents.” Someone correcting `installation.md` can submit another slip. Both refer to the earlier pages they actually used. Neither needs to be rewritten merely because the other slip arrived first.
 
 That is the idea behind a Kelp **commit**. Internally, it is an **edit transaction**: one record containing a batch of file edits. Each edit identifies the preceding version or versions of that path and its new contents, or an explicit deletion. These are file-level relationships; the record is not just the displayed line diff.
 
 When both independent commits are available, Kelp can include both. Their identities stay the same. It does not need to create a project-wide merge commit solely to join unrelated contributions into a history step.
+
+In the model below, share the edits in either order. Then make the second editor change the same retry paragraph instead: the file-parent rule will preserve both competing versions until you record a resolution.
+
+<IndependentEdits />
 
 This draws on a long line of work around changes and dependencies, including [Pijul and Darcs](https://pijul.org/manual/why_pijul.html). I’m exploring a particular combination of file-scoped transactions, local workflows, and partitioned storage. I’m not claiming that changes as a primary concept are new.
 
@@ -200,6 +197,8 @@ kelp clone https://code.example.com/handbook \
 These are alternative examples using a placeholder server. `--paths` accepts project-relative files and directory prefixes, not glob patterns.
 
 The selected scope is remembered for commits, pulls, and restores. The key rule is that a page absent from my desk is not a page I deleted from the handbook. Files outside the selection are not downloaded or treated as deletions. A file I create outside the selection stays local.
+
+<SelectedPages />
 
 Kelp retrieves relevant transactions and their complete dependencies, along with the historical contents for selected paths. A multi-file transaction retains its full description and original identity even when some of its file contents remain on the remote. Selection changes what is materialized, not what the original author’s commit meant.
 
@@ -286,6 +285,8 @@ Kelp constructs a **view** from a selected set of transactions and all the earli
 
 A conflict-free result identifies exact project contents. A **saved view** records files and their transaction context for recovery. A release tag can give a complete, committed saved view a memorable name.
 
+<PinnedEdition />
+
 From a full checkout of the committed state I want to identify:
 
 ```bash
@@ -324,17 +325,7 @@ In Kelp’s distributed deployment, **gateways** receive requests, validate cont
 
 Think of several library buildings, each storing part of the archive, with additional copies for resilience. A visitor uses a counter that knows how to find the records. The counter does not need to own the one master bookmark through which every independent correction must pass.
 
-```text
-Clients and build workers
-          ↓
-Interchangeable gateways
-          ↓
-Partitioned storage nodes
-  • saved file contents and large-file chunks
-  • complete edit transactions
-  • journals for discovering new work
-  • pinned release views
-```
+<DistributedArchive />
 
 File contents are stored before the transaction describing their edits is published. The required dependencies and replicated contents are checked, then a complete transaction record makes the whole batch discoverable. Another gateway accepting an unrelated commit does not invalidate it.
 
@@ -366,7 +357,7 @@ That is what I mean by reimagining Git today. Start with the job version control
 
 ## Notes and sources
 
-The handbook is an analogy for files, snapshots, branches, dependencies, and storage. The diffs are illustrative editing examples. This article describes [my Kelp 0.0.4 implementation](https://github.com/darylcecile/kelp/tree/f370c0741bebc4903de76f2cf4f2a0b1d1065f58), inspected on 25 September 2026.
+The handbook is an analogy for files, snapshots, branches, dependencies, and storage. The diffs and diagrams are illustrative examples. The interactive model calculates file alternatives from named example records; it does not run Kelp or implement text merging. This article describes [my Kelp 0.0.4 implementation](https://github.com/darylcecile/kelp/tree/f370c0741bebc4903de76f2cf4f2a0b1d1065f58), inspected on 25 September 2026.
 
 - [Pro Git: a short history of Git](https://git-scm.com/book/en/v2/Getting-Started-A-Short-History-of-Git)
 - [Pro Git: snapshots, local operations, and the staging area](https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F)

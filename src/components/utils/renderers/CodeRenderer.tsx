@@ -9,6 +9,7 @@ import './twoslash.css'
 import { cacheLife } from 'next/cache';
 import { Suspense } from 'react';
 import sakoaGrammar from '@/lib/shiki/sakoa.tmLanguage.json';
+import DiffRenderer from './DiffRenderer';
 
 type CodeRendererProps = {
 	lang: string;
@@ -23,7 +24,7 @@ function getHighlighter() {
 		highlighterPromise = (async () => {
 			const hl = await getSingletonHighlighter({
 				themes: ['github-dark'],
-				langs: ['typescript', 'tsx', 'rust', 'html', 'bash', 'json', 'diff'],
+				langs: ['typescript', 'tsx', 'rust', 'html', 'bash', 'json'],
 			});
 			await hl.loadLanguage({
 				...(sakoaGrammar as any),
@@ -70,6 +71,7 @@ function CodeFallback({ rawCode }: { rawCode: string }) {
 }
 
 export default function CodeRenderer(props: CodeRendererProps) {
+	if (props.lang === 'diff') return <DiffRenderer>{props.children}</DiffRenderer>;
 	const rawCode = props.children;
 	return (
 		<Suspense fallback={<CodeFallback rawCode={rawCode} />}>
