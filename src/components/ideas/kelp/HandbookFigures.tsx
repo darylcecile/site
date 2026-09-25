@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 
 function Diagram({ title, caption, children }: { title: string; caption: string; children: ReactNode }) {
 	return (
-		<figure aria-label={title} className="not-prose my-10 overflow-hidden rounded-2xl border border-border bg-background/80">
+		<figure aria-label={title} className="not-prose my-10 overflow-hidden rounded-md border border-border bg-background/80">
 			<div className="p-5 sm:p-6">
 				<p className="mb-5 text-sm font-medium">{title}</p>
 				{children}

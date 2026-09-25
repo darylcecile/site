@@ -1,16 +1,24 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowDown, Check, FileText } from 'lucide-react';
+import { ArrowUpRight, Check } from 'lucide-react';
 import { Experiment, experimentButton } from '../Experiment';
 import { handbookView, originalHandbook, retryEdit, retryResolution, secondEdit } from './editModel';
+import { cn } from '@/lib/utils';
 
 function explainView(resolved: boolean, conflicted: boolean, sharedCount: number) {
-	if (resolved) return 'The resolution names both competing versions as parents. Both original commits remain in the history below.';
-	if (conflicted) return 'Both retry policies survive. The last commit received cannot erase the other one; neither was based on the other’s version.';
-	if (sharedCount === 2) return 'Both edits fit. Reset and share them in the opposite order: you will get the same file contents without rewriting either commit.';
-	if (sharedCount === 1) return 'One new commit has arrived. The other editor’s work has not been shared yet.';
-	return 'Neither edit has arrived. These are the original pages both editors started from.';
+	if (resolved) return 'Resolution saved. Both original edits remain in history.';
+	if (conflicted) return 'Both versions remain. Neither edit replaces the other.';
+	if (sharedCount === 2) return 'Both edits fit, in either order. Reset to try the reverse.';
+	if (sharedCount === 1) return 'One edit received. Share the other to combine them.';
+	return 'Share either edit to see the result.';
+}
+
+function versionColor(id: string) {
+	if (id === retryEdit.id) return 'bg-blue-500';
+	if (id === 'second-edit') return 'bg-pink-500';
+	if (id === retryResolution.id) return 'bg-purple-500';
+	return 'bg-muted-foreground/40';
 }
 
 export function IndependentEdits() {
@@ -40,39 +48,47 @@ export function IndependentEdits() {
 	}
 
 	return (
-		<Experiment number="01" title="Does the order of sharing matter?" description="Both editors started from the original handbook. Choose what the second editor changes, then share the two commits in either order." kind="File-version model" onReset={reset}>
-			<div role="group" aria-label="What the second editor changes" className="mb-5 flex flex-wrap gap-2">
-				<button type="button" className={`${experimentButton} ${!samePage ? 'border-blue-500 text-blue-700 dark:text-blue-300' : ''}`} aria-pressed={!samePage} onClick={() => chooseOverlap(false)}>A different page</button>
-				<button type="button" className={`${experimentButton} ${samePage ? 'border-pink-500 text-pink-700 dark:text-pink-300' : ''}`} aria-pressed={samePage} onClick={() => chooseOverlap(true)}>The same retry paragraph</button>
+		<Experiment title="Does the order of sharing matter?" description="Two edits to the same starting handbook. Share them in either order." onReset={reset}>
+			<div role="group" aria-label="What the editors change" className="mb-4 inline-flex max-w-full gap-1 rounded-md bg-muted/60 p-1">
+				{[{ label: 'Different pages', overlap: false }, { label: 'Same paragraph', overlap: true }].map(option => <button
+					key={option.label}
+					type="button"
+					className={cn('min-h-9 rounded-sm px-3 py-1.5 text-xs font-medium', samePage === option.overlap ? 'bg-background text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground')}
+					aria-pressed={samePage === option.overlap}
+					onClick={() => chooseOverlap(option.overlap)}
+				>{option.label}</button>)}
 			</div>
-			<div className="grid gap-3 sm:grid-cols-2">
-				{drafts.map((commit, index) => <div key={commit.id} className={`flex flex-col rounded-xl border p-4 ${index === 0 ? 'border-blue-500/30 bg-blue-500/5' : 'border-pink-500/30 bg-pink-500/5'}`}>
-					<p className="text-xs text-muted-foreground">Editor {index + 1}</p>
-					<p className="mt-1 text-sm font-medium">{commit.label}</p>
-					{Object.entries(commit.edits).map(([path, edit]) => <div key={path} className="my-3">
-						<p className="break-all font-mono text-[11px] text-muted-foreground">{path}</p>
-						<p className="mt-2 text-sm leading-6">“{edit.content}”</p>
+			<div className="grid grid-cols-2 divide-x divide-border">
+				{drafts.map((commit, index) => {
+					const sent = received.includes(commit.id);
+					return <div key={commit.id} className={cn('flex min-w-0 flex-col', index === 0 ? 'pr-4' : 'pl-4')}>
+						<p className="flex items-center gap-2 text-xs font-medium"><span className={cn('size-1.5 rounded-full', versionColor(commit.id))} aria-hidden="true" />Editor {index + 1}</p>
+						{Object.entries(commit.edits).map(([path, edit]) => <div key={path} className="mt-2 mb-3">
+							<p className="truncate font-mono text-[11px] text-muted-foreground" title={path}>{path.split('/').at(-1)}</p>
+							<p className="mt-2 text-xs leading-5">{edit.content}</p>
+						</div>)}
+						<button type="button" aria-label={sent ? `Editor ${index + 1}’s commit is shared` : `Share editor ${index + 1}’s commit`} className={cn(experimentButton, 'mt-auto inline-flex items-center justify-center gap-1.5 rounded-sm')} disabled={sent} onClick={() => share(commit.id)}>
+							{sent ? <Check size={13} aria-hidden="true" /> : <ArrowUpRight size={13} aria-hidden="true" />}{sent ? 'Shared' : 'Share edit'}
+						</button>
+					</div>;
+				})}
+			</div>
+			<div aria-live="polite" aria-atomic="true" className="mt-5 border-t border-border pt-4">
+				<div className="mb-2 flex items-center justify-between gap-3"><p className="text-xs font-medium">Shared result</p><span className={cn('text-[11px]', conflicted ? 'text-red-700 dark:text-red-300' : 'text-muted-foreground')}>{conflicted ? 'Conflict' : resolved ? 'Resolved' : `${received.length} / 2 edits shared`}</span></div>
+				<dl className="divide-y divide-border/60">
+					{pages.map(page => <div key={page.path} className="py-3">
+						<dt className="font-mono text-[11px] text-muted-foreground" title={page.path}>{page.path.split('/').at(-1)}</dt>
+						<dd className="mt-2"><ul className="space-y-2">{page.versions.map(version => <li key={version.id} className="flex items-baseline gap-2 text-xs leading-5"><span className={cn('size-1.5 shrink-0 rounded-full', versionColor(version.id))} aria-hidden="true" />{version.content}</li>)}</ul></dd>
 					</div>)}
-					<button type="button" className={`${experimentButton} mt-auto`} disabled={received.includes(commit.id)} onClick={() => share(commit.id)}>{received.includes(commit.id) ? 'Shared' : `Share editor ${index + 1}’s commit`}</button>
-				</div>)}
+				</dl>
+				<p className="mt-2 text-xs leading-6 text-muted-foreground">{explainView(resolved, conflicted, received.length)}</p>
 			</div>
-			<div className="flex items-center justify-center gap-2 py-4 text-xs text-muted-foreground"><ArrowDown size={15} aria-hidden="true" /> Combine the received records</div>
-			<div aria-live="polite" aria-atomic="true" className="rounded-xl border border-border p-4">
-				<div className="mb-4 flex flex-wrap items-center justify-between gap-2"><p className="text-sm font-medium">Shared file versions</p><span className={`text-xs ${conflicted ? 'text-red-700 dark:text-red-300' : 'text-muted-foreground'}`}>{conflicted ? 'A decision is needed' : 'One version per page'}</span></div>
-				<div className="space-y-3">
-					{pages.map(page => <div key={page.path} className="rounded-lg bg-muted/30 p-3">
-						<p className="mb-2 flex items-start gap-2 break-all font-mono text-[11px] text-muted-foreground"><FileText size={13} className="shrink-0" aria-hidden="true" />{page.path}</p>
-						<ul className="space-y-2">{page.versions.map(version => <li key={version.id} className={`rounded-md px-3 py-2 text-sm ${page.versions.length > 1 ? 'border border-red-500/25 bg-red-500/5' : 'bg-background'}`}>{version.content}</li>)}</ul>
-					</div>)}
-				</div>
-				<p className="mt-4 text-sm leading-7 text-muted-foreground">{explainView(resolved, conflicted, received.length)}</p>
-			</div>
-			{conflicted && <button type="button" className={`${experimentButton} mt-4`} onClick={() => setResolved(true)}>Resolve using transient retries</button>}
-			<div className="mt-5 border-t border-border pt-4">
-				<p className="text-xs font-medium">Retained history <span className="font-normal text-muted-foreground">· shown in arrival order, not a global project order</span></p>
-				<ul className="mt-2 space-y-2 text-xs text-muted-foreground">{commits.map(commit => <li key={commit.id} className="flex items-center gap-2"><Check size={12} aria-hidden="true" />{commit.label}</li>)}</ul>
-			</div>
-			<p className="mt-4 text-xs leading-6 text-muted-foreground">This in-page model applies the file-parent rule to two example files. The competing edits change the same paragraph; no text merge, hash generation, CLI, or network service runs here.</p>
+			{conflicted && <button type="button" aria-label="Resolve using transient retries" className={`${experimentButton} mt-3 rounded-sm`} onClick={() => setResolved(true)}>Keep editor 1’s version</button>}
+			<details className="mt-4 border-t border-border pt-3 text-xs text-muted-foreground">
+				<summary className="cursor-pointer rounded py-1.5 focus-visible:outline-2 focus-visible:outline-ring">Retained history · {commits.length} {commits.length === 1 ? 'record' : 'records'}</summary>
+				<ul className="mt-2 space-y-2 pl-4">{commits.map(commit => <li key={commit.id} className="flex items-center gap-2"><Check size={12} aria-hidden="true" />{commit.label}</li>)}</ul>
+				<p className="mt-3 pl-4 leading-5">Arrival order is shown here; it does not choose a winning version. This is a file-parent model, not a running CLI or text-merge engine.</p>
+			</details>
 		</Experiment>
 	);
 }
