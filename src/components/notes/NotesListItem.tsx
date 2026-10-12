@@ -1,30 +1,8 @@
 
-import dayjs from 'dayjs';
 import { cn } from '@/lib/utils';
-import Link from 'next/link';
-import type { getAllNotesDataSorted } from '@/lib/repo/notesRepo';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
-import advancedFormat from 'dayjs/plugin/advancedFormat';
-import duration from 'dayjs/plugin/duration';
-import relativeTime from 'dayjs/plugin/relativeTime';
+import Link from '@/components/utils/Link';
 import { ViewTransition } from 'react'
-import { ExtractEntryMetadataType } from '@shrubs/studio';
-import studio from '@/../studio';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.extend(customParseFormat);
-dayjs.extend(advancedFormat);
-dayjs.extend(duration);
-dayjs.extend(relativeTime);
-
-type Note = ExtractEntryMetadataType<typeof studio, 'notes'> & {
-	slug: string;
-	readTime: string;
-	publishDate: Date;
-};
+import type { NoteListItem } from '@/lib/repo/notesRepo';
 
 const rainbowColors = [
 	{ text: 'text-red-500', bg: 'focus-within:bg-red-500/10', var: '--color-red-500' },
@@ -36,7 +14,7 @@ const rainbowColors = [
 	{ text: 'text-pink-500', bg: 'focus-within:bg-pink-500/10', var: '--color-pink-500' }
 ];
 
-export default function NotesListItem(props: { note: Note, index: number }) {
+export default function NotesListItem(props: { note: NoteListItem, index: number }) {
 	const { note, index: i } = props;
 
 	return (
@@ -52,7 +30,7 @@ export default function NotesListItem(props: { note: Note, index: number }) {
 		>
 			<ViewTransition name={`notes-${note.slug}`}>
 				<h1 className="text-foreground text-lg">{note.title}</h1>
-				<p className="text-foreground text-sm opacity-75">{dayjs.tz(note.publishDate).format('ddd Do MMM[,] YYYY')} &middot; {note.readTime}</p>
+				<p className="text-foreground text-sm opacity-75">{note.publishDateLabel} &middot; {note.readTime}</p>
 			</ViewTransition>
 			<span className={cn('text-foreground text-xs', rainbowColors[i % rainbowColors.length].text)}>Read more</span>
 

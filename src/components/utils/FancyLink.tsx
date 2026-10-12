@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
-import type { LinkProps } from "next/link";
-import Link from "next/link";
+import Link, { type LinkProps } from '@/components/utils/Link';
 import { Suspense, type PropsWithChildren } from "react";
 import { GitHubUser } from "../SocialPreview/GithubSocialPreview";
+import { siteUrl } from '@/lib/site';
 
 type Props = PropsWithChildren<{
 	hideFavicon?: boolean;
@@ -12,13 +12,12 @@ type Props = PropsWithChildren<{
 	manualColor?: boolean
 } & LinkProps>;
 
-const base = process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000';
 // const FAV_URL = "https://icons.duckduckgo.com/ip3/{{host}}.ico";
 const FAV_URL = "https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url={{origin}}&size=32";
 
 function getFaviconUrl(url: string) {
-	const host = new URL(url, base).host;
-	const origin = new URL(url, base).origin;
+	const host = new URL(url, siteUrl).host;
+	const origin = new URL(url, siteUrl).origin;
 	const favUrl = FAV_URL.replace("{{origin}}", origin).replace("{{host}}", host);
 	return favUrl;
 }

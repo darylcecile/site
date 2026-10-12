@@ -1,53 +1,23 @@
-import fs, { existsSync } from "node:fs";
-import path from "node:path";
-import { cache } from "react";
-import { Mark } from "../markdown";
-import { cacheLife, cacheTag } from "next/cache";
+import { content } from '@/generated/content/metadata.server';
+import type { ContentEntry } from '@/lib/content/types';
 
-export type Project = {
-	name: string;
+export type Project = ContentEntry<'projects'>['metadata'] & {
 	id: string;
 	summary: string;
 	content: string;
-	startYear: number;
-	endYear?: number;
-	image?: string;
-	link: string;
-	sticky?: boolean;
-	tokens: string[];
-	repo?: string | string[];
 };
 
-const projectsDirectory = path.join(process.cwd(), "src/projects_markdown");
+function toProject(entry: ContentEntry<'projects'>): Project {
+	return {
+		...entry.metadata,
+		id: entry.slug,
+		summary: entry.renderedContent,
+		content: entry.content,
+	};
+}
 
-export const getAllProjectsDataSorted_UnCached = () => {
-	// Get file names under /notes
-	const fileNames = fs.readdirSync(projectsDirectory);
-	const allProjectsData: Project[] = fileNames.filter(fileName => {
-		if (!fileName.endsWith(".md") && !fileName.endsWith('.mdx')) return false;
-		return true;
-	}).map((fileName) => {
-		// Remove ".md" from file name to get id
-		const id = fileName.replace(/\.(?:md|mdx)$/, "");
-
-		// Read markdown file as string
-		const fullPath = path.join(projectsDirectory, fileName);
-		const fileContents = fs.readFileSync(fullPath, "utf8");
-		const markdownParser = new Mark();
-
-		// Use gray-matter to parse the post metadata section
-		const matterResult: Partial<Project & { renderedContent: string }> =
-			markdownParser.parse(fileContents);
-
-		// Combine the data with the id
-		return <Project>{
-			id,
-			...matterResult,
-			summary: matterResult.renderedContent,
-			content: matterResult.content,
-		};
-	});
-	return allProjectsData.sort((a, b) => {
+export function getAllProjectsDataSorted() {
+	return content.projects.map(toProject).sort((a, b) => {
 		// Sticky projects first.
 		if (!!a.sticky !== !!b.sticky) return a.sticky ? -1 : 1;
 
@@ -64,45 +34,46 @@ export const getAllProjectsDataSorted_UnCached = () => {
 		const be = b.endYear ?? Number.POSITIVE_INFINITY;
 		return be - ae;
 	});
-};
+}
 
-export const getAllProjectsDataSorted = cache(async () => {
-	"use cache";
+export function getProjectData(id: string) {
+	const project = content.projects.find(project => project.slug === id);
+	return project ? toProject(project) : null;
+}
 
-	cacheTag("projects-data");
-	cacheLife('minutes');
+function toPlainSummary(markdown: string, max = 180): string {
+	const firstParagraph = markdown.trim().split(/\n\s*\n/)[0] ?? '';
+	const text = firstParagraph
+		.replace(/<[^>]+>/g, ' ')
+		.replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+		.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+		.replace(/[*_`>#]/g, '')
+		.replace(/\s+/g, ' ')
+		.trim();
+	if (text.length <= max) return text;
+	const truncated = text.slice(0, max);
+	const lastSpace = truncated.lastIndexOf(' ');
+	return `${(lastSpace > 40 ? truncated.slice(0, lastSpace) : truncated).trimEnd()}…`;
+}
 
-	return getAllProjectsDataSorted_UnCached();
-});
-
-export const getAllProjectIds = cache(() => {
-	const fileNames = fs.readdirSync(projectsDirectory);
-	return fileNames.filter(fileName => {
-		if (!fileName.endsWith(".md") && !fileName.endsWith('.mdx')) return false;
-		return true;
-	}).map((fileName) => {
-		return {
-			params: {
-				id: fileName.replace(/\.md$/, ""),
-			},
-		};
-	});
-});
-
-export const getProjectData = cache((id: string) => {
-	const fullPath = path.join(projectsDirectory, `${id}.md`);
-
-	if (!existsSync(fullPath)) return null;
-
-	const fileContents = fs.readFileSync(fullPath, "utf8");
-	const markdownParser = new Mark();
-
-	const project = markdownParser.parse(fileContents) as any;
-
+function toProjectPage(project: Project) {
+	const { id, name, summary, startYear, endYear, image, link, tokens, sticky, repo } = project;
 	return {
-		id,
-		...project,
-		summary: project.renderedContent,
-		content: project.content,
-	} as Project;
-});
+		id, name, summary, startYear, endYear, link, tokens: tokens ?? [], sticky, repo,
+		image: !image ? undefined : URL.canParse(image) ? image : `/images/projects/${image}`,
+	};
+}
+
+export function getProjectPage(id: string) {
+	const project = getProjectData(id);
+	return project ? toProjectPage(project) : null;
+}
+
+export type ProjectPageData = NonNullable<ReturnType<typeof getProjectPage>>;
+
+export function getProjectCards() {
+	return getAllProjectsDataSorted().map(project => ({
+		...toProjectPage(project),
+		summary: toPlainSummary(project.content),
+	}));
+}

@@ -1,12 +1,13 @@
 import { writeFileSync } from "node:fs";
 import { Feed } from "feed";
 import Fuse from "fuse.js";
-import { getAllNotesDataSorted_UnCached, Note } from "@/lib/repo/notesRepo";
-import { getAllProjectsDataSorted_UnCached } from "@/lib/repo/projectsRepo";
+import { getAllNotesDataSorted, type Note } from "@/lib/repo/notesRepo";
+import { getAllProjectsDataSorted } from "@/lib/repo/projectsRepo";
 import { SEARCH_KEYS, toSearchText, type SearchDoc, type SearchIndexBundle } from "@/lib/search/config";
 import dayjs from "dayjs";
 import { renderToStaticMarkup } from 'react-dom/server'
-import { compileMDX } from 'next-mdx-remote/rsc';
+import { createElement } from 'react';
+import { contentModules } from '@/generated/content/modules';
 import InfoBox from '@/components/utils/InfoBox';
 import { getIdeas } from '@/lib/repo/ideasRepo';
 
@@ -15,9 +16,9 @@ function parseISO(dateString: string) {
 	return dayjs(dateString).toDate();
 }
 
-export async function compileMarkdown(content: string) {
-	const out = await compileMDX({
-		source: content,
+export async function compileMarkdown(slug: string) {
+	const { default: Content } = await contentModules.notes[slug]();
+	return createElement(Content, {
 		components: {
 			'Abbr': "abbr",
 			'TweetRenderer': "custom-element",
@@ -26,20 +27,24 @@ export async function compileMarkdown(content: string) {
 			'a': "a",
 			'p': "p",
 			'Gallery': "div",
+			'pre': ({ children }) => createElement('pre', null, children),
 		}
 	});
-	return out.content
 }
 
-async function compileToHTML(markdown) {
+async function compileToHTML(slug: string) {
 	const out = await renderToStaticMarkup(
-		await compileMarkdown(markdown)
+		await compileMarkdown(slug)
 	);
 
 	return out
 }
 
+const notesList = getAllNotesDataSorted();
+const latestNote = notesList[0];
+
 const feed = new Feed({
+	updated: latestNote ? parseISO(latestNote.lastUpdated ?? latestNote.date) : new Date(0),
 	title: "Daryl Cecile",
 	description: "My notes",
 	id: "https://darylcecile.net",
@@ -63,11 +68,9 @@ const feed = new Feed({
 
 const notes: { items: Array<Partial<Note>> } = { items: [] };
 
-const notesList = getAllNotesDataSorted_UnCached(false);
-
 for (const note of notesList) {
 	if (!note.hidden) {
-		const content = await compileToHTML(note.content);
+		const content = await compileToHTML(note.slug);
 		feed.addItem({
 			title: note.title,
 			id: note.slug,
@@ -131,7 +134,7 @@ const searchDocs: SearchDoc[] = [
 			keywords: [],
 			body: toSearchText(note.content),
 		})),
-	...getAllProjectsDataSorted_UnCached().map((project): SearchDoc => ({
+	...getAllProjectsDataSorted().map((project): SearchDoc => ({
 		type: "project",
 		slug: project.id,
 		title: project.name ?? project.id,

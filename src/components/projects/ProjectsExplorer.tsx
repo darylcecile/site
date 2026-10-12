@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { GeistSans } from "geist/font/sans";
+import { GeistSans } from '@/lib/fonts';
 import { cn } from "@/lib/utils";
 import { ProjectCard, type ProjectCardData } from "./ProjectCard";
 import { rainbowAt } from "./rainbow";

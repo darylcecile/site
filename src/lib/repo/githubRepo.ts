@@ -1,4 +1,7 @@
-import { cacheLife, cacheTag } from "next/cache";
+import "@tanstack/react-start/server-only";
+import { cachedJson } from "@/lib/server/cache.server";
+import { fetchGithub } from "@/lib/server/github.server";
+import { validateRepoIdentifier } from "@/lib/server/preview-validation";
 
 export type RepoStats = {
 	repo: string;
@@ -7,17 +10,6 @@ export type RepoStats = {
 	htmlUrl: string | null;
 	isPrivate: boolean;
 };
-
-function authHeaders(): HeadersInit {
-	const headers: Record<string, string> = {
-		Accept: "application/vnd.github+json",
-		"X-GitHub-Api-Version": "2022-11-28",
-		"User-Agent": "darylcecile.net",
-	};
-	const token = process.env.GITHUB_TOKEN;
-	if (token) headers.Authorization = `Bearer ${token}`;
-	return headers;
-}
 
 function parseLastPageFromLink(link: string | null): number | null {
 	if (!link) return null;
@@ -28,7 +20,8 @@ function parseLastPageFromLink(link: string | null): number | null {
 	if (!url) return null;
 	try {
 		const page = new URL(url).searchParams.get("page");
-		return page ? Number.parseInt(page, 10) : null;
+		const count = page ? Number.parseInt(page, 10) : NaN;
+		return Number.isSafeInteger(count) && count > 0 ? count : null;
 	} catch {
 		return null;
 	}
@@ -69,17 +62,33 @@ export async function getAggregatedRepoStats(
 	return { repos: stats, commitsCount, lastUpdated };
 }
 
-async function fetchRepoStatsUncached(repo: string): Promise<RepoStats> {
-	if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) {
-		throw new Error(`Invalid repo identifier: ${repo}`);
+async function fetchCommitsCount(repo: string): Promise<number | null> {
+	try {
+		const commitsRes = await fetchGithub(`/repos/${repo}/commits?per_page=1`);
+		if (!commitsRes.ok) {
+			await commitsRes.body?.cancel();
+			// GitHub returns 409 for an empty repository, which is a valid zero count.
+			if (commitsRes.status === 409) return 0;
+			throw new Error("GitHub commit request failed.");
+		}
+		const lastPage = parseLastPageFromLink(commitsRes.headers.get("link"));
+		if (lastPage != null) {
+			await commitsRes.body?.cancel();
+			return lastPage;
+		}
+		const commits = await commitsRes.json() as unknown;
+		if (!Array.isArray(commits)) throw new Error("GitHub returned an invalid commit list.");
+		return commits.length;
+	} catch {
+		console.warn("[GitHub repository] Could not load commit count.");
+		return null;
 	}
+}
 
-	const headers = authHeaders();
-
-	const repoRes = await fetch(`https://api.github.com/repos/${repo}`, {
-		headers,
-	});
+async function fetchRepoStatsUncached(repo: string): Promise<RepoStats> {
+	const repoRes = await fetchGithub(`/repos/${repo}`);
 	if (!repoRes.ok) {
+		await repoRes.body?.cancel();
 		throw new Error(`GitHub repo fetch failed: ${repo} (${repoRes.status})`);
 	}
 	const repoData = (await repoRes.json()) as {
@@ -92,22 +101,7 @@ async function fetchRepoStatsUncached(repo: string): Promise<RepoStats> {
 
 	const isPrivate =
 		repoData.private === true || repoData.visibility === "private";
-
-	const commitsRes = await fetch(
-		`https://api.github.com/repos/${repo}/commits?per_page=1`,
-		{ headers },
-	);
-
-	let commitsCount: number | null = null;
-	if (commitsRes.ok) {
-		const lastPage = parseLastPageFromLink(commitsRes.headers.get("link"));
-		if (lastPage != null) {
-			commitsCount = lastPage;
-		} else {
-			const commits = (await commitsRes.json()) as unknown[];
-			commitsCount = Array.isArray(commits) ? commits.length : null;
-		}
-	}
+	const commitsCount = await fetchCommitsCount(repo);
 
 	return {
 		repo,
@@ -118,21 +112,19 @@ async function fetchRepoStatsUncached(repo: string): Promise<RepoStats> {
 	};
 }
 
-async function fetchRepoStatsCached(repo: string): Promise<RepoStats> {
-	"use cache";
-
-	cacheTag(`repo-stats:${repo}`);
-	cacheLife("hours");
-
-	return fetchRepoStatsUncached(repo);
-}
-
 export async function getRepoStats(repo: string): Promise<RepoStats | null> {
 	try {
-		return await fetchRepoStatsCached(repo);
+		validateRepoIdentifier(repo);
+		return await cachedJson(
+			`repo-stats:${repo.toLowerCase()}`,
+			3 * 3600,
+			() => fetchRepoStatsUncached(repo),
+			stats => stats.commitsCount !== null,
+		);
 	} catch {
 		// Don't cache failures — returning null here keeps the cache clean so
 		// transient errors (rate limits, missing token, etc.) recover next call.
+		console.warn("[GitHub repository] Could not load repository statistics.");
 		return null;
 	}
 }

@@ -1,51 +1,29 @@
-import dayjs from "dayjs";
-import isoWeek from "dayjs/plugin/isoWeek";
-import {
-	type ContributionCalendar,
-	ContributionDay,
-	fetchGithubContributionCalendar,
-	getLastYearRange,
-} from "../utils/githubContributions";
+import type { ContributionCalendar, ContributionDay } from "../utils/githubContributions";
+import { getGithubActivity } from "@/lib/server/previews.functions";
+import { usePreviewData } from "@/lib/usePreviewData";
 import { cn } from "@/lib/utils";
 
 type GithubActivityHeatmapProps = {
 	username: string;
 	className?: string;
+	enabled?: boolean;
 };
 
-dayjs.extend(isoWeek);
+const loadActivity = (username: string, signal: AbortSignal) => getGithubActivity({ data: username, signal });
 
-async function fetchCalendar(username: string): Promise<ContributionCalendar> {
-	const token = process.env.GITHUB_TOKEN;
-
-	if (!token) {
-		throw new Error("GITHUB_TOKEN is not configured.");
-	}
-
-	const { from, to } = getLastYearRange();
-	return fetchGithubContributionCalendar(username, token, from, to);
-}
-
-export async function GithubActivityHeatmap({
+export function GithubActivityHeatmap({
 	username,
 	className,
+	enabled = true,
 }: GithubActivityHeatmapProps) {
-	"use cache";
-	
-	let calendar: ContributionCalendar | null = null;
-	let error: string | null = null;
+	const { data: calendar, status } = usePreviewData(username, enabled, loadActivity);
 
-	try {
-		calendar = await fetchCalendar(username);
-	} catch (err) {
-		console.error(err);
-		error = "Failed to load GitHub activity.";
-	}
-
-	if (error || !calendar) {
+	if (!calendar) {
 		return (
-			<div className={className}>
-				<p className="text-red-500">{error ?? "No data."}</p>
+			<div className={cn("rounded-3xl border border-neutral-100 p-3 shadow-lg", className)} role="status">
+				<p className={status === "error" ? "text-red-500" : "text-sm text-muted-foreground"}>
+					{status === "error" ? "Failed to load GitHub activity." : "Loading GitHub activity…"}
+				</p>
 			</div>
 		);
 	}
@@ -75,61 +53,30 @@ export async function GithubActivityHeatmap({
 }
 
 function toMonthWeeks(calendar: ContributionCalendar) {
-	//  converts to map of months -> 5 weeks each 
-	const monthMap: { [month: string]: (ContributionDay | null)[][] } = {};
+	// Preserve the four activity buckets per month used by the compact heatmap.
+	const monthMap: Record<string, ContributionDay[][]> = {};
 	
 	calendar.weeks.forEach(week => {
 		week.contributionDays.forEach(day => {
 			const month = day.date.slice(0, 7); // "YYYY-MM"
-			const weekN = Math.floor(dayjs(day.date).date() / 8) + 1; // 1-based week number in month
+			const weekIndex = Math.floor(Number(day.date.slice(8, 10)) / 8);
 
 			if (!monthMap[month]) {
-				monthMap[month] = [];
+				monthMap[month] = [[], [], [], []];
 			}
-
-			if (!monthMap[month][weekN - 1]) {
-				monthMap[month][weekN - 1] = [day];
-			} else {
-				// merge days into existing week slot
-				monthMap[month][weekN - 1].push(day);
-			}
+			monthMap[month][weekIndex].push(day);
 		});
 	});
 
 	return monthMap;
 }
 
-function DailyChart({ calendar }: { calendar: ContributionCalendar }) {
-	return (
-		<div className="grid grid-flow-col auto-cols-min grid-rows-7 gap-[3px]">
-			{calendar.weeks.map((week, weekIndex) =>
-				week.contributionDays.map((day, dayIndex) => (
-					<div
-						key={`${weekIndex}-${day.date}`}
-						title={`${day.count} contributions on ${day.date}`}
-						style={{
-							backgroundColor: day.color || "rgba(30, 41, 59, 0.6)",
-							opacity: day.count === 0 ? 0.3 : 1,
-							gridRowStart: dayIndex + 1, // 1..7 (Sun..Sat)
-							// @ts-ignore
-							cornerShape: 'superellipse(0.4)',
-						}}
-						className="h-2.5 w-2.5 rounded-[2px]"
-					/>
-				))
-			)}
-		</div>
-	)
-}
-
 function WeeklyChart({ calendar }: { calendar: ContributionCalendar }) {
 	const cal = toMonthWeeks(calendar);
-	const sum = (arg) => arg.reduce((a, b) => a + b, 0);
 
 	return (
 		<div className="grid grid-flow-col auto-cols-min grid-rows-4 grid-cols-13 gap-1.5">
 			{Object.values(cal).map((weeks, monthIndex) => {
-				// const weeks = month.length < 5 ? [...month, []] : month;
 				return weeks.map((week, weekIndex) => {
 					if (week.length === 0) {
 						return (
@@ -150,7 +97,7 @@ function WeeklyChart({ calendar }: { calendar: ContributionCalendar }) {
 					
 					const day: ContributionDay = {
 						date: week[0].date,
-						count: sum(week.map(d => d.count ?? 0)),
+						count: week.reduce((total, day) => total + day.count, 0),
 						color: week.toSorted((a, b) => (b.count ?? 0) - (a.count ?? 0))[0].color,
 					}
 

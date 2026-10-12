@@ -1,15 +1,13 @@
 import { Suspense, type PropsWithChildren } from 'react';
-import { GeistSans } from 'geist/font/sans';
+import { GeistSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { Github } from 'lucide-react';
 import { GitHubUser } from '../SocialPreview/GithubSocialPreview';
-import HeaderClient from '@/components/header/index.client';
-import KnoshIcon from "@/../public/knosh-icon.png";
-import Image from 'next/image';
+import HeaderClient from '@/components/header/HeaderClient';
 import { KnoshLogo } from '@/components/vectors/KnoshLogo';
 import FancyLink from '../utils/FancyLink';
 import DotImageBackground from './Dot';
-import Link from 'next/link';
+import Link from '@/components/utils/Link';
 import Photography from '@/components/Photograph';
 import { AbbrPreview } from '../utils/AbbrPreview';
 
@@ -106,4 +104,3 @@ function Badge(props: BadgeProps) {
 		</div>
 	)
 }
-

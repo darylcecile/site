@@ -5,7 +5,7 @@ import { CopyIcon } from "lucide-react";
 import { type ComponentProps, useCallback, useEffect, useState } from "react";
 
 type CopyButtonProps = ComponentProps<'button'> & {
-	text?: string;
+	text: string;
 	clickedLabel?: string;
 };
 

@@ -1,0 +1,3 @@
+# Local Workers runtime secret for GitHub activity and repository statistics.
+# Set GITHUB_TOKEN separately on the deployed Worker; .env is build-time only.
+GITHUB_TOKEN=

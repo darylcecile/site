@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { GeistMono } from "geist/font/mono";
+import { GeistMono } from '@/lib/fonts';
 
 export function InlineCodeRenderer({ children }: { children: React.ReactNode }) {
 	return (

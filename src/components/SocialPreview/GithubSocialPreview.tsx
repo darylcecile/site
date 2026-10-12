@@ -1,9 +1,10 @@
 import { Badge } from "@/components/ui/badge"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { cn } from "@/lib/utils"
-import { ExternalLink, Github } from "lucide-react"
-import { cacheLife, cacheTag } from "next/cache"
-import { type PropsWithChildren, cache } from "react"
+import { getGithubProfile } from "@/lib/server/previews.functions"
+import { usePreviewData } from "@/lib/usePreviewData"
+import { ExternalLink } from "lucide-react"
+import { type PropsWithChildren, useState } from "react"
 import { GithubActivityHeatmap } from "../ui/githubActivity"
 
 interface GitHubUserProps {
@@ -11,86 +12,18 @@ interface GitHubUserProps {
 	variant?: "default" | "heatmap"
 }
 
-interface GitHubProfile {
-	login: string
-	name: string
-	avatar_url: string
-	bio: string
-	followers: number
-	following: number
-	public_repos: number
-	html_url: string
-	site_admin: boolean
-	location?: string
-	created_at: string
-}
+const loadProfile = (handle: string, signal: AbortSignal) => getGithubProfile({ data: handle, signal });
 
-const myGithubProfileFallback = {
-	"login": "darylcecile",
-	"id": 6310278,
-	"node_id": "MDQ6VXNlcjYzMTAyNzg=",
-	"avatar_url": "https://avatars.githubusercontent.com/u/6310278?v=4",
-	"gravatar_id": "",
-	"url": "https://api.github.com/users/darylcecile",
-	"html_url": "https://github.com/darylcecile",
-	"followers_url": "https://api.github.com/users/darylcecile/followers",
-	"following_url": "https://api.github.com/users/darylcecile/following{/other_user}",
-	"gists_url": "https://api.github.com/users/darylcecile/gists{/gist_id}",
-	"starred_url": "https://api.github.com/users/darylcecile/starred{/owner}{/repo}",
-	"subscriptions_url": "https://api.github.com/users/darylcecile/subscriptions",
-	"organizations_url": "https://api.github.com/users/darylcecile/orgs",
-	"repos_url": "https://api.github.com/users/darylcecile/repos",
-	"events_url": "https://api.github.com/users/darylcecile/events{/privacy}",
-	"received_events_url": "https://api.github.com/users/darylcecile/received_events",
-	"type": "User",
-	"user_view_type": "public",
-	"site_admin": true,
-	"name": "Daryl",
-	"company": null,
-	"blog": "https://darylcecile.net",
-	"location": null,
-	"email": null,
-	"hireable": null,
-	"bio": null,
-	"twitter_username": "darylcecile",
-	"public_repos": 70,
-	"public_gists": 1,
-	"followers": 8,
-	"following": 18,
-	"created_at": "2014-01-03T10:22:48Z",
-	"updated_at": "2025-03-11T21:36:36Z"
-}
-
-const getUser = cache(async (handle: string) => {
-	"use cache";
-
-	cacheTag(`github-user-${handle}`);
-	cacheLife('weeks')
-
-	const response = await fetch(`https://api.github.com/users/${handle}`);
-
-	if (!response.ok) {
-		if (handle === "darylcecile") {
-			return myGithubProfileFallback as GitHubProfile
-		}
-
-		if (process.env.NODE_ENV === 'production') throw new Error(`Failed to fetch GitHub profile: ${response.statusText}`)
-	}
-
-	const profile = await response.json() as GitHubProfile
-
-	return profile;
-})
-
-export async function GitHubUser({ handle, children, variant }: PropsWithChildren<GitHubUserProps>) {
-	const profile = await getUser(handle);
+export function GitHubUser({ handle, children, variant }: PropsWithChildren<GitHubUserProps>) {
+	const [open, setOpen] = useState(false);
+	const { data: profile, status } = usePreviewData(handle, open && variant !== "heatmap", loadProfile);
 
 	const joinDate = profile?.created_at
 		? new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" }).format(new Date(profile.created_at))
 		: null
 
 	return (
-		<HoverCard>
+		<HoverCard open={open} onOpenChange={setOpen}>
 			<HoverCardTrigger asChild >
 				{children}
 			</HoverCardTrigger>
@@ -106,14 +39,14 @@ export async function GitHubUser({ handle, children, variant }: PropsWithChildre
 				sideOffset={5}
 			>
 				{variant === 'heatmap' ? (
-					<GithubActivityHeatmap username={handle} className="bg-white"/>
+					<GithubActivityHeatmap username={handle} enabled={open} className="bg-white"/>
+				) : !profile ? (
+					<div className="p-6 text-sm text-muted-foreground" role="status">
+						{status === "error" ? "GitHub profile is unavailable right now." : "Loading GitHub profile…"}
+					</div>
 				) : (
 					<div className="overflow-hidden ">
 						<div className="h-24 aspect-4/1 bg-neutral-400 dark:bg-neutral-700 relative overflow-hidden -z-1">
-							{/* <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 100" preserveAspectRatio="none">
-						<path d="M0,50 C100,20 200,80 400,50 L400,100 L0,100 Z" fill="#1a2d4c" fillOpacity="0.4" />
-						<path d="M0,60 C150,30 250,90 400,60 L400,100 L0,100 Z" fill="#2a3d5c" fillOpacity="0.2" />
-					</svg> */}
 							<img
 								src={profile.avatar_url || "/placeholder.svg"}
 								alt=""
@@ -194,4 +127,3 @@ export async function GitHubUser({ handle, children, variant }: PropsWithChildre
 		</HoverCard>
 	)
 }
-

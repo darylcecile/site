@@ -100,11 +100,8 @@ web_modules/
 
 # dotenv environment variable files
 
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
+.env*
+!.env.example
 
 # parcel-bundler cache (https://parceljs.org/)
 
@@ -174,5 +171,15 @@ dist
 # Finder (MacOS) folder config
 .DS_Store
 
-# OpenNext
-.open-next
+# Cloudflare local state and secrets
+.wrangler/
+.cloudflare/
+.dev.vars*
+!.dev.vars.example
+
+# Build-time content modules
+src/generated/
+
+# TanStack Router generates this during development and builds.
+src/routeTree.gen.ts
+.tanstack/

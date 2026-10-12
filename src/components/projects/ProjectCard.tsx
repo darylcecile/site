@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from '@/components/utils/Link';
 import { ViewTransition } from "react";
 import { cn } from "@/lib/utils";
 import { rainbowAt } from "./rainbow";
@@ -81,7 +81,6 @@ export function ProjectCard({
 			{project.image ? (
 				<ViewTransition name={`projects-image-${project.id}`}>
 					<div className="z-2 aspect-video w-full overflow-hidden rounded-sm border border-border bg-muted">
-						{/* eslint-disable-next-line @next/next/no-img-element */}
 						<img
 							src={project.image}
 							alt=""

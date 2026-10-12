@@ -1,10 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import Link from '@/components/utils/Link';
 import { createContext, type Dispatch, type SetStateAction, use, useCallback, useRef, useState, type PropsWithChildren, useId, useEffect } from "react";
 import * as motion from "motion/react-client";
-import { usePathname, useRouter } from 'next/navigation';
+import { useLocation, useRouter } from '@tanstack/react-router';
 import { ArrowLeftIcon, FolderGit2, FolderGit2Icon, LightbulbIcon, Loader2, PenToolIcon, SearchIcon } from "lucide-react";
 import { useResize } from "@/lib/hooks/useResize";
 import { createPortal } from 'react-dom';
@@ -35,7 +35,7 @@ type NavContextSearchState = {
 	setSelectionIndex: Dispatch<SetStateAction<number>>;
 }
 
-const NavContext = createContext<NavContextType>(null);
+const NavContext = createContext<NavContextType | null>(null);
 
 export function NavProvider({ children }: PropsWithChildren) {
 	const [isSearchActive, setIsSearchActive] = useState(false);
@@ -190,7 +190,9 @@ export function NavContainer(props: PropsWithChildren) {
 }
 
 export function useNav() {
-	return use(NavContext)
+	const context = use(NavContext);
+	if (!context) throw new Error('Navigation must be rendered inside NavProvider.');
+	return context;
 }
 
 type NavItemProps = PropsWithChildren<{
@@ -201,7 +203,7 @@ type NavItemProps = PropsWithChildren<{
 
 export function NavItem(props: NavItemProps) {
 	const navContext = useNav();
-	const pathName = usePathname();
+	const pathName = useLocation({ select: location => location.pathname });
 	const isActive = !navContext.isSearchActive && (props.active || pathName === props.href || (props.href === '/ideas' && pathName.startsWith('/ideas/')));
 	const ref = useRef<HTMLLIElement>(null);
 
@@ -355,7 +357,7 @@ export function NavSearch() {
 					if (e.key === 'ArrowDown') {
 						e.preventDefault();
 						navContext.searchState.setSelectionIndex(prev => {
-							if (prev + 1 >= navContext.searchState.results?.length) return prev;
+							if (prev + 1 >= (navContext.searchState.results?.length ?? 0)) return prev;
 							return prev + 1;
 						});
 					}
@@ -375,7 +377,7 @@ export function NavSearch() {
 							navContext.searchState.setSearchTerm('');
 							navContext.setIsSearchActive(false);
 							(e.target as HTMLInputElement).blur();
-							router.push(`/${result.type}s/${result.slug}`);
+							void router.navigate({ to: `/${result.type}s/${result.slug}` });
 						}
 					}
 				}}
@@ -395,7 +397,7 @@ export function NavSearch() {
 export function NavSearchPanel() {
 	const navContext = useNav();
 	const isMounted = useMounted();
-	const { state, results, selectionIndex, setSelectionIndex } = navContext.searchState;
+	const { state, results = [], selectionIndex, setSelectionIndex } = navContext.searchState;
 	const { windowWidth, windowHeight } = useResize();
 	const listRef = useRef<HTMLUListElement>(null);
 
@@ -410,6 +412,8 @@ export function NavSearchPanel() {
 	}, [selectionIndex]);
 
 	if (!isMounted) return null;
+	const portal = document.getElementById(navContext.portalId);
+	if (!portal) return null;
 
 	return createPortal(
 		<motion.div
@@ -510,7 +514,7 @@ export function NavSearchPanel() {
 				)}
 			</AnimatePresence>
 		</motion.div>
-		, document.getElementById(navContext.portalId));
+		, portal);
 }
 
 export function NavBackButton() {
@@ -520,15 +524,15 @@ export function NavBackButton() {
 	const clickHandler = useCallback(() => {
 		navContext.setIsSearchActive(false);
 		if (window.history.length > 1) {
-			router.back();
+			router.history.back();
 		} else {
 			const pathSegments = window.location.pathname.split('/');
 			if (pathSegments.length > 1) {
 				pathSegments.pop();
 				const newPath = pathSegments.join('/') || '/';
-				router.push(newPath);
+				void router.navigate({ to: newPath });
 			} else {
-				router.push('/');
+				void router.navigate({ to: '/' });
 			}
 		}
 	}, [navContext, router]);

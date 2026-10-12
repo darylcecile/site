@@ -9,6 +9,6 @@ function SectionHeading({ children, ...props }: ComponentPropsWithoutRef<'h2'>) 
 
 const components = { h2: SectionHeading };
 
-export function IdeaMarkdown({ content }: { content: string }) {
-	return <MarkdownRenderer content={content} components={components} />;
+export function IdeaMarkdown({ slug }: { slug: string }) {
+	return <MarkdownRenderer collection="ideas" slug={slug} components={components} />;
 }

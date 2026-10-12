@@ -1,111 +1,77 @@
-import fs, { existsSync } from "node:fs";
-import fsAsync from "node:fs/promises";
-import path from "node:path";
-import { cache } from "react";
-import { Mark } from "../markdown";
-import { cacheLife, cacheTag } from "next/cache";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import duration from 'dayjs/plugin/duration';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import { content } from '@/generated/content/metadata.server';
+import type { ContentEntry } from '@/lib/content/types';
 
-export type Note = {
-	[name: string]: any;
-	title: string;
-	date: string;
-	lastUpdated?: string;
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(customParseFormat);
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
+dayjs.extend(advancedFormat);
+
+export type Note = ContentEntry<'notes'>['metadata'] & {
 	slug: string;
 	content: string;
 	renderedContent: string;
 	readTime: string;
-	hidden?: boolean;
-	image?: string;
-	snippet?: string;
-	preview_img?: string;
 };
 
-const postsDirectory = path.join(process.cwd(), "src/notes_markdown");
+export async function getNotes() {
+	return [...content.notes];
+}
 
-export const getAllNotesDataSorted_UnCached = (ignoreContent?: boolean) => {
-	// Get file names under /notes
-	const fileNames = fs.readdirSync(postsDirectory);
-	const allPostsData: Note[] = [];
+export async function getNote(slug: string) {
+	return content.notes.find(note => note.slug === slug);
+}
 
-	for (const fileName of fileNames) {
-		if (!fileName.endsWith('.md') && !fileName.endsWith('.mdx')) continue;
-		// Remove ".md" from file name to get id
-		const slug = fileName.replace(/\.(?:md|mdx)$/, "");
+export function getPublicNotes(maxItems?: number) {
+	const now = Date.now();
+	return getAllNotesDataSorted()
+		.filter(note => dayjs.tz(note.date, 'YYYY-MM-DD', 'Europe/London').valueOf() < now)
+		.slice(0, maxItems)
+		.map(note => ({
+			slug: note.slug,
+			title: note.title,
+			publishDateLabel: dayjs.tz(note.date, 'YYYY-MM-DD', 'Europe/London').format('ddd Do MMM[,] YYYY'),
+			readTime: dayjs.duration({ minutes: Math.ceil(note.content.split(' ').length / 200) }).humanize(),
+		}));
+}
 
-		// Read markdown file as string
-		const fullPath = path.join(postsDirectory, fileName);
-		const fileContents = fs.readFileSync(fullPath, "utf8");
-		const markdownParser = new Mark();
+export type NoteListItem = ReturnType<typeof getPublicNotes>[number];
 
-		// Use gray-matter to parse the post metadata section
-		const matterResult: Partial<Note> = markdownParser.parse(fileContents);
+export async function getNotePage(slug: string) {
+	const note = await getNote(slug);
+	if (!note) return null;
+	const { title, snippet, date, lastUpdated } = note.metadata;
+	return { slug: note.slug, readTime: note.readTime, metadata: { title, snippet, date, lastUpdated } };
+}
 
-		if (matterResult.hidden) continue;
+export type NotePageData = NonNullable<Awaited<ReturnType<typeof getNotePage>>>;
 
-		// Combine the data with the id
-		allPostsData.push(<Note>{
-			slug,
-			...matterResult,
-			content: ignoreContent ? null : matterResult.content,
-			renderedContent: ignoreContent
-				? null
-				: matterResult.renderedContent,
-		});
-	}
-
-	// Sort notes by date
-	return allPostsData.sort((a, b) => {
-		if ((a.lastUpdated ?? a.date) < (b.lastUpdated ?? b.date)) {
-			return 1;
-		}
-		return -1;
-	});
-};
-
-export const getAllNotesDataSorted = cache(getAllNotesDataSorted_UnCached);
-
-
-export const getAllNotesSlugs = cache(async function() {
-	"use cache";
-
-	cacheTag("notes-slugs");
-	cacheLife('seconds');
-
-	const fileNames = fs.readdirSync(postsDirectory);
-	return fileNames.filter(fileName => {
-		if (!fileName.endsWith('.md') && !fileName.endsWith('.mdx')) return false;
-		return true;
-	}).map((fileName) => {
-		return {
-			params: {
-				slug: fileName.replace(/\.(?:md|mdx)$/, ""),
-			},
-		};
-	});
-});
-
-export const getNoteData = cache(async function(
-	slug: string,
-	ignoreContent?: boolean,
-){
-	"use cache";
-
-	cacheTag(`note-${slug}-${ignoreContent ? 'no-content' : 'with-content'}`);
-	cacheLife('minutes');
-
-	const fullPath = path.join(postsDirectory, `${slug}.md`);
-
-	if (!existsSync(fullPath)) return null;
-
-	const fileContents = await fsAsync.readFile(fullPath, "utf8");
-	const markdownParser = new Mark();
-
-	const post = markdownParser.parse(fileContents);
-
+function toNote(entry: ContentEntry<'notes'>): Note {
 	return {
-		slug,
-		...post,
-		content: ignoreContent ? null : post.content,
-		renderedContent: ignoreContent ? null : post.renderedContent,
-	} as Note;
-});
+		...entry.metadata,
+		slug: entry.slug,
+		content: entry.content,
+		renderedContent: entry.renderedContent,
+		readTime: entry.readTime,
+	};
+}
+
+export function getAllNotesDataSorted() {
+	return content.notes
+		.filter(note => !note.metadata.hidden)
+		.map(toNote)
+		.sort((a, b) => {
+			if ((a.lastUpdated ?? a.date) < (b.lastUpdated ?? b.date)) {
+				return 1;
+			}
+			return -1;
+		});
+}

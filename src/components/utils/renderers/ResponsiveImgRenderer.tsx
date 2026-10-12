@@ -18,13 +18,13 @@ function ResponsiveImg(props: ResponsiveImgRendererProps) {
 	];
 	const srcSet = defaultSizes.map(
 		(size) =>
-			`/_next/image?url=${encodeURIComponent(String(src))}&w=${size}&q=${quality ?? 75} ${size}w`,
+			`/image?url=${encodeURIComponent(String(src))}&w=${size}&q=${quality ?? 75} ${size}w`,
 	);
 
 	return (
 		<img
 			{...innerProps}
-			src={isSrcValid ? String(src) : `/_next/image?url=${encodeURIComponent(String(src))}&w=1080&q=${quality ?? 90}`}
+			src={isSrcValid ? String(src) : `/image?url=${encodeURIComponent(String(src))}&w=1080&q=${quality ?? 90}`}
 			alt={alt}
 			decoding={"async"}
 			loading={loading ?? "lazy"}

@@ -1,5 +1,5 @@
 import { ArrowUpRight, Database, Fish, Package, Sprout } from 'lucide-react';
-import Link from 'next/link';
+import Link from '@/components/utils/Link';
 import type { Idea } from '@/lib/repo/ideasRepo';
 import { rainbowAt } from '@/components/projects/rainbow';
 import { cn } from '@/lib/utils';

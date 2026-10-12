@@ -2,7 +2,7 @@
 
 import { generateIdFromText } from '@/lib/generateIdFromText';
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import Link from '@/components/utils/Link';
 import type { ComponentType, JSX, PropsWithChildren } from "react";
 import { useScrollHintHeading } from "./ScrollHint";
 

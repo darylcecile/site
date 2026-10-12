@@ -1,35 +1,41 @@
 import { Heading } from '@/components/notes/Heading';
 import { AbbrPreview } from '@/components/utils/AbbrPreview';
 import CodeRenderer from '@/components/utils/renderers/CodeRenderer';
-import GalleryRenderer from '@/components/utils/renderers/GalleryRenderer';
 import ResponsiveImgRenderer from '@/components/utils/renderers/ResponsiveImgRenderer';
-import TweetRenderer from '@/components/utils/renderers/TweetRenderer';
 import type { MDXComponents } from 'mdx/types.js'
-import { MDXRemote, compileMDX } from 'next-mdx-remote/rsc';
-import rehypeMdxCodeProps from 'rehype-mdx-code-props'
+import { isValidElement, lazy, Suspense, type ComponentPropsWithoutRef, type ComponentType } from 'react';
+import { contentModules } from '@/generated/content/modules';
+import type { ContentCollection } from '@/lib/content/types';
 import FancyLink from '../FancyLink';
 import InfoBox from '../InfoBox';
 import { InlineCodeRenderer } from './InlineCodeRenderer';
 
 type Props = {
-	content: string;
+	collection: ContentCollection;
+	slug: string;
 	components?: MDXComponents;
 }
 
+const GalleryRenderer = lazy(() => import('./GalleryRenderer'));
+const TweetRenderer = lazy(() => import('./TweetRenderer'));
+const componentCache = new Map<string, ComponentType<{ components?: MDXComponents }>>();
+
 export default function MarkdownRenderer(props: Props) {
-	return (
-		<MDXRemote
-			source={props.content}
-			components={{ ...components, ...props.components }}
-			options={{
-				mdxOptions: {
-					rehypePlugins: [rehypeMdxCodeProps],
-				},
-				blockJS: false,
-			}}
-		/>
-	)
+	const modules = contentModules[props.collection];
+	const key = `${props.collection}/${props.slug}`;
+	if (!Object.hasOwn(modules, props.slug)) throw new Error(`Missing generated content: ${key}`);
+	let Content = componentCache.get(key);
+	if (!Content) {
+		Content = lazy(modules[props.slug]);
+		componentCache.set(key, Content);
+	}
+	return <Suspense fallback={null}><Content components={{ ...components, ...props.components }} /></Suspense>;
 }
+
+type PreProps = ComponentPropsWithoutRef<'pre'> & {
+	highlightedHtml?: string;
+	rawCode?: string;
+};
 
 const components: MDXComponents = {
 	'Abbr': AbbrPreview,
@@ -37,25 +43,16 @@ const components: MDXComponents = {
 	'InfoBox': InfoBox,
 	'img': ResponsiveImgRenderer,
 	'a': FancyLink,
-	'p': (props: any) => {
+	'p': (props) => {
 		const child = props.children;
-		if (child && typeof child === "object" && !Array.isArray(child) && "type" in child) {
-			const typeName = typeof child.type === "function" ? child.type.name : undefined;
-			if (typeName && ["ResponsiveImgRenderer", "TweetRenderer"].includes(typeName)) {
-				return child;
-			}
+		if (isValidElement(child) && (child.type === ResponsiveImgRenderer || child.type === TweetRenderer)) {
+			return child;
 		}
 		return <p>{child}</p>;
 	},
-	'pre': (props: any) => {
-		const child = props.children;
-		const childType = child && typeof child === "object" ? child.type : undefined;
-		const childTypeName = typeof childType === "function" ? childType.name : undefined;
-		if (childType === 'code' || childTypeName === 'code') {
-			const className: string = child.props?.className ?? '';
-			const language = className.replace('language-', '');
-			const code = child.props?.children;
-			return <CodeRenderer lang={language} withIntellisense={props.twoslash}>{code}</CodeRenderer>;
+	'pre': ({ highlightedHtml, rawCode, ...props }: PreProps) => {
+		if (highlightedHtml !== undefined && rawCode !== undefined) {
+			return <CodeRenderer html={highlightedHtml} rawCode={rawCode} />;
 		}
 		return <pre {...props} />;
 	},

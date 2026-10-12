@@ -1,9 +1,9 @@
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
+import { getLinkMetadata } from '@/lib/server/previews.functions';
+import { usePreviewData } from '@/lib/usePreviewData';
 import { cn } from '@/lib/utils';
-import { parse } from 'node-html-parser';
-import { Suspense, type PropsWithChildren } from 'react';
+import { useState, type PropsWithChildren } from 'react';
 import FancyLink from './FancyLink';
-import { cacheLife, cacheTag } from 'next/cache';
 
 type AbbrPreviewProps = PropsWithChildren<{
 	title: string;
@@ -17,42 +17,16 @@ type AbbrPreviewProps = PropsWithChildren<{
 	manualColor?: boolean
 }>
 
-const base = process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000';
+const loadMetadata = (url: string, signal: AbortSignal) => getLinkMetadata({ data: url, signal });
 
 export function AbbrPreview(props: AbbrPreviewProps) {
-	const fallback = props.link ? (
-		<FancyLink
-			href={props.link}
-			className={cn('decoration-dotted', props.className)}
-			hideFavicon={props.hideFavicon}
-			faviconUrlOverride={props.faviconUrl}
-			manualColor={props.manualColor}
-		>{props.children}</FancyLink>
-	) : (
-		<span className={cn(
-			'underline decoration-dotted underline-offset-4',
-			props.className
-		)}>{props.children}</span>
-	);
-
-	return (
-		<Suspense fallback={fallback}>
-			<AbbrPreviewInner {...props} />
-		</Suspense>
-	);
-}
-
-async function AbbrPreviewInner(props: AbbrPreviewProps) {
-	const data = props.link && await getMetadata(props.link);
-
-	if (!data && !props.title && !props.description) {
-		return props.children;
-	}
-
+	const [open, setOpen] = useState(false);
+	const { data, status } = usePreviewData(props.link ?? '', open && Boolean(props.link), loadMetadata);
 	const title = data?.title || props.title;
+	const description = data?.description ?? props.description;
 
 	return (
-		<HoverCard openDelay={100} closeDelay={200}>
+		<HoverCard open={open} onOpenChange={setOpen} openDelay={100} closeDelay={200}>
 			<HoverCardTrigger asChild>
 				{props.link ? (
 					<FancyLink
@@ -66,7 +40,7 @@ async function AbbrPreviewInner(props: AbbrPreviewProps) {
 					<span className={cn(
 						'underline decoration-dotted underline-offset-4',
 						props.className
-					)}>{props.children}</span>
+					)} tabIndex={0}>{props.children}</span>
 				)}
 			</HoverCardTrigger>
 			<HoverCardContent
@@ -77,97 +51,18 @@ async function AbbrPreviewInner(props: AbbrPreviewProps) {
 				align="center"
 			>
 				{data?.image && (
-					<img src={`/proxy?u=${btoa(data.image)}`} className='bg-muted aspect-video w-full object-cover rounded-lg mb-2' alt="" />
+					<img src={`/proxy?u=${encodeURIComponent(btoa(data.image))}`} className='bg-muted aspect-video w-full object-cover rounded-lg mb-2' alt="" />
 				)}
 				{title && (
-					<p className={'p-1 leading-5 pb-0 text-balance relative'}>{title}</p>
+					<p className='p-1 leading-5 pb-0 text-balance relative'>{title}</p>
 				)}
-				<p className='p-1 text-sm text-muted-foreground'>{data?.description ?? props.description}</p>
+				{description && <p className='p-1 text-sm text-muted-foreground'>{description}</p>}
+				{props.link && !data && (
+					<p className='p-1 text-sm text-muted-foreground' role="status">
+						{status === 'error' ? 'Preview unavailable. You can still visit the link.' : 'Loading preview…'}
+					</p>
+				)}
 			</HoverCardContent>
 		</HoverCard>
 	);
-}
-
-function toColor(text: string) {
-	// convert the text to a nummber between 0 and 7
-	const hash = [...text].reduce((acc, char) => acc + char.charCodeAt(0), 0);
-	const index = hash % 7;
-	const colors = [
-		"text-red-700 dark:text-red-400",
-		"text-yellow-700 dark:text-yellow-400",
-		"text-green-700 dark:text-green-400",
-		"text-blue-700 dark:text-blue-400",
-		"text-indigo-700 dark:text-indigo-400",
-		"text-purple-700 dark:text-purple-400",
-		"text-pink-700 dark:text-pink-400"
-	];
-	return colors[index];
-}
-
-const URL_IGNORE_LIST = [
-	"https://projectfunction.io"
-];
-
-async function getMetadata(url: string) {
-	"use cache";
-
-	cacheTag(`abbr-preview-${url}`);
-	cacheLife('days');
-
-	if (URL_IGNORE_LIST.some((ignore) => url.startsWith(ignore))) {
-		return null;
-	}
-
-	try {
-		const qualifiedUrl = new URL(url, 'https://darylcecile.net');
-
-		const controller = new AbortController();
-		const timeout = setTimeout(() => controller.abort(), 5000);
-
-		let response: Response;
-		try {
-			response = await fetch(qualifiedUrl, {
-				method: "GET",
-				signal: controller.signal,
-			});
-		} catch (fetchError) {
-			console.warn(`[AbbrPreview] Skipping ${url} — fetch failed:`, fetchError instanceof Error ? fetchError.message : fetchError);
-			return null;
-		} finally {
-			clearTimeout(timeout);
-		}
-
-		if (!response.ok) {
-			console.warn(`[AbbrPreview] Skipping ${url} — HTTP ${response.status}`);
-			return null;
-		}
-
-		let text: string;
-		try {
-			text = await response.text();
-		} catch (readError) {
-			console.warn(`[AbbrPreview] Skipping ${url} — failed to read body:`, readError instanceof Error ? readError.message : readError);
-			return null;
-		}
-
-		const DOC = parse(text);
-
-		return {
-			title: DOC.querySelector("title")?.innerText,
-			favicon: [...DOC.querySelectorAll("[rel=icon]")]
-				.reverse()[0]
-				?.getAttribute("href"),
-			image: DOC.querySelector('[property="og:image"]')?.getAttribute(
-				"content",
-			),
-			description: (
-				DOC.querySelector("[name=description]") ??
-				DOC.querySelector('[property="og:description"]')
-			)?.getAttribute("content"),
-		}
-	}
-	catch (error) {
-		console.warn(`[AbbrPreview] Skipping ${url} — unexpected error:`, error instanceof Error ? error.message : error);
-		return null;
-	}
 }
