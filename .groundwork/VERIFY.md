@@ -62,5 +62,6 @@ Record unavailable environments, missing check mappings, and observations still 
 - Install with `bun install`. Start `bun run dev` or build and use `bun run preview`; both serve on port 3000.
 - Local Worker secrets use ignored `.dev.vars`; `GITHUB_TOKEN` enables GitHub activity and repository statistics. The dry-run selects the personal `daryl` cf profile.
 - Before a deployment, exercise `/`, `/notes`, `/projects`, `/ideas`, `/bookmarks`, representative article routes, unknown slugs, `/og`, `/image`, `/proxy`, feeds/search assets, social redirects, and WebFinger on the real Worker preview.
+- Image proxy cases include a same-origin `/og?slug=throwaway-prototypes` URL encoded in `u`, relative OG URLs, local static images, and remote images. A valid proxied OG image should decode as a 600×315 WebP; unknown slugs return 404 and malformed inputs return 400.
 - Browser observations should include navigation/search, project filters, article headings/code copy, theme selection, link/GitHub hover cards, and embedded tweets. Build/typecheck alone do not assert those behaviors.
 - Inspect cf's compressed upload size and verify the deployed URL before custom-domain cutover. Keep run evidence under `.groundwork/runs/` and one-off observations under ignored `.groundwork/tmp/`.

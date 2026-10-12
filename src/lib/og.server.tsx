@@ -11,6 +11,21 @@ dayjs.extend(customParse);
 dayjs.extend(advanceFormat);
 
 
+export async function generateOgResponse(request: Request): Promise<Response> {
+	try {
+		const image = await generateOgImage(request);
+		if (!image.ok) return image;
+		const bytes = await image.arrayBuffer();
+		if (!bytes.byteLength) throw new Error('Social image renderer returned an empty image.');
+		return new Response(bytes, {
+			headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=3600' },
+		});
+	} catch (error) {
+		console.error('[og] Rendering failed', error instanceof Error ? error.message : error);
+		return new Response('Social image unavailable', { status: 502 });
+	}
+}
+
 export async function generateOgImage(opt: Request): Promise<Response> {
 	const { searchParams } = new URL(opt.url);
 	const icon = await env.ASSETS.fetch(new URL('/icon.png', opt.url));

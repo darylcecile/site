@@ -1,4 +1,5 @@
 import { env } from 'cloudflare:workers';
+import { generateOgResponse } from '@/lib/og.server';
 
 export async function transformImage(request: Request, source: string, width: number, quality = 80) {
 	const origin = new URL(request.url);
@@ -14,9 +15,13 @@ export async function transformImage(request: Request, source: string, width: nu
 
 	let upstream: Response;
 	try {
-		upstream = url.origin === origin.origin
-			? await env.ASSETS.fetch(url)
-			: await fetch(url, { signal: AbortSignal.timeout(10_000) });
+		if (url.origin !== origin.origin) {
+			upstream = await fetch(url, { signal: AbortSignal.timeout(10_000) });
+		} else if (url.pathname === '/og') {
+			upstream = await generateOgResponse(new Request(url));
+		} else {
+			upstream = await env.ASSETS.fetch(url);
+		}
 	} catch (error) {
 		console.warn('[images] Upstream fetch failed', error instanceof Error ? error.message : error);
 		return new Response('Image unavailable', { status: 502 });
