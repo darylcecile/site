@@ -2,12 +2,14 @@ import { defineStudioConfig, Collection } from "@shrubs/studio";
 import { GitHubAdapter } from "@shrubs/studio/adapters/github";
 import { z } from "zod/v4";
 
+const githubToken = process.env.GITHUB_TOKEN;
+
 export default defineStudioConfig({
-	remote: new GitHubAdapter({
-		token: process.env.GITHUB_TOKEN,
+	remote: githubToken ? new GitHubAdapter({
+		token: githubToken,
 		repo: "darylcecile/site",
 		branch: "testing",
-	}),
+	}) : undefined,
 	collections: [
 		Collection.define({
 			name: "ideas",

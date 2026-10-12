@@ -101,7 +101,7 @@ Run development or a build before the first typecheck so TanStack Router has gen
 
 | Variable | Location | Purpose |
 |----------|----------|---------|
-| `GITHUB_TOKEN` | `.env` or the build environment | Credentials for build-time tooling that requests GitHub data |
+| `GITHUB_TOKEN` | `.env` | Optional Studio GitHub remote access; local content builds do not require it |
 | `GITHUB_TOKEN` | `.dev.vars` | Credentials for GitHub activity and repository statistics in the local Worker |
 | `GITHUB_TOKEN` | Deployed Worker secret | Credentials for GitHub activity and repository statistics in production |
 | `CLOUDFLARE_API_TOKEN` | Deployment environment, usually CI | Cloudflare CLI authentication; takes precedence over OAuth profiles |

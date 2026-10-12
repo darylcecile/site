@@ -1,5 +1,9 @@
 {
   "checks": {
+    "content-no-secrets": {
+      "command": "env -u GITHUB_TOKEN bun --no-env-file run scripts/contentBuilder.ts",
+      "expect": "Local content compiles without a GitHub token or dotenv files, as on a fresh CI runner"
+    },
     "worker-build": {
       "command": "bun run build",
       "expect": "Content generation and TanStack Start produce native Cloudflare Build Output"

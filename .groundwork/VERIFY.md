@@ -57,6 +57,7 @@ Record unavailable environments, missing check mappings, and observations still 
 
 ## Cloudflare deployment checks
 
+- `groundwork verify content-no-secrets` checks content generation without a GitHub token or dotenv files, matching a fresh CI runner.
 - `groundwork verify worker-build typecheck worker-dry-run` generates content, builds the TanStack Start Worker, checks TypeScript, and validates native cf Build Output.
 - Install with `bun install`. Start `bun run dev` or build and use `bun run preview`; both serve on port 3000.
 - Local Worker secrets use ignored `.dev.vars`; `GITHUB_TOKEN` enables GitHub activity and repository statistics. The dry-run selects the personal `daryl` cf profile.
