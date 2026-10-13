@@ -4,6 +4,7 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { ogFontPlugin } from './scripts/ogFontPlugin.ts';
+import { portlessProductsPlugin } from './scripts/portlessProductsPlugin.ts';
 
 export default defineConfig(({ isPreview }) => {
 	// cf invokes Vite directly, so content generation belongs here rather than
@@ -14,10 +15,16 @@ export default defineConfig(({ isPreview }) => {
 	}
 
 	return {
-		server: { port: 3000 },
+		server: {
+			port: Number(process.env.PORT ?? 3000),
+			strictPort: true,
+		},
 		preview: { port: 3000 },
 		resolve: { tsconfigPaths: true },
+		// The OG font transform must also run in development, before dependency bundling.
+		environments: { ssr: { optimizeDeps: { exclude: ['@vercel/og'] } } },
 		plugins: [
+			portlessProductsPlugin(),
 			ogFontPlugin(),
 			cloudflare({ viteEnvironment: { name: 'ssr' } }),
 			tanstackStart(),

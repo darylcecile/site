@@ -1,7 +1,7 @@
 ---
 name: JavaScript Virtual Machine (jsvm) 🐱‍👤
 startYear: 2026
-link: https://github.com/darylcecile/vmjs
+link: https://jsvm.darylcecile.net
 tokens: [web, library, sandbox]
 repo: darylcecile/vmjs
 ---

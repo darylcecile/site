@@ -1,0 +1,283 @@
+.kato-site {
+	--kato-paper: #f6f8f3;
+	--kato-surface: #fff;
+	--kato-soft: #e9f0e2;
+	--kato-ink: #203a2f;
+	--kato-muted: #586b5c;
+	--kato-green: #164936;
+	--kato-line: #c8d6c4;
+	--kato-sprout: #d1ecad;
+	--kato-code-bg: #164936;
+	--kato-code-ink: #f0f8e9;
+	--kato-danger: #8d3126;
+	--kato-danger-bg: #fbeddf;
+	--kato-mono: 'IBM Plex Mono', monospace;
+	min-height: 100vh;
+	background: var(--kato-paper);
+	color: var(--kato-ink);
+	font-family: 'IBM Plex Sans Variable', 'IBM Plex Sans', sans-serif;
+	font-size: 16px;
+	line-height: 1.6;
+	color-scheme: light;
+	-webkit-font-smoothing: antialiased;
+}
+
+.dark .kato-site {
+	--kato-paper: #10251b;
+	--kato-surface: #162f23;
+	--kato-soft: #1c3729;
+	--kato-ink: #e6eedc;
+	--kato-muted: #b0c2ac;
+	--kato-green: #c7e6aa;
+	--kato-line: #3a5440;
+	--kato-sprout: #c7e6aa;
+	--kato-danger: #ffd2b7;
+	--kato-danger-bg: #472b24;
+	color-scheme: dark;
+}
+
+.kato-site *, .kato-site *::before, .kato-site *::after { box-sizing: border-box; }
+.kato-site h1, .kato-site h2, .kato-site h3, .kato-site p, .kato-site pre { margin: 0; }
+.kato-site a { color: inherit; text-decoration: none; }
+.kato-site a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.kato-site button, .kato-site select, .kato-site textarea { font: inherit; }
+.kato-site button, .kato-site select { touch-action: manipulation; }
+.kato-site button, .kato-site summary { cursor: pointer; }
+.kato-site button:disabled, .kato-site button[aria-disabled="true"] { cursor: wait; opacity: .6; }
+.kato-site :is(a, button, textarea, select, summary, [tabindex]):focus-visible { outline: 3px solid var(--kato-green); outline-offset: 4px; }
+.kato-site h1, .kato-site h2, .kato-site h3 { text-wrap: balance; }
+.kato-site h2 { font-size: clamp(2rem, 3.5vw, 3.3rem); font-weight: 450; line-height: 1.13; letter-spacing: -.045em; }
+.kato-site h3 { font-size: 1.25rem; line-height: 1.3; font-weight: 500; letter-spacing: -.018em; }
+.kato-site p { text-wrap: pretty; }
+.kato-site code, .kato-site pre, .kato-site kbd { font-family: var(--kato-mono); }
+.kato-site p code { font-size: .85em; color: var(--kato-green); }
+.kato-site pre { font-size: .84rem; line-height: 1.85; overflow: auto; tab-size: 2; }
+.kato-site section[id] { scroll-margin-top: 28px; }
+.kato-container { width: min(1160px, calc(100% - 96px)); margin-inline: auto; }
+.kato-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.kato-skip { position: absolute; top: 8px; left: 8px; z-index: 20; padding: 10px 20px; color: var(--kato-paper) !important; background: var(--kato-green); transform: translateY(-150%); }
+.kato-skip:focus { transform: translateY(0); }
+.kato-header { display: flex; align-items: center; gap: 28px; min-height: 108px; }
+.kato-wordmark { display: inline-flex; align-items: center; gap: 10px; color: var(--kato-green) !important; font-size: 2rem; font-weight: 600; letter-spacing: -.06em; line-height: 1; }
+.kato-wordmark:hover { text-decoration: none !important; }
+.kato-mark { flex: none; }
+.kato-header nav { display: flex; align-items: center; gap: 32px; margin-left: auto; font-size: .875rem; }
+.kato-header nav a { min-height: 44px; display: inline-flex; align-items: center; gap: 4px; }
+.kato-nav-source { margin-left: 16px; }
+.kato-theme { display: grid; place-items: center; width: 42px; height: 42px; padding: 0; border: 1px solid var(--kato-line); border-radius: 50%; color: var(--kato-ink); background: transparent; }
+.kato-theme:hover { background: var(--kato-soft); }
+.kato-sun { display: none; }
+.dark .kato-sun { display: block; }
+.dark .kato-moon { display: none; }
+.kato-hero { display: grid; grid-template-columns: 1.04fr 1fr; align-items: center; gap: 50px; padding-top: 58px; padding-bottom: 96px; }
+.kato-status { display: inline-flex; align-items: center; gap: 8px; color: var(--kato-muted) !important; font-size: .8rem; }
+.kato-status > span { width: 7px; height: 7px; background: var(--kato-green); border-radius: 50%; }
+.kato-site h1 { margin-top: 28px; font-size: clamp(2.8rem, 4.9vw, 4.45rem); font-weight: 450; line-height: 1.035; letter-spacing: -.06em; }
+.kato-hero-copy > p:not(.kato-name-note) { max-width: 440px; margin-top: 26px; font-size: 1.12rem; line-height: 1.65; color: var(--kato-muted); }
+.kato-hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 28px; margin-top: 32px; }
+.kato-site .kato-button { display: inline-flex; justify-content: center; align-items: center; gap: 20px; min-height: 48px; padding: 12px 20px; border: 1px solid var(--kato-green); border-radius: 5px; background: var(--kato-green); color: var(--kato-paper); font-weight: 500; font-size: .9rem; text-decoration: none; }
+.kato-site .kato-button:hover { filter: brightness(1.1); }
+.kato-text-link { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 500; font-size: .9rem; }
+.kato-name-note { margin-top: 38px !important; color: var(--kato-muted); font-size: .8rem; line-height: 1.7; }
+.kato-hero-document { min-width: 0; padding-top: 16px; }
+.kato-document-tab { display: flex; align-items: center; gap: 8px; width: fit-content; padding: 9px 20px; background: var(--kato-soft); border: 1px solid var(--kato-line); border-bottom: none; border-radius: 8px 8px 0 0; font-family: var(--kato-mono); font-size: .7rem; }
+.kato-file-square { width: 9px; height: 11px; border: 1px solid currentColor; }
+.kato-hero-code { position: relative; padding: 25px 32px 29px; border-radius: 0 9px 9px 9px; background: var(--kato-code-bg); color: var(--kato-code-ink); box-shadow: 0 15px 40px -25px #10251b80; }
+.kato-code-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 20px; color: #c1d7b8; font-size: .73rem; border-bottom: 1px solid #60857166; }
+.kato-hero-code pre { padding-top: 24px; font-size: clamp(.8rem, 1.14vw, 1rem); line-height: 1.82; }
+.kato-token-comment { color: #b3c8a8; }
+.kato-token-meta { color: #b4dce1; }
+.kato-token-string { color: #d1ecad; }
+.kato-token-value { color: #f4d694; }
+.kato-code-annotation { display: flex; align-items: flex-start; gap: 10px; margin-top: 25px; padding-top: 18px; border-top: 1px solid #60857166; color: #c1d7b8; font-size: .76rem; line-height: 1.6; }
+.kato-annotation-dot { width: 7px; height: 7px; margin-top: 6px; flex: none; border: 1px solid #b3d397; border-radius: 50%; }
+.kato-value-slip { position: relative; margin: -1px 20px 0; padding: 15px 18px; background: var(--kato-soft); border: 1px solid var(--kato-line); border-top: none; border-radius: 0 0 5px 5px; display: flex; flex-direction: column; gap: 7px; font-size: .76rem; }
+.kato-value-slip > code { font-size: .76rem; overflow-wrap: anywhere; }
+.kato-principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding-block: 26px; border-top: 1px solid var(--kato-line); border-bottom: 1px solid var(--kato-line); }
+.kato-principles p { display: flex; align-items: center; gap: 13px; font-size: .82rem; }
+.kato-principles code { color: var(--kato-green); font-size: 1.15rem; white-space: nowrap; }
+.kato-section { padding-block: 100px; }
+.kato-section-label { color: var(--kato-muted); font-size: .82rem; margin-bottom: 16px !important; }
+.kato-notation { display: grid; grid-template-columns: .85fr 1.15fr; column-gap: 84px; row-gap: 60px; }
+.kato-section-intro > p:not(.kato-section-label) { margin-top: 24px; color: var(--kato-muted); }
+.kato-section-intro > .kato-text-link { margin-top: 16px; }
+.kato-comparison { display: grid; grid-template-columns: 1fr 1fr; min-width: 0; align-self: start; border: 1px solid var(--kato-line); border-radius: 7px; overflow: hidden; background: var(--kato-surface); }
+.kato-comparison-example { min-width: 0; }
+.kato-comparison-example:first-child { background: var(--kato-soft); border-right: 1px solid var(--kato-line); }
+.kato-example-label { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; padding: 14px 20px; border-bottom: 1px solid var(--kato-line); font-size: .75rem; }
+.kato-example-label > span:first-child { font-weight: 500; }
+.kato-example-label > span:nth-child(2) { color: var(--kato-muted); font-size: .68rem; }
+.kato-comparison pre { padding: 24px 20px 30px; font-size: .72rem; min-height: 250px; }
+.kato-comparison-note { grid-column: 1 / -1; border-top: 1px solid var(--kato-line); padding: 15px 20px; color: var(--kato-muted); font-size: .8rem; }
+.kato-type-intro { padding-top: 7px; }
+.kato-type-intro p { margin-top: 18px; color: var(--kato-muted); }
+.kato-site .kato-small { font-size: .84rem; }
+.kato-type-table-wrap { min-width: 0; overflow-x: auto; }
+.kato-type-table { width: 100%; border-collapse: collapse; text-align: left; font-size: .78rem; white-space: nowrap; }
+.kato-type-table th { padding: 9px 12px; font-weight: 400; color: var(--kato-muted); font-size: .73rem; border-bottom: 1px solid var(--kato-line); }
+.kato-type-table td { padding: 13px 12px; border-bottom: 1px solid var(--kato-line); }
+.kato-type-table td:first-child { color: var(--kato-green); }
+.kato-type-table td:last-child { color: var(--kato-muted); font-size: .74rem; }
+.kato-type-table tr:last-child td { border-bottom: none; }
+.kato-playground-section { padding-block: 82px; background: var(--kato-soft); border-block: 1px solid var(--kato-line); }
+.kato-playground-intro { display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 80px; margin-bottom: 36px; }
+.kato-playground-intro > p { max-width: 380px; padding-bottom: 4px; color: var(--kato-muted); }
+.kato-workbench { min-width: 0; }
+.kato-presets { display: flex; align-items: stretch; flex-wrap: wrap; gap: 6px; }
+.kato-presets button { min-height: 42px; padding: 8px 16px; border: 1px solid transparent; border-radius: 5px; font-size: .85rem; color: var(--kato-muted); background: transparent; }
+.kato-presets button:hover { color: var(--kato-ink); background: var(--kato-paper); }
+.kato-presets button[aria-pressed="true"] { color: var(--kato-ink); background: var(--kato-surface); border-color: var(--kato-line); }
+.kato-preset-description { max-width: 760px; min-height: 74px; padding-block: 13px 20px; color: var(--kato-muted); font-size: .85rem; }
+.kato-editor-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--kato-line); border-radius: 8px; overflow: hidden; background: var(--kato-surface); }
+.kato-editor-pane, .kato-output-pane { min-width: 0; }
+.kato-editor-pane { display: flex; flex-direction: column; border-right: 1px solid var(--kato-line); }
+.kato-pane-heading { min-height: 53px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 20px; border-bottom: 1px solid var(--kato-line); background: var(--kato-paper); font-size: .78rem; }
+.kato-pane-heading > label { font-family: var(--kato-mono); font-size: .72rem; }
+.kato-pane-heading > span { color: var(--kato-muted); font-size: .72rem; }
+.kato-site textarea { display: block; flex: 1 1 auto; width: 100%; height: 440px; min-height: 240px; resize: vertical; padding: 24px; border: none; border-radius: 0; color: var(--kato-ink); background: var(--kato-surface); font-family: var(--kato-mono); font-size: .82rem; line-height: 1.9; tab-size: 2; }
+.kato-site textarea:focus-visible { position: relative; outline-offset: -3px; }
+.kato-editor-controls { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; min-height: 70px; padding: 12px 16px; border-top: 1px solid var(--kato-line); }
+.kato-profile-control { display: flex; align-items: center; gap: 8px; font-size: .73rem; }
+.kato-profile-control > label { color: var(--kato-muted); }
+.kato-profile-control select { min-height: 40px; max-width: 170px; padding: 5px; border: 1px solid var(--kato-line); border-radius: 4px; background: var(--kato-paper); color: var(--kato-ink); font-size: .75rem; }
+.kato-run-controls { display: flex; align-items: center; gap: 12px; }
+.kato-reset { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 40px; padding: 6px; border: none; background: transparent; color: var(--kato-muted); font-size: .75rem !important; }
+.kato-reset:hover { color: var(--kato-ink); }
+.kato-site .kato-parse { min-height: 40px; padding: 7px 16px; font-size: .8rem; gap: 7px; }
+.kato-output-pane { display: flex; flex-direction: column; background: var(--kato-paper); }
+.kato-output-options { display: flex; align-items: center; gap: 12px; }
+.kato-output-options button { min-height: 32px; border: none; padding: 3px 0; color: var(--kato-muted); background: transparent; font-size: .78rem; border-bottom: 2px solid transparent; }
+.kato-output-options button[aria-pressed="true"] { border-bottom-color: var(--kato-green); color: var(--kato-ink); }
+.kato-output-options button:hover { color: var(--kato-green); }
+.kato-output-body { flex: 1; min-height: 440px; max-height: 560px; overflow: auto; }
+.kato-output-body > pre { min-height: 100%; padding: 24px; font-size: .78rem; line-height: 1.9; }
+.kato-output-empty { padding: 28px 24px; font-size: .85rem; color: var(--kato-muted); }
+.kato-output-status { display: flex; align-items: center; gap: 7px; min-height: 70px; padding: 15px 24px; color: var(--kato-muted); border-top: 1px solid var(--kato-line); font-size: .75rem; }
+.kato-output-stale { opacity: .55; }
+.kato-diagnostic { margin: 20px; padding: 18px; border: 1px solid currentColor; border-radius: 5px; background: var(--kato-danger-bg); color: var(--kato-danger); font-size: .82rem; overflow-wrap: anywhere; }
+.kato-diagnostic strong { display: flex; align-items: center; gap: 8px; font-weight: 500; }
+.kato-diagnostic p { margin-top: 12px; }
+.kato-diagnostic pre { margin-top: 12px; font-size: .75rem; }
+.kato-diagnostic small { display: block; margin-top: 12px; font-size: .72rem; }
+.kato-error-help { font-size: .76rem; }
+.kato-workbench-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 30px; margin-top: 18px; color: var(--kato-muted); font-size: .74rem; }
+.kato-workbench-notes details { grid-column: 1 / -1; margin-top: 10px; }
+.kato-workbench-notes summary { width: fit-content; min-height: 32px; }
+.kato-workbench-notes details p { max-width: 720px; margin-block: 8px; }
+.kato-workbench-notes details pre { font-size: .76rem; margin-block: 12px; }
+.kato-workbench-notes a { text-decoration: underline; text-underline-offset: 3px; }
+.kato-workbench-notes kbd { font-size: .72rem; }
+.kato-agents { display: grid; grid-template-columns: .85fr 1.15fr; gap: 48px 84px; }
+.kato-agents-heading > p:last-child { margin-top: 26px; color: var(--kato-muted); }
+.kato-agent-sheet { min-width: 0; border: 1px solid var(--kato-line); border-radius: 6px; background: var(--kato-surface); }
+.kato-agent-sheet pre { padding: 25px 28px; font-size: .79rem; }
+.kato-sheet-note { display: flex; align-items: flex-start; gap: 14px; padding: 18px 24px; background: var(--kato-soft); border-top: 1px solid var(--kato-line); border-radius: 0 0 6px 6px; color: var(--kato-muted); font-size: .79rem; }
+.kato-sheet-note svg { flex: none; margin-top: 4px; }
+.kato-workflows { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 36px 70px; }
+.kato-workflows article { border-top: 1px solid var(--kato-line); padding-top: 26px; }
+.kato-workflows p { margin-top: 15px; color: var(--kato-muted); font-size: .94rem; }
+.kato-workflow-foot { display: block; margin-top: 18px; font-size: .76rem; color: var(--kato-muted); }
+.kato-review-workflow { grid-column: 1 / -1; display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 80px; }
+.kato-diff { padding: 25px; border: 1px solid var(--kato-line); border-radius: 5px; background: var(--kato-surface); font-size: .85rem; line-height: 2.2; }
+.kato-diff span { display: block; padding-inline: 12px; }
+.kato-diff-remove { color: var(--kato-danger); background: var(--kato-danger-bg); }
+.kato-diff-add { color: var(--kato-green); background: var(--kato-soft); }
+.kato-start { display: grid; grid-template-columns: .85fr 1.15fr; gap: 46px 84px; padding-top: 70px; border-top: 1px solid var(--kato-line); }
+.kato-start-intro > p:not(.kato-section-label) { margin-top: 24px; color: var(--kato-muted); }
+.kato-start-intro > a { margin-top: 28px; }
+.kato-start-code { min-width: 0; border: 1px solid var(--kato-line); border-radius: 6px; overflow: hidden; background: var(--kato-surface); }
+.kato-start-code .kato-example-label { background: var(--kato-soft); }
+.kato-start-code pre { padding: 23px; font-size: .76rem; }
+.kato-start-code pre + .kato-example-label { border-top: 1px solid var(--kato-line); }
+.kato-status-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; grid-column: 1 / -1; }
+.kato-status-notes h3 { font-size: 1.05rem; }
+.kato-status-notes p { margin-top: 12px; font-size: .86rem; color: var(--kato-muted); }
+.kato-source-links { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 0 70px; }
+.kato-source-links a { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 57px; border-bottom: 1px solid var(--kato-line); font-size: .87rem; }
+.kato-footer { display: flex; justify-content: space-between; gap: 40px; padding-block: 34px 48px; border-top: 1px solid var(--kato-line); }
+.kato-footer .kato-wordmark { font-size: 1.6rem; }
+.kato-footer .kato-mark { width: 23px; height: 27px; }
+.kato-footer p { margin-top: 12px; font-size: .8rem; color: var(--kato-muted); }
+.kato-footer-links { display: flex; align-items: center; gap: 26px; font-size: .78rem; }
+
+@media (min-width: 1500px) {
+	.kato-hero { padding-block: 86px 110px; }
+}
+
+@media (max-width: 1050px) {
+	.kato-container { width: calc(100% - 64px); }
+	.kato-hero { gap: 32px; }
+	.kato-hero-code { padding-inline: 24px; }
+	.kato-notation, .kato-agents, .kato-start { column-gap: 40px; }
+	.kato-comparison { grid-template-columns: 1fr; }
+	.kato-comparison-example:first-child { border-right: none; border-bottom: 1px solid var(--kato-line); }
+	.kato-comparison pre { min-height: unset; padding-block: 16px; }
+	.kato-principles p { align-items: flex-start; font-size: .75rem; }
+	.kato-editor-controls { min-height: 116px; }
+	.kato-output-status { min-height: 116px; }
+}
+
+@media (max-width: 760px) {
+	.kato-container { width: calc(100% - 40px); }
+	.kato-header { min-height: 90px; gap: 14px; flex-wrap: wrap; padding-block: 22px; }
+	.kato-header nav { order: 3; width: 100%; justify-content: space-between; gap: 16px; border-top: 1px solid var(--kato-line); padding-top: 8px; margin-top: 8px; }
+	.kato-header nav a { font-size: .82rem; }
+	.kato-nav-source { margin-left: 0; }
+	.kato-theme { margin-left: auto; }
+	.kato-wordmark { font-size: 1.8rem; }
+	.kato-hero { grid-template-columns: 1fr; padding-block: 28px 52px; gap: 30px; }
+	.kato-site h1 { font-size: clamp(2.7rem, 8.5vw, 4.2rem); margin-top: 21px; }
+	.kato-hero-copy > p:not(.kato-name-note) { font-size: 1rem; }
+	.kato-name-note { margin-top: 25px !important; }
+	.kato-hero-document { padding-top: 0; }
+	.kato-hero-code pre { font-size: .87rem; }
+	.kato-principles { grid-template-columns: 1fr; padding-block: 22px; gap: 16px; }
+	.kato-principles p { align-items: center; font-size: .83rem; }
+	.kato-principles code { width: 40px; font-size: 1rem; }
+	.kato-section { padding-block: 64px; }
+	.kato-notation, .kato-agents, .kato-start { grid-template-columns: 1fr; gap: 32px; }
+	.kato-notation .kato-type-intro { margin-top: 12px; }
+	.kato-comparison { grid-template-columns: 1fr 1fr; }
+	.kato-comparison-example:first-child { border-right: 1px solid var(--kato-line); border-bottom: none; }
+	.kato-comparison .kato-example-label { align-items: flex-start; flex-direction: column; }
+	.kato-comparison pre { font-size: .66rem; padding-inline: 14px; }
+	.kato-playground-section { padding-block: 58px; }
+	.kato-playground-intro { grid-template-columns: 1fr; gap: 22px; }
+	.kato-playground-intro > p { max-width: 100%; font-size: .94rem; }
+	.kato-presets { display: grid; grid-template-columns: 1fr 1fr; }
+	.kato-presets button { text-align: left; }
+	.kato-preset-description { min-height: 102px; }
+	.kato-editor-grid { grid-template-columns: 1fr; }
+	.kato-editor-pane { border-right: none; border-bottom: 1px solid var(--kato-line); }
+	.kato-site textarea { height: 380px; padding: 18px; font-size: 16px; }
+	.kato-editor-controls { min-height: 70px; padding-inline: 12px; }
+	.kato-profile-control { gap: 4px; }
+	.kato-profile-control select { max-width: 140px; }
+	.kato-run-controls { gap: 6px; }
+	.kato-output-body { min-height: 280px; max-height: 400px; }
+	.kato-output-body > pre { padding: 20px; }
+	.kato-output-status { min-height: 50px; padding-block: 12px; }
+	.kato-workbench-notes { grid-template-columns: 1fr; gap: 12px; }
+	.kato-agent-sheet pre { padding-inline: 18px; font-size: .73rem; }
+	.kato-workflows, .kato-status-notes { grid-template-columns: 1fr; gap: 30px; }
+	.kato-review-workflow { grid-template-columns: 1fr; gap: 22px; }
+	.kato-start-code pre { padding-inline: 17px; font-size: .71rem; }
+	.kato-source-links { grid-template-columns: 1fr; }
+	.kato-footer { flex-direction: column; gap: 26px; padding-bottom: max(32px, env(safe-area-inset-bottom)); }
+	.kato-footer-links { align-items: flex-start; flex-wrap: wrap; gap: 12px 24px; }
+}
+
+@media (max-width: 380px) {
+	.kato-container { width: calc(100% - 32px); }
+	.kato-header nav { gap: 10px; }
+	.kato-header nav a { font-size: .75rem; }
+	.kato-site h1 { font-size: 2.55rem; }
+	.kato-hero-code { padding-inline: 18px; }
+	.kato-hero-code pre { font-size: .77rem; }
+	.kato-comparison { grid-template-columns: 1fr; }
+	.kato-comparison-example:first-child { border-right: none; border-bottom: 1px solid var(--kato-line); }
+	.kato-comparison .kato-example-label { flex-direction: row; }
+	.kato-comparison pre { font-size: .75rem; }
+	.kato-pane-heading { padding-inline: 14px; }
+	.kato-editor-controls { gap: 8px; }
+}

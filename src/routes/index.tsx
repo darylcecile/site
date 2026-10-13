@@ -1,6 +1,17 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/react-start';
-import HomePage from '@/pages/HomePage';
+import { lazy, Suspense } from 'react';
+import { getCurrentProduct } from '@/lib/current-product';
+import { productOrigin, type ProductId } from '@/lib/product-sites';
+
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const productPages = {
+	jsvm: lazy(() => import('@/products/jsvm/Page')),
+	sakoa: lazy(() => import('@/products/sakoa/Page')),
+	kato: lazy(() => import('@/products/kato/Page')),
+	jsql: lazy(() => import('@/products/jsql/Page')),
+	binzo: lazy(() => import('@/products/binzo/Page')),
+};
 
 const getHomeData = createServerFn({ method: 'GET' }).handler(async () => {
 	const { getNotes, getPublicNotes } = await import('@/lib/repo/notesRepo');
@@ -14,11 +25,25 @@ const getHomeData = createServerFn({ method: 'GET' }).handler(async () => {
 });
 
 export const Route = createFileRoute('/')({
-	loader: () => getHomeData(),
-	head: () => ({ links: [{ rel: 'canonical', href: 'https://darylcecile.net' }] }),
+	loader: async () => {
+		const product = getCurrentProduct();
+		return product
+			? { product, home: null }
+			: { product: null as ProductId | null, home: await getHomeData() };
+	},
+	head: () => {
+		const product = getCurrentProduct();
+		return { links: [{ rel: 'canonical', href: product ? productOrigin(product) : 'https://darylcecile.net' }] };
+	},
 	component: HomeRoute,
 });
 
 function HomeRoute() {
-	return <HomePage {...Route.useLoaderData()} />;
+	const { product, home } = Route.useLoaderData();
+	const ProductPage = product && productPages[product];
+	return (
+		<Suspense fallback={<main className="p-8" role="status">Loading…</main>}>
+			{ProductPage ? <ProductPage /> : home ? <HomePage {...home} /> : null}
+		</Suspense>
+	);
 }

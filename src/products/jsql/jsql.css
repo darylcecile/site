@@ -1,0 +1,236 @@
+.jsql-site {
+	--jsql-paper: #fff;
+	--jsql-mist: #f3f7fc;
+	--jsql-ink: #182536;
+	--jsql-muted: #536479;
+	--jsql-blue: #1458da;
+	--jsql-tint: #eaf1fe;
+	--jsql-line: #d9e2ef;
+	--jsql-success: #1b6c52;
+	--jsql-error: #a3313b;
+	--jsql-mono: 'IBM Plex Mono', monospace;
+	background: var(--jsql-paper);
+	color: var(--jsql-ink);
+	font-family: 'Manrope Variable', sans-serif;
+	font-size: 16px;
+	line-height: 1.65;
+	min-height: 100vh;
+	color-scheme: light;
+}
+
+.dark .jsql-site {
+	--jsql-paper: #111e30;
+	--jsql-mist: #16263c;
+	--jsql-ink: #eaf0fa;
+	--jsql-muted: #a5b6ce;
+	--jsql-blue: #8cb5ff;
+	--jsql-tint: #203654;
+	--jsql-line: #304158;
+	--jsql-success: #83d9b4;
+	--jsql-error: #ffadb3;
+	color-scheme: dark;
+}
+
+.jsql-site *, .jsql-site *::before, .jsql-site *::after { box-sizing: border-box; }
+.jsql-site :is(h1, h2, h3, p, pre, dl, dd) { margin: 0; }
+.jsql-site a { color: inherit; text-decoration: none; }
+.jsql-site button, .jsql-site select, .jsql-site textarea { font: inherit; }
+.jsql-site button, .jsql-site select { cursor: pointer; }
+.jsql-site button { color: inherit; }
+.jsql-site button:disabled { cursor: wait; }
+.jsql-site :is(button, a, select, textarea, summary, pre):focus-visible { outline: 3px solid var(--jsql-blue); outline-offset: 4px; }
+.jsql-site ::selection { background: #bdd4ff; color: #152d54; }
+.jsql-site code, .jsql-site pre { font-family: var(--jsql-mono); }
+.jsql-site p code { font-size: .9em; }
+.jsql-site section[id] { scroll-margin-top: 26px; }
+.jsql-site .jsql-container { width: min(1200px, calc(100% - 96px)); margin-inline: auto; }
+.jsql-site .jsql-skip { position: absolute; left: 20px; top: 12px; z-index: 10; padding: 12px 20px; background: var(--jsql-blue); color: var(--jsql-paper); transform: translateY(-180%); }
+.jsql-site .jsql-skip:focus { transform: translateY(0); }
+
+.jsql-site .jsql-header { display: flex; align-items: center; gap: 50px; min-height: 96px; border-bottom: 1px solid var(--jsql-line); }
+.jsql-site .jsql-logo { display: inline-flex; align-items: center; gap: 11px; font: 500 29px/1 var(--jsql-mono); letter-spacing: -1.5px; }
+.jsql-site .jsql-logo > svg { color: var(--jsql-blue); }
+.jsql-site .jsql-logo-cursor { color: var(--jsql-blue); }
+.jsql-site .jsql-header nav { display: flex; gap: 30px; margin-left: auto; font-size: 13px; font-weight: 650; }
+.jsql-site .jsql-header nav a:hover, .jsql-site .jsql-footer a:hover { color: var(--jsql-blue); }
+.jsql-site .jsql-header-actions { display: flex; align-items: center; gap: 22px; }
+.jsql-site .jsql-source-link { display: flex; gap: 6px; align-items: center; font-size: 13px; font-weight: 650; }
+.jsql-site .jsql-theme { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--jsql-line); border-radius: 50%; background: transparent; }
+.jsql-site .jsql-theme:hover { background: var(--jsql-mist); }
+
+.jsql-site .jsql-hero { display: grid; grid-template-columns: 1.3fr 1fr; align-items: end; gap: 80px; padding-block: 78px 68px; }
+.jsql-site .jsql-intro-label { display: flex; gap: 12px; align-items: center; color: var(--jsql-muted); font-size: 13px; margin-bottom: 22px; }
+.jsql-site .jsql-intro-label > span { font-family: var(--jsql-mono); color: var(--jsql-blue); }
+.jsql-site h1 { font-size: clamp(42px, 4.8vw, 68px); font-weight: 650; line-height: 1.12; letter-spacing: -.035em; word-spacing: .04em; }
+.jsql-site .jsql-hero-aside > p:first-child { max-width: 38ch; font-size: 17px; line-height: 1.8; color: var(--jsql-muted); }
+.jsql-site .jsql-hero-links { display: flex; gap: 26px; align-items: center; margin-top: 25px; }
+.jsql-site .jsql-button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 11px 18px; border: 1px solid transparent; border-radius: 6px; background: var(--jsql-blue); color: var(--jsql-paper); font-size: 13px; font-weight: 700; line-height: 1.4; }
+.jsql-site .jsql-button:hover { filter: brightness(.94); }
+.jsql-site .jsql-text-link { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+.jsql-site .jsql-text-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.jsql-site .jsql-small-note { font-size: 12px; color: var(--jsql-muted); margin-top: 17px; }
+
+.jsql-site .jsql-section-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 18px; }
+.jsql-site .jsql-flow { display: flex; align-items: center; gap: 17px; font-family: var(--jsql-mono); font-size: 16px; font-weight: 500; letter-spacing: -.5px; }
+.jsql-site .jsql-flow svg { width: 18px; color: var(--jsql-blue); }
+.jsql-site .jsql-demo-label { font-size: 12px; color: var(--jsql-muted); }
+.jsql-site .jsql-workbench { border: 1px solid var(--jsql-line); border-radius: 10px; overflow: hidden; background: var(--jsql-paper); box-shadow: 0 12px 35px -25px #1f42744d; }
+.jsql-site .jsql-workbench-loading { min-height: 590px; display: grid; place-items: center; background: var(--jsql-mist); border: 1px solid var(--jsql-line); border-radius: 10px; color: var(--jsql-muted); }
+.jsql-site .jsql-example-bar { display: flex; align-items: center; gap: 16px; padding: 14px 22px; background: var(--jsql-mist); border-bottom: 1px solid var(--jsql-line); font-size: 12px; }
+.jsql-site .jsql-example-bar label { font-weight: 600; }
+.jsql-site .jsql-example-bar select { min-height: 36px; padding: 5px 30px 5px 12px; color: var(--jsql-ink); border: 1px solid var(--jsql-line); background-color: var(--jsql-paper); border-radius: 5px; font-size: 12px; }
+.jsql-site .jsql-local { display: flex; align-items: center; gap: 7px; margin-left: auto; color: var(--jsql-muted); }
+.jsql-site .jsql-local > span { width: 6px; height: 6px; border-radius: 50%; background: var(--jsql-success); }
+.jsql-site .jsql-question { padding: 17px 22px; border-bottom: 1px solid var(--jsql-line); font-size: 15px; font-weight: 650; }
+.jsql-site .jsql-editor-grid { display: grid; grid-template-columns: 1fr 1.1fr; }
+.jsql-site .jsql-input-pane { min-width: 0; display: flex; flex-direction: column; border-right: 1px solid var(--jsql-line); }
+.jsql-site .jsql-query-pane { min-width: 0; }
+.jsql-site .jsql-pane-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 15px 22px 10px; font-size: 12px; }
+.jsql-site .jsql-pane-heading label { font-weight: 700; }
+.jsql-site .jsql-pane-heading > span { font-size: 11px; color: var(--jsql-muted); }
+.jsql-site textarea { display: block; width: calc(100% - 28px); margin-inline: 14px; padding: 8px; border: 0; border-radius: 3px; background: transparent; color: var(--jsql-ink); font: 400 13px/1.9 var(--jsql-mono); resize: vertical; tab-size: 2; overflow-wrap: normal; }
+.jsql-site textarea:focus-visible { outline-width: 2px; outline-offset: 0; }
+.jsql-site textarea:disabled { opacity: .6; }
+.jsql-site .jsql-json-editor { flex: 1; min-height: 342px; }
+.jsql-site .jsql-sql-editor { min-height: 159px; color: var(--jsql-blue); }
+.jsql-site .jsql-editor-help { padding: 14px 22px; font-size: 11px; color: var(--jsql-muted); }
+.jsql-site .jsql-run-bar { display: flex; align-items: center; gap: 14px; padding: 13px 22px 18px; }
+.jsql-site .jsql-run { min-height: 38px; padding: 9px 14px; font-size: 12px; }
+.jsql-site .jsql-shortcut { font-size: 10px; color: var(--jsql-muted); }
+.jsql-site .jsql-reset { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; padding: 9px 0 9px 7px; border: 0; background: none; font-size: 11px; color: var(--jsql-muted); }
+.jsql-site .jsql-reset:hover { color: var(--jsql-blue); }
+.jsql-site .jsql-result-heading { display: flex; align-items: center; justify-content: space-between; min-height: 46px; padding: 7px 22px; background: var(--jsql-mist); border-block: 1px solid var(--jsql-line); font-size: 12px; font-weight: 650; }
+.jsql-site .jsql-result-heading > span { display: flex; align-items: center; gap: 7px; }
+.jsql-site .jsql-result-heading svg { color: var(--jsql-success); }
+.jsql-site .jsql-result-pane { min-height: 138px; max-height: 400px; overflow: auto; background: var(--jsql-mist); }
+.jsql-site .jsql-result-pane pre { margin: 0; padding: 18px 22px; font-size: 12px; line-height: 1.95; min-height: 138px; }
+.jsql-site .jsql-result-empty { padding: 27px 22px; max-width: 36ch; color: var(--jsql-muted); font-size: 12px; }
+.jsql-site .jsql-query-error { padding: 18px 22px; font-size: 12px; }
+.jsql-site .jsql-query-error strong { color: var(--jsql-error); font-weight: 650; }
+.jsql-site .jsql-query-error p { margin-block: 7px; font-family: var(--jsql-mono); overflow-wrap: anywhere; }
+.jsql-site .jsql-query-error > span { color: var(--jsql-muted); }
+.jsql-site .jsql-workbench-status { display: flex; justify-content: space-between; gap: 15px; padding: 10px 22px; border-top: 1px solid var(--jsql-line); color: var(--jsql-muted); font-size: 10px; }
+.jsql-site .jsql-success { color: var(--jsql-success); }
+.jsql-site .jsql-example-note { padding: 13px 22px; border-top: 1px solid var(--jsql-line); color: var(--jsql-muted); background: var(--jsql-mist); font-size: 12px; }
+.jsql-site .jsql-demo-details { margin-top: 18px; max-width: 90ch; font-size: 12px; color: var(--jsql-muted); }
+.jsql-site .jsql-demo-details summary { cursor: pointer; width: fit-content; padding-block: 3px; }
+.jsql-site .jsql-demo-details p { margin-top: 12px; }
+.jsql-site .jsql-demo-details a { text-decoration: underline; text-underline-offset: 3px; }
+.jsql-site .jsql-copy { display: inline-flex; align-items: center; gap: 6px; padding: 6px; border: 0; border-radius: 3px; background: transparent; font-size: 10px; font-weight: 500; }
+.jsql-site .jsql-copy:hover { background: var(--jsql-tint); }
+
+.jsql-site .jsql-explain { display: grid; grid-template-columns: .9fr 1.35fr; gap: 100px; padding-block: 112px; }
+.jsql-site h2 { font-size: clamp(32px, 3vw, 42px); line-height: 1.18; font-weight: 600; letter-spacing: -.045em; }
+.jsql-site .jsql-explain-intro > p { color: var(--jsql-muted); font-size: 15px; margin-top: 24px; max-width: 34ch; line-height: 1.85; }
+.jsql-site .jsql-explain-intro .jsql-text-link { margin-top: 29px; color: var(--jsql-blue); }
+.jsql-site .jsql-mapping > div { padding-block: 20px; border-bottom: 1px solid var(--jsql-line); }
+.jsql-site .jsql-mapping > div:first-child { padding-top: 0; }
+.jsql-site .jsql-mapping dt { font-size: 13px; font-weight: 750; margin-bottom: 10px; }
+.jsql-site .jsql-mapping dd { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 11px; font-size: 11px; }
+.jsql-site .jsql-mapping dd > code { padding: 3px 7px; background: var(--jsql-mist); border-radius: 3px; overflow-wrap: anywhere; }
+.jsql-site .jsql-mapping dd > svg { color: var(--jsql-blue); flex-shrink: 0; }
+.jsql-site .jsql-mapping dd p { width: 100%; margin-top: 4px; color: var(--jsql-muted); font-size: 12px; line-height: 1.85; }
+
+.jsql-site .jsql-agent-section { background: #114cbd; color: #fff; }
+.dark .jsql-site .jsql-agent-section { background: #173f7f; }
+.jsql-site .jsql-agent-layout { display: grid; grid-template-columns: 1fr 1.12fr; gap: 44px 84px; padding-block: 70px 25px; }
+.jsql-site .jsql-agent-label { font-size: 12px; color: #c3d8ff; margin-bottom: 23px; }
+.jsql-site .jsql-agent-layout h2 { font-size: clamp(30px, 2.9vw, 40px); }
+.jsql-site .jsql-agent-layout h2 ~ p { font-size: 14px; color: #deebff; margin-top: 24px; line-height: 1.9; max-width: 45ch; }
+.jsql-site .jsql-agent-example { align-self: center; min-width: 0; }
+.jsql-site .jsql-agent-question { font-size: 16px; font-weight: 600; margin-bottom: 19px; }
+.jsql-site .jsql-agent-example .jsql-command { --jsql-line: #4272c6; --jsql-tint: #295bbc; background: #0f3d94; color: #fff; }
+.jsql-site .jsql-agent-example .jsql-command-title { color: #d8e6ff; }
+.jsql-site .jsql-agent-example .jsql-command-output { color: #d1f7de; }
+.jsql-site .jsql-agent-example .jsql-command-output > span { color: #b6cefb; }
+.jsql-site .jsql-agent-caption { margin-top: 18px; font-size: 12px; color: #c3d8ff; line-height: 1.8; }
+.jsql-site .jsql-agent-footnote { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; padding-top: 20px; border-top: 1px solid #ffffff30; color: #c3d8ff; font-size: 11px; }
+.jsql-site .jsql-agent-footnote svg { flex-shrink: 0; }
+.jsql-site .jsql-agent-section :is(a, button, pre):focus-visible { outline-color: #fff; }
+
+.jsql-site .jsql-command { min-width: 0; background: var(--jsql-mist); border: 1px solid var(--jsql-line); border-radius: 7px; overflow: hidden; }
+.jsql-site .jsql-command-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 13px 8px 18px; border-bottom: 1px solid var(--jsql-line); font-size: 11px; color: var(--jsql-muted); }
+.jsql-site .jsql-command-title > span { display: flex; align-items: center; gap: 7px; }
+.jsql-site .jsql-command pre { padding: 20px 18px; font-size: 12px; line-height: 1.9; white-space: pre-wrap; overflow-wrap: anywhere; }
+.jsql-site .jsql-command-output { display: flex; gap: 18px; padding: 12px 18px; border-top: 1px solid var(--jsql-line); color: var(--jsql-success); font-size: 12px; overflow-wrap: anywhere; }
+.jsql-site .jsql-command-output > span { color: var(--jsql-muted); font-size: 10px; padding-top: 2px; }
+.jsql-site .jsql-get-started { display: grid; grid-template-columns: .9fr 1.35fr; gap: 100px; padding-block: 105px 85px; }
+.jsql-site .jsql-install-intro > p:not(.jsql-small-note) { font-size: 15px; line-height: 1.9; color: var(--jsql-muted); max-width: 35ch; margin-top: 24px; }
+.jsql-site .jsql-release { display: flex; align-items: center; gap: 10px; width: fit-content; margin-top: 26px; font-size: 12px; }
+.jsql-site .jsql-release > span { padding: 2px 7px; border: 1px solid var(--jsql-line); border-radius: 4px; font: 11px/1.8 var(--jsql-mono); }
+.jsql-site .jsql-install-steps { min-width: 0; }
+.jsql-site .jsql-install-steps h3 { font-size: 16px; font-weight: 750; margin-bottom: 12px; }
+.jsql-site .jsql-install-steps > p { color: var(--jsql-muted); font-size: 13px; margin-bottom: 17px; }
+.jsql-site .jsql-install-steps > p a { color: var(--jsql-blue); text-decoration: underline; text-underline-offset: 3px; }
+.jsql-site .jsql-install-steps > .jsql-install-alternative { font-size: 11px; margin-top: 14px; margin-bottom: 32px; }
+.jsql-site .jsql-boundary { display: flex; align-items: flex-start; gap: 24px; padding: 26px 30px; background: var(--jsql-mist); border-radius: 8px; }
+.jsql-site .jsql-boundary > svg { color: var(--jsql-blue); flex-shrink: 0; margin-top: 3px; }
+.jsql-site .jsql-boundary h2 { font-size: 16px; letter-spacing: -.02em; font-weight: 750; }
+.jsql-site .jsql-boundary p { font-size: 12px; line-height: 1.85; color: var(--jsql-muted); max-width: 80ch; margin-top: 9px; }
+.jsql-site .jsql-boundary > a { display: flex; gap: 6px; align-items: center; white-space: nowrap; margin-left: auto; font-size: 11px; }
+.jsql-site .jsql-footer { display: flex; gap: 20px; align-items: center; padding-block: 45px; margin-top: 30px; font-size: 11px; color: var(--jsql-muted); }
+.jsql-site .jsql-footer .jsql-logo { font-size: 20px; color: var(--jsql-ink); gap: 8px; }
+.jsql-site .jsql-footer > p a { text-decoration: underline; text-underline-offset: 3px; }
+.jsql-site .jsql-footer nav { display: flex; gap: 22px; margin-left: auto; }
+.jsql-site .jsql-footer nav a { display: flex; align-items: center; gap: 4px; }
+
+@media (max-width: 1000px) {
+	.jsql-site .jsql-container { width: calc(100% - 64px); }
+	.jsql-site .jsql-hero { gap: 40px; }
+	.jsql-site .jsql-hero-aside > p:first-child { font-size: 15px; }
+	.jsql-site .jsql-explain, .jsql-site .jsql-get-started { gap: 55px; }
+	.jsql-site .jsql-agent-layout { gap: 40px; }
+	.jsql-site .jsql-shortcut { display: none; }
+	.jsql-site .jsql-header { gap: 25px; }
+	.jsql-site .jsql-header nav { gap: 20px; }
+}
+
+@media (max-width: 760px) {
+	.jsql-site .jsql-container { width: calc(100% - 40px); }
+	.jsql-site .jsql-header { flex-wrap: wrap; min-height: auto; padding-block: 23px 16px; gap: 22px; }
+	.jsql-site .jsql-header nav { order: 3; width: 100%; justify-content: space-between; padding-top: 2px; font-size: 12px; }
+	.jsql-site .jsql-header-actions { margin-left: auto; gap: 15px; }
+	.jsql-site .jsql-hero { grid-template-columns: 1fr; gap: 27px; padding-block: 45px; }
+	.jsql-site .jsql-intro-label { margin-bottom: 16px; font-size: 12px; }
+	.jsql-site h1 { font-size: clamp(38px, 8.6vw, 62px); }
+	.jsql-site .jsql-hero-aside > p:first-child { max-width: 48ch; font-size: 15px; }
+	.jsql-site .jsql-hero-links { margin-top: 21px; }
+	.jsql-site .jsql-demo-label { display: none; }
+	.jsql-site .jsql-flow { font-size: 14px; gap: 14px; }
+	.jsql-site .jsql-example-bar { flex-wrap: wrap; padding: 13px 16px; gap: 7px 12px; }
+	.jsql-site .jsql-example-bar select { flex: 1; min-width: 130px; font-size: 14px; }
+	.jsql-site .jsql-local { width: 100%; margin: 2px 0 0; font-size: 10px; }
+	.jsql-site .jsql-question { padding: 16px; font-size: 14px; }
+	.jsql-site .jsql-editor-grid { grid-template-columns: 1fr; }
+	.jsql-site .jsql-input-pane { border-right: 0; border-bottom: 1px solid var(--jsql-line); }
+	.jsql-site .jsql-pane-heading { padding-inline: 16px; }
+	.jsql-site textarea { width: calc(100% - 20px); margin-inline: 10px; padding-inline: 6px; font-size: 16px; line-height: 1.65; }
+	.jsql-site .jsql-json-editor { min-height: 240px; height: 270px; flex: none; }
+	.jsql-site .jsql-sql-editor { min-height: 192px; }
+	.jsql-site .jsql-editor-help { padding-inline: 16px; }
+	.jsql-site .jsql-run-bar { padding-inline: 16px; }
+	.jsql-site .jsql-run { min-height: 44px; }
+	.jsql-site .jsql-reset { min-height: 44px; }
+	.jsql-site .jsql-result-pane pre { padding-inline: 16px; font-size: 13px; }
+	.jsql-site .jsql-result-heading { padding-inline: 16px; }
+	.jsql-site .jsql-workbench-status { flex-wrap: wrap; padding-inline: 16px; gap: 3px 20px; }
+	.jsql-site .jsql-example-note { padding-inline: 16px; }
+	.jsql-site .jsql-explain, .jsql-site .jsql-get-started { grid-template-columns: 1fr; padding-block: 65px; gap: 38px; }
+	.jsql-site .jsql-explain-intro > p, .jsql-site .jsql-install-intro > p:not(.jsql-small-note) { max-width: 45ch; }
+	.jsql-site .jsql-explain-intro h2 br, .jsql-site .jsql-install-intro h2 br { display: none; }
+	.jsql-site .jsql-explain-intro h2, .jsql-site .jsql-install-intro h2 { max-width: 13ch; }
+	.jsql-site .jsql-mapping dd > code { font-size: 11px; }
+	.jsql-site .jsql-agent-layout { grid-template-columns: 1fr; padding-block: 48px 24px; gap: 30px; }
+	.jsql-site .jsql-agent-layout h2 { font-size: 32px; }
+	.jsql-site .jsql-agent-layout h2 ~ p { max-width: 48ch; }
+	.jsql-site .jsql-agent-footnote { margin-top: 6px; align-items: flex-start; }
+	.jsql-site .jsql-boundary { flex-wrap: wrap; padding: 24px; gap: 15px; }
+	.jsql-site .jsql-boundary > div { flex: 1; min-width: 210px; }
+	.jsql-site .jsql-boundary > a { margin-left: 40px; }
+	.jsql-site .jsql-footer { flex-wrap: wrap; gap: 15px; padding-block: 32px; }
+	.jsql-site .jsql-footer nav { margin-left: 0; width: 100%; padding-top: 6px; gap: 22px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.jsql-site :is(.jsql-button, .jsql-theme, .jsql-copy) { transition: background-color 120ms ease, filter 120ms ease; }
+}

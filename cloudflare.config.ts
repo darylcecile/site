@@ -6,9 +6,18 @@ export default defineConfig({
 		name: 'darylcecile-site',
 		entrypoint: './src/server.ts',
 		compatibilityDate: '2026-10-01',
-		compatibilityFlags: ['nodejs_compat'],
+		// Resolve same-zone image and metadata requests through the public Worker routes.
+		compatibilityFlags: ['nodejs_compat', 'global_fetch_strictly_public'],
 		workersDev: true,
-		domains: ['darylcecile.net', 'www.darylcecile.net'],
+		domains: [
+			'darylcecile.net',
+			'www.darylcecile.net',
+			'jsvm.darylcecile.net',
+			'sakoa.darylcecile.net',
+			'kato.darylcecile.net',
+			'jsql.darylcecile.net',
+			'binzo.darylcecile.net',
+		],
 		assets: { notFoundHandling: 'none' },
 		env: {
 			ASSETS: bindings.assets(),

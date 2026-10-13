@@ -1,6 +1,6 @@
 # darylcecile.net
 
-A personal website and blog built with TanStack Start and React, deployed to Cloudflare Workers with the native `cf` CLI.
+A personal website, blog, and the JSVM, Sakoa, Kato, jsql, and Binzo websites, built with TanStack Start and React and deployed to Cloudflare Workers with the native `cf` CLI.
 
 ## Overview
 
@@ -23,12 +23,28 @@ This is the source code for [darylcecile.net](https://darylcecile.net), a person
 - **Animations**: [Motion](https://motion.dev/)
 - **Deployment**: Native Cloudflare Build Output with `cf build` and `cf deploy`
 
+## Project websites
+
+| Project | Website | Interactive examples |
+|---------|---------|----------------------|
+| JSVM | [jsvm.darylcecile.net](https://jsvm.darylcecile.net) | The published JavaScript VM in a disposable browser worker |
+| Sakoa | [sakoa.darylcecile.net](https://sakoa.darylcecile.net) | Checked language examples with recorded compiler feedback |
+| Kato | [kato.darylcecile.net](https://kato.darylcecile.net) | The TypeScript reference parser and evaluator |
+| jsql | [jsql.darylcecile.net](https://jsql.darylcecile.net) | Real SQLite queries over editable JSON in a browser worker |
+| Binzo | [binzo.darylcecile.net](https://binzo.darylcecile.net) | The release matcher with real, recorded GitHub release assets |
+
+Each website owns its design and content under `src/products/<name>/`. The root route
+selects the page from the request/browser hostname; the portfolio's layout and the
+individual pages are loaded independently. `src/products/registry.ts` provides
+document/social metadata. Runtime-heavy demos load when requested, and source
+references live beside the examples or vendored reference code.
+
 ## Getting Started
 
 ### Prerequisites
 
 - [Bun](https://bun.sh) 1.3+ for dependencies and content generation
-- Node.js 22.18+ for Vite and Cloudflare's typed configuration loader
+- [Node.js](https://nodejs.org/) 24+ for Portless, Vite, and Cloudflare's typed configuration loader
 - Git
 
 ### Installation
@@ -57,13 +73,49 @@ This is the source code for [darylcecile.net](https://darylcecile.net), a person
 
 ### Development
 
-Start the development server:
+Start the development server through the pinned [Portless](https://github.com/vercel-labs/portless) dependency:
 
 ```bash
 bun run dev
 ```
 
-The site will be available at [http://localhost:3000](http://localhost:3000). The Cloudflare Vite plugin runs server-side code in the Workers runtime with local bindings.
+One Vite/Workers process serves the portfolio and five project websites:
+
+| Site | Local URL |
+|------|-----------|
+| Portfolio | [https://site.darylcecile.localhost](https://site.darylcecile.localhost) |
+| JSVM | [https://jsvm.projects.darylcecile.localhost](https://jsvm.projects.darylcecile.localhost) |
+| Sakoa | [https://sakoa.projects.darylcecile.localhost](https://sakoa.projects.darylcecile.localhost) |
+| Kato | [https://kato.projects.darylcecile.localhost](https://kato.projects.darylcecile.localhost) |
+| jsql | [https://jsql.projects.darylcecile.localhost](https://jsql.projects.darylcecile.localhost) |
+| Binzo | [https://binzo.projects.darylcecile.localhost](https://binzo.projects.darylcecile.localhost) |
+
+Portless defaults to HTTPS on port 443. On first use, run `bun run dev` in an interactive terminal so Portless can request administrator access and trust its local certificate authority. If a task runner cannot bootstrap the proxy, start it from a terminal first:
+
+```bash
+bunx portless proxy start
+```
+
+If certificate trust was skipped, run `bunx portless trust`.
+
+Portless registers the portfolio hostname and assigns Vite a free internal port. The development-only `scripts/portlessProductsPlugin.ts` registers the five project website hosts against that same port when Vite starts listening. These process-owned routes work with the default strict proxy and are removed when Vite closes or restarts. Existing route conflicts fail startup and roll back only newly registered website routes.
+
+In linked worktrees, the portfolio uses `https://<branch>.site.darylcecile.localhost` and each project uses `https://<project>.<branch>.projects.darylcecile.localhost`. The fixed `site` and `projects` labels keep branch names such as `kato` separate from the Kato website. Portless normalizes the branch's final path segment for its hostname (`feature/kato` becomes `kato`); the terminal prints the exact URLs.
+
+Portless preserves the browser's hostname for server-side page selection. The Cloudflare Vite plugin runs server-side code in the Workers runtime with local bindings. Vite allows `.localhost` hosts by default, and HMR WebSockets pass through Portless using the current page's host and protocol.
+
+Chrome, Firefox, and Edge resolve `.localhost` subdomains automatically. Portless's proxy also syncs registered hostnames to the hosts file by default for Safari; if resolution fails, run `bunx portless hosts sync` while the dev server is running.
+
+For an isolated, nonprivileged HTTP proxy (useful in agent sessions), run:
+
+```bash
+PORTLESS_STATE_DIR="$PWD/.groundwork/tmp/portless" \
+PORTLESS_PORT=1355 PORTLESS_HTTPS=0 PORTLESS_SYNC_HOSTS=0 bun run dev
+```
+
+This uses `http://site.darylcecile.localhost:1355` and `http://<project>.projects.darylcecile.localhost:1355`. Stop that isolated proxy after stopping the app with `PORTLESS_STATE_DIR="$PWD/.groundwork/tmp/portless" PORTLESS_PORT=1355 bunx portless proxy stop`.
+
+For direct Vite development without the proxy, use `PORTLESS=0 bun run dev` and open [http://localhost:3000](http://localhost:3000). `PORT` can override this fallback port. Hostname-selected project websites use the named Portless URLs above.
 
 Vite first runs `scripts/contentBuilder.ts`, then `scripts/feedBuilder.ts`. This also happens when `cf build` invokes Vite directly, so content generation does not depend on a package-manager lifecycle hook. If either script fails, startup/build stops.
 
@@ -87,7 +139,7 @@ Preview reuses the existing build and does not regenerate content. Cloudflare Wo
 
 | Script | Description |
 |--------|-------------|
-| `bun run dev` | Generate content and start Vite/Workers development on port 3000 |
+| `bun run dev` | Generate content and serve the portfolio and project websites through Portless |
 | `bun run content` | Regenerate content modules, feeds, and search data |
 | `bun run build` | Generate content and create production Build Output with `cf build` |
 | `bun run preview` | Preview the existing production build on port 3000 |
@@ -172,7 +224,7 @@ The equivalent direct build is `bunx cf build`. Vite defaults to production mode
 
 ### GitHub Actions CI
 
-Once `.github/workflows/deploy.yml` is pushed or merged to `main`, pushes to `main` (including merged pull requests) automatically build, typecheck, and deploy to [darylcecile.net](https://darylcecile.net). **Run workflow** also supports manual deployment from `main` only. Production deployments are serialized, with in-progress deployments allowed to finish.
+Pushes to `main` (including merged pull requests) check the demo examples, build, typecheck, and deploy the portfolio and project websites. **Run workflow** also supports manual deployment from `main` only. Production deployments are serialized, with in-progress deployments allowed to finish.
 
 Configure the GitHub repository secret `CLOUDFLARE_API_TOKEN` with a deployment token for the account in `cloudflare.config.ts`. The runner uses Node.js 24 and Bun 1.3.14, installs with `bun install --frozen-lockfile`, runs `bun run build` before `bun run typecheck`, then deploys with `bunx cf deploy --prebuilt --mode production`. Only the deploy step receives the Cloudflare token; no personal OAuth profile is used on the runner.
 

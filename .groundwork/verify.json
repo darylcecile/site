@@ -1,5 +1,15 @@
 {
   "checks": {
+    "binzo-examples": {
+      "command": "bun test src/products/binzo/demo.test.ts",
+      "expect": "Recorded releases and command plans follow Binzo's actual asset matcher",
+      "paths": ["src/products/binzo/plan.ts", "src/products/binzo/releases.ts", "src/products/binzo/demo.test.ts", "src/products/binzo/reference/**"]
+    },
+    "kato-examples": {
+      "command": "bun test src/products/kato/demo.test.ts",
+      "expect": "Kato reference examples, genuine diagnostics and bounded output adapters behave correctly",
+      "paths": ["src/products/kato/demo.ts", "src/products/kato/demo.test.ts", "src/products/kato/reference/**"]
+    },
     "content-no-secrets": {
       "command": "env -u GITHUB_TOKEN bun --no-env-file run scripts/contentBuilder.ts",
       "expect": "Local content compiles without a GitHub token or dotenv files, as on a fresh CI runner"
@@ -15,6 +25,56 @@
     "worker-dry-run": {
       "command": "bunx cf deploy --prebuilt --profile daryl --mode production --dry-run",
       "expect": "cf validates the built Worker and reports its upload size without deploying"
+    }
+  },
+  "behaviours": {
+    "product-hosts": {
+      "description": "Production and local product hostnames select the matching page, metadata and layout",
+      "paths": ["src/lib/product-sites.ts", "src/lib/current-product.ts", "src/products/registry.ts", "src/routes/index.tsx", "src/routes/__root.tsx", "src/components/layout/**", "cloudflare.config.ts"],
+      "entry": "Open the apex and each product hostname at /",
+      "guide": ".groundwork/VERIFY.md#product-hosts"
+    },
+    "jsvm-product": {
+      "description": "Explore JSVM and execute bounded guest-code examples",
+      "paths": ["src/products/jsvm/**"],
+      "entry": "https://jsvm.darylcecile.net/",
+      "guide": ".groundwork/VERIFY.md#jsvm-product",
+      "dependsOn": ["product-hosts"]
+    },
+    "sakoa-product": {
+      "description": "Explore Sakoa's language choices and checked compiler examples",
+      "paths": ["src/products/sakoa/**"],
+      "entry": "https://sakoa.darylcecile.net/",
+      "guide": ".groundwork/VERIFY.md#sakoa-product",
+      "dependsOn": ["product-hosts"]
+    },
+    "kato-product": {
+      "description": "Explore Kato and parse editable notation with the reference implementation",
+      "paths": ["src/products/kato/**"],
+      "entry": "https://kato.darylcecile.net/",
+      "guide": ".groundwork/VERIFY.md#kato-product",
+      "dependsOn": ["product-hosts"]
+    },
+    "jsql-product": {
+      "description": "Explore jsql and query JSON through a real SQLite-backed playground",
+      "paths": ["src/products/jsql/**"],
+      "entry": "https://jsql.darylcecile.net/",
+      "guide": ".groundwork/VERIFY.md#jsql-product",
+      "dependsOn": ["product-hosts"]
+    },
+    "binzo-website": {
+      "description": "Explore Binzo and inspect real release matching and installation commands",
+      "paths": ["src/products/binzo/**"],
+      "entry": "https://binzo.darylcecile.net/",
+      "guide": ".groundwork/VERIFY.md#binzo-website",
+      "dependsOn": ["product-hosts"]
+    },
+    "portless-development": {
+      "description": "Named local hosts and HMR share one development process without disrupting other routes",
+      "paths": ["vite.config.ts", "package.json", "scripts/*portless*", "scripts/*Portless*"],
+      "entry": "bun run dev",
+      "guide": ".groundwork/VERIFY.md#portless-development",
+      "dependsOn": ["product-hosts"]
     }
   }
 }

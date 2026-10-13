@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import dayjs from 'dayjs';
 import customParse from 'dayjs/plugin/customParseFormat';
 import advanceFormat from 'dayjs/plugin/advancedFormat';
+import { productForHostname } from './product-sites';
+import { generateProductOgImage } from './product-og.server';
 
 dayjs.extend(customParse);
 dayjs.extend(advanceFormat);
@@ -27,7 +29,10 @@ export async function generateOgResponse(request: Request): Promise<Response> {
 }
 
 export async function generateOgImage(opt: Request): Promise<Response> {
-	const { searchParams } = new URL(opt.url);
+	const url = new URL(opt.url);
+	const product = productForHostname(url.hostname);
+	if (product) return generateProductOgImage(product);
+	const { searchParams } = url;
 	const icon = await env.ASSETS.fetch(new URL('/icon.png', opt.url));
 	if (!icon.ok) return new Response('Profile image unavailable', { status: 502 });
 	const avatar = `data:image/png;base64,${Buffer.from(await icon.arrayBuffer()).toString('base64')}`;

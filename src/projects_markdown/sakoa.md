@@ -1,7 +1,7 @@
 ---
 name: Sakoa
 startYear: 2026
-link: https://github.com/darylcecile/sakoa
+link: https://sakoa.darylcecile.net
 tokens: [language, tooling]
 repo: darylcecile/sakoa
 ---

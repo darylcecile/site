@@ -1,7 +1,7 @@
 ---
 name: Kato
 startYear: 2026
-link: https://github.com/darylcecile/kato
+link: https://kato.darylcecile.net
 image: https://opengraph.githubassets.com/18079fc030b81ba0ba3ac42fc745752a50dd3121981da9626216a9491dbf70ec/darylcecile/kato
 tokens: [library]
 ---
