@@ -4,6 +4,7 @@ import Link from '@/components/utils/Link';
 import type { NoteListItem } from '@/lib/repo/notesRepo';
 import type { Idea } from '@/lib/repo/ideasRepo';
 import { IdeaCard } from '@/components/ideas/IdeaCard';
+import { ProductsShowcase } from '@/components/products/ProductsShowcase';
 
 export default function HomePage({ notes, notesCount, latestIdea }: {
 	notes: NoteListItem[];
@@ -27,6 +28,7 @@ export default function HomePage({ notes, notesCount, latestIdea }: {
 					</div>
 					<IdeaCard idea={latestIdea} />
 				</section>}
+				<ProductsShowcase />
 			</div>
 		</div>
 	)
