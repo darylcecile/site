@@ -1,0 +1,10 @@
+{
+  "goal": "Keep the selected theme after restarting the application",
+  "requirements": [
+    {
+      "id": "persist-theme",
+      "expect": "A fresh application process reads the selected dark theme",
+      "checks": ["theme-persists"]
+    }
+  ]
+}

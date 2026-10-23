@@ -3,7 +3,7 @@
 ## Run and control
 
 - Install dependencies with `bun install --frozen-lockfile`; use Node 24 and Bun 1.3.14 or the versions pinned by the deployment workflow.
-- `bun run dev` starts development through Portless. The portfolio is `https://site.darylcecile.localhost`; the project websites use `{jsvm,sakoa,kato,jsql,binzo}.projects.darylcecile.localhost`.
+- `bun run dev` starts development through Portless. The portfolio is `https://site.darylcecile.localhost`; the project websites use `{jsvm,sakoa,kato,jsql,binzo,groundwork,tuna}.projects.darylcecile.localhost`.
 - `PORTLESS=0 bun run dev` starts Vite directly. `bun run preview` serves an existing production build on port 3000.
 - Content generation runs before development/build: `scripts/contentBuilder.ts`, then `scripts/feedBuilder.ts`. Generated modules and the route tree are ignored outputs.
 - Local Worker secrets use ignored `.dev.vars`. `GITHUB_TOKEN` supports GitHub activity/statistics; local content builds do not require it.
@@ -14,13 +14,14 @@
 - `groundwork verify content-no-secrets` compiles local content with the token unset and dotenv loading disabled.
 - `groundwork verify kato-examples` exercises the reference parser and its bounded display/diagnostic adapter, including malformed and expanding inputs.
 - `groundwork verify binzo-examples` checks release matching and command planning against recorded upstream releases.
+- `groundwork verify groundwork-example` checks that the displayed example files, recorded input hashes and downloadable ZIP agree. It checks asset consistency; use the recorded CLI observations and the runnable example to inspect behavior.
 - `groundwork verify worker-build typecheck worker-dry-run` builds native Cloudflare output, checks application/binding types, and validates the upload configuration. It does not deploy.
 - Plans live under `.groundwork/plans/`; pass a plan to `groundwork verify --plan <file>` when tracking a multi-part task. A build result does not prove an interactive behavior.
 - Use `groundwork view guide` and `groundwork map product-hosts` to discover the product journeys below. Keep runtime screenshots, request receipts and demo outputs in the active run evidence directory or ignored `.groundwork/tmp/`.
 
 ## Product hosts
 
-`src/lib/product-sites.ts` recognizes the five explicit project domains and their named localhost equivalents, including worktree prefixes. `src/lib/current-product.ts` selects the hostname in the matching server/browser environment. `src/routes/index.tsx` loads the selected project; `src/routes/__root.tsx` selects document metadata and page chrome. Local portfolio hosts end in `site.darylcecile.localhost`, while project hosts end in `projects.darylcecile.localhost`, preventing a branch named `kato` from being mistaken for the Kato website.
+`src/lib/product-sites.ts` recognizes the seven explicit project domains and their named localhost equivalents, including worktree prefixes. `src/lib/current-product.ts` selects the hostname in the matching server/browser environment. `src/routes/index.tsx` loads the selected project; `src/routes/__root.tsx` selects document metadata and page chrome. Local portfolio hosts end in `site.darylcecile.localhost`, while project hosts end in `projects.darylcecile.localhost`, preventing a branch named `kato` from being mistaken for the Kato website.
 
 Starting from a running Portless server or deployed Worker:
 
@@ -72,10 +73,26 @@ Source recognition is an allowlist; a hostname containing a product name at an u
 - Expected: matching follows the upstream implementation; recorded release data is identified, and the browser preview does not claim to install software. Unsupported platforms and version/update behavior are explained accurately.
 - Evidence: upstream matcher comparisons, selected assets/commands, keyboard/reset behavior and narrow/wide screenshots.
 
+## Groundwork website
+
+- Entry: `https://groundwork.darylcecile.net/` or its Portless equivalent.
+- Owner: `src/products/groundwork/`.
+- Journey: understand how Groundwork reduces continuous agent supervision, connect task tracking and behaviour mapping to guardrails and checks, then inspect a verification report and supporting evidence. Explore different outcomes and follow installation/project setup instructions.
+- Expected: examples are source-backed and distinguish recorded or illustrative output from live execution. Skills guide the agent's work; the CLI runs project-owned checks and retains source-aware evidence. A passing check supports its specific assertion, and stale or missing evidence is not presented as verified.
+- Evidence: pinned upstream references, demonstration state/output observations, copy/keyboard checks and desktop/mobile theme screenshots.
+
+## Tuna website
+
+- Entry: `https://tuna.darylcecile.net/` or its Portless equivalent.
+- Owner: `src/products/tuna/`.
+- Journey: understand how Tuna removes repeated corrections and daily AGENTS.md maintenance, inspect background learning and automatic consolidation, then see how harnesses look up relevant expectations. Find installation and local controls when needed.
+- Expected: an illustrative walkthrough is identified as such; the website does not imply it runs live model analysis. Local preference storage is distinguished from inference through an authenticated harness provider. Installation and lifecycle copy match the referenced release.
+- Evidence: release/source provenance, interaction states, accessible copy/selection controls and desktop/mobile theme screenshots.
+
 ## Portless development
 
 - Owner: `package.json`, `vite.config.ts` and the local-development helper/config documented in `README.md`.
-- All six named hosts should reach one Vite/Workers process, with the original public hostname available to SSR.
+- All eight named hosts should reach one Vite/Workers process, with the original public hostname available to SSR.
 - Verify a Vite HMR WebSocket handshake on the product hosts, browser hydration and assets. The local proxy's existing unrelated routes must continue working.
 - On shutdown, registrations owned by this dev process should be cleaned up. Direct development without Portless should still work for the apex.
 

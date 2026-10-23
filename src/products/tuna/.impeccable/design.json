@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-23T20:59:55Z",
+  "title": "Design System: Tuna",
+  "extensions": {
+    "motion": [],
+    "breakpoints": [
+      { "name": "compact-desktop", "value": "1050px" },
+      { "name": "stacked", "value": "760px" }
+    ],
+    "shadows": [],
+    "typographyMeta": {
+      "display": { "displayName": "Manrope display", "purpose": "Clear opening proposition, max 96px, mobile fluid override." },
+      "command": { "displayName": "Geist Mono command", "purpose": "Executable text, paths, IDs, sequential numbers." },
+      "reading": { "displayName": "Reading text", "purpose": "15px installation, FAQ, controls and evidence quotes, capped at 55ch (about 503px at desktop)." },
+      "label": { "displayName": "Supporting labels", "purpose": "12px minimum for honesty labels, record metadata and small controls, including mobile." }
+    }
+  },
+  "components": [
+    {
+      "name": "Primary action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Violet action with direct language.",
+      "html": "<button class=\"ds-action\">Start with Tuna</button>",
+      "css": ".ds-action{font:650 14px 'Manrope Variable',sans-serif;background:#563095;color:#fff;border:0;border-radius:6px;padding:15px 22px;min-height:50px;cursor:pointer}.ds-action:hover{filter:brightness(1.08)}.ds-action:focus-visible{outline:3px solid #6540b3;outline-offset:5px}"
+    },
+    {
+      "name": "Causal story",
+      "kind": "custom",
+      "description": "One visible sequence from conversation to maintained instructions to future lookup, with supporting evidence in a disclosure.",
+      "html": "<ol class=\"ds-story\"><li>You correct your agent</li><li>Tuna maintains AGENTS.md</li><li>The next agent looks it up</li></ol>",
+      "css": ".ds-story{display:grid;grid-template-columns:.95fr 1.15fr 1fr;list-style:none;margin:0;padding:0;border:1px solid #c5b9db;font:600 16px 'Manrope Variable',sans-serif;color:#302347;background:#fcfbff}.ds-story li{padding:28px}.ds-story li+li{border-left:1px solid #c5b9db}.ds-story li:nth-child(2){background:#f1edfb}@media(max-width:1050px){.ds-story{display:block}.ds-story li+li{border-left:0;border-top:1px solid #c5b9db}}"
+    },
+    {
+      "name": "Harness selector",
+      "kind": "custom",
+      "description": "Labelled native select updates the future harness's linked instruction path.",
+      "html": "<label for=\"ds-harness\">Your next coding harness</label><select id=\"ds-harness\" class=\"ds-harness\"><option>OpenCode V2</option><option>Copilot CLI</option><option>Codex</option><option>Claude Code</option></select>",
+      "css": ".ds-harness{display:block;font:400 14px 'Manrope Variable',sans-serif;color:#302347;background:#fcfbff;border:1px solid #c5b9db;border-radius:5px;padding:10px 12px;min-height:44px;cursor:pointer}.ds-harness:hover{border-color:#6540b3}.ds-harness:focus-visible{outline:3px solid #6540b3;outline-offset:5px}"
+    },
+    {
+      "name": "Section navigation",
+      "kind": "nav",
+      "description": "Understated, always-visible native links.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#how-it-works\">How it works</a><a href=\"#start\">Get started</a></nav>",
+      "css": ".ds-nav{display:flex;gap:32px;font:600 14px 'Manrope Variable',sans-serif}.ds-nav a{color:#302347;text-decoration:none;padding:12px 0;text-underline-offset:4px}.ds-nav a:hover{text-decoration:underline}.ds-nav a:focus-visible{outline:3px solid #6540b3;outline-offset:5px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The revisable proof sheet",
+    "overview": "A warm-in-voice, cool-in-color document language. Open geometric type and broad lavender fields connect everyday feedback to maintained instructions and timely lookup.",
+    "keyCharacteristics": ["Wide document surfaces", "Visible before and after", "Human quotations", "Continuous causal story", "Copyable commands"],
+    "rules": [{ "name": "Explicit change", "body": "Before/after labels identify maintained instructions without relying on color. Violet carries action and relevance.", "section": "colors" }],
+    "dos": ["Do connect evidence to relief from manual instruction upkeep and timely agent lookup.", "Do use semantic palette variables for all themes and state text alongside color.", "Do retain wrapping commands and stable, native keyboard behavior."],
+    "donts": ["Don't imply the website runs Tuna, analyzes input, or collects real conversations.", "Don't add eyebrow headings, gradient text, generic icon-card grids, or decorative charts."]
+  }
+}

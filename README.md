@@ -1,6 +1,6 @@
 # darylcecile.net
 
-A personal website, blog, and the JSVM, Sakoa, Kato, jsql, and Binzo websites, built with TanStack Start and React and deployed to Cloudflare Workers with the native `cf` CLI.
+A personal website, blog, and the JSVM, Sakoa, Kato, jsql, Binzo, Groundwork, and Tuna websites, built with TanStack Start and React and deployed to Cloudflare Workers with the native `cf` CLI.
 
 ## Overview
 
@@ -32,12 +32,21 @@ This is the source code for [darylcecile.net](https://darylcecile.net), a person
 | Kato | [kato.darylcecile.net](https://kato.darylcecile.net) | The TypeScript reference parser and evaluator |
 | jsql | [jsql.darylcecile.net](https://jsql.darylcecile.net) | Real SQLite queries over editable JSON in a browser worker |
 | Binzo | [binzo.darylcecile.net](https://binzo.darylcecile.net) | The release matcher with real, recorded GitHub release assets |
+| Groundwork | [groundwork.darylcecile.net](https://groundwork.darylcecile.net) | Delegate agent work with guardrails, then inspect the verification report and proof |
+| Tuna | [tuna.darylcecile.net](https://tuna.darylcecile.net) | Background preference learning and automatic upkeep of shared agent instructions |
 
 Each website owns its design and content under `src/products/<name>/`. The root route
 selects the page from the request/browser hostname; the portfolio's layout and the
 individual pages are loaded independently. `src/products/registry.ts` provides
 document/social metadata. Runtime-heavy demos load when requested, and source
 references live beside the examples or vendored reference code.
+
+Groundwork's example has a reproducible recording and download. Run
+`python3 .groundwork/scripts/groundwork-example.py --check` to check source/archive
+consistency. To refresh it, use `--record <checkout>` with the Groundwork revision
+documented in `src/products/groundwork/RESEARCH.md`. The script runs the real CLI
+against a synthetic fixture before updating the recording and ZIP; CI checks their
+agreement with the canonical example files.
 
 ## Getting Started
 
@@ -79,7 +88,7 @@ Start the development server through the pinned [Portless](https://github.com/ve
 bun run dev
 ```
 
-One Vite/Workers process serves the portfolio and five project websites:
+One Vite/Workers process serves the portfolio and seven project websites:
 
 | Site | Local URL |
 |------|-----------|
@@ -89,6 +98,8 @@ One Vite/Workers process serves the portfolio and five project websites:
 | Kato | [https://kato.projects.darylcecile.localhost](https://kato.projects.darylcecile.localhost) |
 | jsql | [https://jsql.projects.darylcecile.localhost](https://jsql.projects.darylcecile.localhost) |
 | Binzo | [https://binzo.projects.darylcecile.localhost](https://binzo.projects.darylcecile.localhost) |
+| Groundwork | [https://groundwork.projects.darylcecile.localhost](https://groundwork.projects.darylcecile.localhost) |
+| Tuna | [https://tuna.projects.darylcecile.localhost](https://tuna.projects.darylcecile.localhost) |
 
 Portless defaults to HTTPS on port 443. On first use, run `bun run dev` in an interactive terminal so Portless can request administrator access and trust its local certificate authority. If a task runner cannot bootstrap the proxy, start it from a terminal first:
 
@@ -98,7 +109,7 @@ bunx portless proxy start
 
 If certificate trust was skipped, run `bunx portless trust`.
 
-Portless registers the portfolio hostname and assigns Vite a free internal port. The development-only `scripts/portlessProductsPlugin.ts` registers the five project website hosts against that same port when Vite starts listening. These process-owned routes work with the default strict proxy and are removed when Vite closes or restarts. Existing route conflicts fail startup and roll back only newly registered website routes.
+Portless registers the portfolio hostname and assigns Vite a free internal port. The development-only `scripts/portlessProductsPlugin.ts` registers the seven project website hosts against that same port when Vite starts listening. These process-owned routes work with the default strict proxy and are removed when Vite closes or restarts. Existing route conflicts fail startup and roll back only newly registered website routes.
 
 In linked worktrees, the portfolio uses `https://<branch>.site.darylcecile.localhost` and each project uses `https://<project>.<branch>.projects.darylcecile.localhost`. The fixed `site` and `projects` labels keep branch names such as `kato` separate from the Kato website. Portless normalizes the branch's final path segment for its hostname (`feature/kato` becomes `kato`); the terminal prints the exact URLs.
 

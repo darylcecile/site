@@ -1,0 +1,20 @@
+{
+  "context": { "fixture": "website-theme-example", "storage": "local-file" },
+  "checks": {
+    "theme-persists": {
+      "command": "bun .groundwork/scripts/theme-check.mjs",
+      "expect": "Dark theme survives a fresh application process",
+      "kind": "workflow",
+      "covers": ["theme-persistence"],
+      "artifacts": ["after-restart.json"],
+      "result": "observation.json"
+    }
+  },
+  "behaviours": {
+    "theme-persistence": {
+      "description": "Theme selection survives restarting the CLI app",
+      "paths": ["preferences.mjs"],
+      "entry": "Set dark, then read the saved value in a new process"
+    }
+  }
+}

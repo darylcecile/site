@@ -1,0 +1,288 @@
+.tuna-site {
+	--tuna-paper: #fcfbff;
+	--tuna-field: #e2dcfa;
+	--tuna-surface: #f1edfb;
+	--tuna-ink: #302347;
+	--tuna-muted: #655675;
+	--tuna-accent: #6540b3;
+	--tuna-action: #563095;
+	--tuna-on-action: #fff;
+	--tuna-line: #c5b9db;
+	--tuna-good: #37634c;
+	--tuna-good-field: #e9f1e9;
+	--tuna-reading-size: .9375rem;
+	--tuna-label-size: .75rem;
+	--tuna-reading-measure: 55ch;
+	background: var(--tuna-paper);
+	color: var(--tuna-ink);
+	font-family: 'Manrope Variable', sans-serif;
+	font-size: 16px;
+	line-height: 1.65;
+	font-synthesis: none;
+	-webkit-font-smoothing: antialiased;
+	scrollbar-color: var(--tuna-line) var(--tuna-paper);
+}
+.dark .tuna-site {
+	--tuna-paper: #1c1725;
+	--tuna-field: #30233f;
+	--tuna-surface: #282033;
+	--tuna-ink: #f1eafa;
+	--tuna-muted: #bfb1ce;
+	--tuna-accent: #baa0ef;
+	--tuna-action: #c6b0f1;
+	--tuna-on-action: #2b1c40;
+	--tuna-line: #574565;
+	--tuna-good: #afd5ba;
+	--tuna-good-field: #24382c;
+}
+.tuna-site *, .tuna-site *::before, .tuna-site *::after { box-sizing: border-box; }
+.tuna-site ::selection { background: var(--tuna-action); color: var(--tuna-on-action); }
+.tuna-site :focus-visible:not(main) { outline: 3px solid var(--tuna-accent); outline-offset: 5px; border-radius: 3px; }
+.tuna-site main:focus { outline: none; }
+.tuna-site :is(h1, h2, h3, h4, p, blockquote, pre, dl) { margin: 0; }
+.tuna-site :is(h1, h2, h3) { text-wrap: balance; }
+.tuna-site h1 { font-size: clamp(3.25rem, 7vw, 6rem); line-height: 1.04; font-weight: 600; letter-spacing: -.04em; }
+.tuna-site h2 { font-size: clamp(2rem, 3.7vw, 3.4rem); line-height: 1.13; font-weight: 550; letter-spacing: -.035em; }
+.tuna-site h3 { font-size: 1.2rem; font-weight: 650; line-height: 1.35; letter-spacing: -.02em; }
+.tuna-site h4 { font-size: 1rem; font-weight: 650; line-height: 1.4; }
+.tuna-site a { color: inherit; text-underline-offset: .22em; text-decoration-thickness: 1px; }
+.tuna-site a:hover { text-decoration: underline; }
+.tuna-site button { font: inherit; color: inherit; cursor: pointer; }
+.tuna-site code, .tuna-site pre { font-family: 'Geist Mono Variable', monospace; font-size: .84em; }
+.tuna-site p code { overflow-wrap: anywhere; }
+.tuna-site button, .tuna-site a { -webkit-tap-highlight-color: transparent; }
+.tuna-site :is(section, main) { scroll-margin-top: 24px; }
+.tuna-site .tuna-container { width: min(1200px, calc(100% - 96px)); margin-inline: auto; }
+.tuna-site .tuna-opening { background: var(--tuna-field); }
+.tuna-site .tuna-body { background: var(--tuna-paper); }
+.tuna-site .tuna-skip { position: fixed; top: 12px; left: 12px; padding: 10px 18px; background: var(--tuna-action); color: var(--tuna-on-action); z-index: 10; transform: translateY(-160%); }
+.tuna-site .tuna-skip:focus { transform: translateY(0); }
+.tuna-site .tuna-header { min-height: 100px; display: flex; align-items: center; justify-content: space-between; gap: 30px; border-bottom: 1px solid var(--tuna-line); }
+.tuna-site .tuna-wordmark { display: inline-flex; align-items: center; gap: 9px; font-size: 2rem; line-height: 1; font-weight: 750; letter-spacing: -.04em; text-decoration: none; }
+.tuna-site .tuna-header nav { display: flex; gap: 32px; font-size: .875rem; font-weight: 600; }
+.tuna-site .tuna-header nav a { padding-block: 12px; text-decoration: none; }
+.tuna-site .tuna-header nav a:hover { text-decoration: underline; }
+.tuna-site .tuna-header-actions { display: flex; gap: 22px; align-items: center; }
+.tuna-site .tuna-header-actions > a { display: inline-flex; align-items: center; gap: 5px; font-size: .875rem; font-weight: 600; }
+.tuna-site .tuna-theme { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--tuna-line); border-radius: 50%; background: transparent; }
+.tuna-site .tuna-theme:hover { background: var(--tuna-paper); }
+.tuna-site .tuna-sun { display: none; }
+.dark .tuna-site .tuna-sun { display: block; }
+.dark .tuna-site .tuna-moon { display: none; }
+.tuna-site .tuna-hero { padding: 64px 0 48px; }
+.tuna-site .tuna-hero h1 span { color: var(--tuna-accent); }
+.tuna-site .tuna-hero-bottom { display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 100px; margin-top: 35px; }
+.tuna-site .tuna-hero-bottom > p { font-size: 1.15rem; max-width: 48ch; line-height: 1.65; }
+.tuna-site .tuna-hero-install > a { display: flex; align-items: center; justify-content: flex-end; gap: 8px; font-size: .78rem; color: var(--tuna-muted); }
+.tuna-site .tuna-hero-install .tuna-copy-feedback { margin-bottom: -3px; }
+.tuna-site .tuna-hero-harnesses { display: flex; flex-wrap: wrap; align-items: center; gap: 9px 17px; font-size: .8rem; color: var(--tuna-muted); margin-top: 31px; }
+.tuna-site .tuna-hero-harnesses strong { font-weight: 600; color: var(--tuna-ink); }
+.tuna-site .tuna-hero-harnesses > span { color: var(--tuna-muted); }
+.tuna-site .tuna-command { display: flex; align-items: flex-start; gap: 16px; background: var(--tuna-surface); border: 1px solid var(--tuna-line); border-radius: 8px; }
+.tuna-site .tuna-command pre { flex: 1; padding: 17px 0 17px 18px; white-space: pre-wrap; overflow-wrap: anywhere; min-width: 0; font-size: .78rem; line-height: 1.85; }
+.tuna-site .tuna-command code { font-size: inherit; }
+.tuna-site .tuna-command button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 70px; min-height: 44px; margin: 7px; padding: 8px 10px; border: 0; border-radius: 5px; color: var(--tuna-accent); background: transparent; font-size: var(--tuna-label-size); font-weight: 650; }
+.tuna-site .tuna-command button:hover { background: var(--tuna-field); }
+.tuna-site .tuna-copy-feedback { display: block; min-height: 20px; margin-top: 2px; font-size: var(--tuna-label-size); color: var(--tuna-accent); line-height: 1.4; }
+.tuna-site .tuna-hero-install .tuna-command { background: var(--tuna-ink); border-color: var(--tuna-ink); color: var(--tuna-paper); }
+.tuna-site .tuna-hero-install .tuna-command button { color: var(--tuna-paper); }
+.tuna-site .tuna-hero-install .tuna-command button:hover { background: color-mix(in srgb, var(--tuna-paper) 14%, transparent); }
+.tuna-site .tuna-lifecycle { padding-bottom: 64px; }
+.tuna-site .tuna-demo-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
+.tuna-site .tuna-demo-heading h2 { font-size: 1.5rem; font-weight: 650; letter-spacing: -.02em; }
+.tuna-site .tuna-demo-heading p { font-size: var(--tuna-label-size); color: var(--tuna-muted); }
+.tuna-site .tuna-story-flow { list-style: none; display: grid; grid-template-columns: .95fr 1.15fr 1fr; padding: 0; margin: 0; border: 1px solid var(--tuna-line); background: var(--tuna-paper); }
+.tuna-site .tuna-story-flow > li { min-width: 0; padding: 28px; }
+.tuna-site .tuna-story-flow > li + li { border-left: 1px solid var(--tuna-line); }
+.tuna-site .tuna-story-flow > li:nth-child(2) { background: var(--tuna-surface); }
+.tuna-site .tuna-story-flow h3 { display: flex; gap: 12px; align-items: baseline; margin-bottom: 24px; font-size: 1.1rem; text-wrap: pretty; }
+.tuna-site .tuna-story-flow h3 > span { color: var(--tuna-accent); font-family: 'Geist Mono Variable', monospace; font-size: .8rem; }
+.tuna-site .tuna-story-flow blockquote { font-size: 1.4rem; line-height: 1.45; font-weight: 550; letter-spacing: -.025em; margin-bottom: 24px; }
+.tuna-site .tuna-story-flow p { font-size: var(--tuna-reading-size); max-width: var(--tuna-reading-measure); }
+.tuna-site .tuna-story-flow pre { font-size: .78rem; line-height: 1.85; white-space: pre-wrap; overflow-wrap: anywhere; }
+.tuna-site .tuna-story-flow pre code { font-size: inherit; }
+.tuna-site .tuna-story-flow .tuna-story-timing { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--tuna-line); color: var(--tuna-muted); font-size: .875rem; }
+.tuna-site .tuna-instruction-before { margin-top: 24px; color: var(--tuna-muted); }
+.tuna-site .tuna-story-flow h4 { font-size: .8rem; margin-bottom: 10px; }
+.tuna-site .tuna-upkeep-arrow { display: block; margin-block: 18px; color: var(--tuna-accent); }
+.tuna-site .tuna-instruction-after { color: var(--tuna-ink); }
+.tuna-site .tuna-harness-label { display: block; font-size: var(--tuna-label-size); color: var(--tuna-muted); margin-bottom: 7px; }
+.tuna-site .tuna-story-flow select { font: inherit; font-size: .875rem; color: var(--tuna-ink); background: var(--tuna-paper); border: 1px solid var(--tuna-line); border-radius: 5px; padding: 10px 12px; min-height: 44px; width: 100%; cursor: pointer; }
+.tuna-site .tuna-story-flow select:hover { border-color: var(--tuna-accent); }
+.tuna-site .tuna-next-task { font-weight: 650; margin-top: 22px; margin-bottom: 8px; }
+.tuna-site .tuna-lookup-example { margin-top: 22px; }
+.tuna-site .tuna-lookup-example > p:first-child { font-size: var(--tuna-label-size); color: var(--tuna-muted); }
+.tuna-site .tuna-lookup-example pre { margin-top: 7px; }
+.tuna-site .tuna-lookup-answer { padding-top: 18px; margin-top: 18px; border-top: 1px solid var(--tuna-line); }
+.tuna-site .tuna-lookup-answer strong { display: block; color: var(--tuna-accent); margin-bottom: 6px; font-size: .8rem; }
+.tuna-site .tuna-story-flow .tuna-harness-path { margin-top: 24px; color: var(--tuna-muted); font-size: var(--tuna-label-size); }
+.tuna-site .tuna-harness-path strong { font-weight: 500; display: block; margin-bottom: 5px; }
+.tuna-site .tuna-harness-path code { font-size: inherit; }
+.tuna-site .tuna-story-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; padding-block: 26px; border-bottom: 1px solid var(--tuna-line); }
+.tuna-site .tuna-story-bottom > p { font-size: var(--tuna-reading-size); max-width: var(--tuna-reading-measure); }
+.tuna-site .tuna-story-evidence summary { font-size: .875rem; padding-block: 2px; }
+.tuna-site .tuna-story-evidence > div { padding-top: 22px; }
+.tuna-site .tuna-story-evidence h3 { font-size: 1rem; }
+.tuna-site .tuna-story-evidence ol { list-style: none; padding: 0; margin-block: 20px; }
+.tuna-site .tuna-story-evidence li + li { margin-top: 20px; }
+.tuna-site .tuna-story-evidence li > span { font-size: var(--tuna-label-size); color: var(--tuna-muted); }
+.tuna-site .tuna-story-evidence blockquote, .tuna-site .tuna-story-evidence p { font-size: var(--tuna-reading-size); margin-top: 10px; max-width: var(--tuna-reading-measure); }
+.tuna-site .tuna-demo-note { color: var(--tuna-muted); font-size: var(--tuna-label-size); max-width: var(--tuna-reading-measure); margin-top: 18px; }
+.tuna-site .tuna-origin { display: grid; grid-template-columns: .8fr 1.2fr; gap: 100px; padding-block: 80px; border-bottom: 1px solid var(--tuna-line); }
+.tuna-site .tuna-origin h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); }
+.tuna-site .tuna-origin p { max-width: var(--tuna-reading-measure); }
+.tuna-site .tuna-origin p + p { margin-top: 20px; }
+.tuna-site .tuna-origin .tuna-origin-byline { margin-top: 25px; font-size: .875rem; color: var(--tuna-muted); }
+.tuna-site .tuna-section { padding-block: 112px; }
+.tuna-site .tuna-install { display: grid; grid-template-columns: .8fr 1.2fr; gap: 100px; }
+.tuna-site .tuna-section-intro > p { max-width: 34ch; margin-top: 25px; color: var(--tuna-muted); }
+.tuna-site .tuna-text-link { display: inline-flex; align-items: center; gap: 8px; font-size: .85rem; font-weight: 650; color: var(--tuna-accent); }
+.tuna-site .tuna-section-intro .tuna-text-link { margin-top: 25px; }
+.tuna-site .tuna-install-steps { padding: 0; list-style: none; margin: 0; }
+.tuna-site .tuna-install-steps > li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 21px; padding-bottom: 36px; }
+.tuna-site .tuna-install-steps > li + li { padding-top: 34px; border-top: 1px solid var(--tuna-line); }
+.tuna-site .tuna-install-steps > li:last-child { padding-bottom: 0; }
+.tuna-site .tuna-install-number { font-family: 'Geist Mono Variable', monospace; font-size: .75rem; display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid var(--tuna-line); border-radius: 50%; }
+.tuna-site .tuna-install-steps h3 { margin-bottom: 14px; }
+.tuna-site .tuna-install-steps p { font-size: var(--tuna-reading-size); color: var(--tuna-muted); margin-bottom: 17px; max-width: var(--tuna-reading-measure); }
+.tuna-site .tuna-install-steps p:last-child { margin-bottom: 0; }
+.tuna-site :is(.tuna-install-steps, .tuna-control-rows) .tuna-small { font-size: .875rem; color: var(--tuna-muted); }
+.tuna-site .tuna-install-steps .tuna-inline-note { color: var(--tuna-ink); }
+.tuna-site .tuna-details { margin-top: 15px; }
+.tuna-site summary { cursor: pointer; font-weight: 650; }
+.tuna-site .tuna-details summary { font-size: .8rem; padding: 7px 0; color: var(--tuna-accent); }
+.tuna-site .tuna-details > div { padding-top: 16px; }
+.tuna-site .tuna-downloads { list-style: none; margin: 0 0 22px; padding: 0; font-size: .75rem; }
+.tuna-site .tuna-downloads code { font-size: var(--tuna-label-size); }
+.tuna-site .tuna-downloads li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding-block: 8px; border-bottom: 1px solid var(--tuna-line); }
+.tuna-site .tuna-harness-section { padding: 88px 0 75px; background: var(--tuna-surface); }
+.tuna-site .tuna-wide-heading { display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 100px; margin-bottom: 48px; }
+.tuna-site .tuna-wide-heading > p { max-width: 49ch; color: var(--tuna-muted); }
+.tuna-site .tuna-integration-table { overflow-x: auto; }
+.tuna-site .tuna-table-hint { display: none; }
+.tuna-site .tuna-integration-table table { width: 100%; text-align: left; border-collapse: collapse; }
+.tuna-site .tuna-integration-table th { font-weight: 600; }
+.tuna-site .tuna-integration-table thead th { font-size: var(--tuna-label-size); color: var(--tuna-muted); padding: 12px 24px 15px 0; }
+.tuna-site .tuna-integration-table tbody :is(th, td) { padding: 23px 24px 23px 0; border-top: 1px solid var(--tuna-line); font-size: .84rem; }
+.tuna-site .tuna-integration-table tbody th { font-size: 1rem; white-space: nowrap; }
+.tuna-site .tuna-integration-table tbody td:last-child { padding-right: 0; }
+.tuna-site .tuna-integration-table code { font-size: .75rem; }
+.tuna-site .tuna-integration-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; border-top: 1px solid var(--tuna-line); padding-top: 26px; font-size: .875rem; color: var(--tuna-muted); }
+.tuna-site .tuna-integration-notes p { max-width: var(--tuna-reading-measure); }
+.tuna-site .tuna-integration-notes p + p { margin-top: 15px; }
+.tuna-site .tuna-controls-layout { display: grid; grid-template-columns: 1.15fr .85fr; gap: 90px; align-items: start; }
+.tuna-site .tuna-control-rows > div { padding-bottom: 30px; }
+.tuna-site .tuna-control-rows > div + div { padding-top: 30px; border-top: 1px solid var(--tuna-line); }
+.tuna-site .tuna-control-rows > div:last-child { padding-bottom: 0; }
+.tuna-site .tuna-control-rows h3 { margin-bottom: 18px; }
+.tuna-site .tuna-control-rows p { color: var(--tuna-muted); font-size: var(--tuna-reading-size); max-width: var(--tuna-reading-measure); }
+.tuna-site .tuna-control-rows p + p { margin-top: 10px; }
+.tuna-site .tuna-remember { background: var(--tuna-field); padding: 35px; border-radius: 2px 24px 2px 2px; }
+.tuna-site .tuna-remember h3 { font-size: 1.7rem; letter-spacing: -.025em; margin-bottom: 24px; }
+.tuna-site .tuna-remember p { font-size: var(--tuna-reading-size); margin-top: 18px; max-width: var(--tuna-reading-measure); }
+.tuna-site .tuna-remember blockquote { font-size: 1.23rem; letter-spacing: -.02em; font-weight: 500; line-height: 1.5; margin-top: 15px; padding-block: 18px; border-block: 1px solid var(--tuna-line); }
+.tuna-site .tuna-remember .tuna-copy { margin-top: 12px; }
+.tuna-site .tuna-remember .tuna-command pre { font-size: var(--tuna-label-size); }
+.tuna-site .tuna-remember .tuna-command button { min-width: 35px; }
+.tuna-site .tuna-remember .tuna-command button span { display: none; }
+.tuna-site .tuna-remember .tuna-text-link { margin-top: 25px; font-size: .77rem; }
+.tuna-site .tuna-underneath { padding-block: 90px; background: var(--tuna-surface); }
+.tuna-site .tuna-underneath-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 100px; align-items: start; }
+.tuna-site .tuna-underneath-layout > div > p { max-width: 36ch; margin-top: 25px; color: var(--tuna-muted); }
+.tuna-site .tuna-storage { margin-top: 38px; padding-top: 22px; border-top: 1px solid var(--tuna-line); }
+.tuna-site .tuna-storage > code { font-size: .8rem; }
+.tuna-site .tuna-storage dl { margin-top: 13px; }
+.tuna-site .tuna-storage dl > div { display: grid; grid-template-columns: 105px 1fr; gap: 10px; font-size: .75rem; padding-block: 5px; }
+.tuna-site .tuna-storage dt { font-family: 'Geist Mono Variable', monospace; font-size: var(--tuna-label-size); }
+.tuna-site .tuna-storage dd { color: var(--tuna-muted); margin: 0; }
+.tuna-site .tuna-faq details { border-bottom: 1px solid var(--tuna-line); padding-block: 19px; }
+.tuna-site .tuna-faq details:first-child { padding-top: 0; }
+.tuna-site .tuna-faq summary { font-size: .95rem; line-height: 1.5; padding-block: 8px; }
+.tuna-site .tuna-faq details > div { padding-block: 14px 7px; }
+.tuna-site .tuna-faq p { font-size: var(--tuna-reading-size); color: var(--tuna-muted); max-width: var(--tuna-reading-measure); }
+.tuna-site .tuna-faq p + p, .tuna-site .tuna-faq .tuna-copy { margin-top: 15px; }
+.tuna-site .tuna-close { padding-block: 105px; text-align: center; }
+.tuna-site .tuna-close > svg { display: block; margin: 0 auto 24px; color: var(--tuna-accent); }
+.tuna-site .tuna-close h2 { font-size: clamp(2rem, 3.5vw, 3rem); }
+.tuna-site .tuna-button { display: inline-flex; align-items: center; justify-content: center; gap: 25px; background: var(--tuna-action); color: var(--tuna-on-action); border-radius: 6px; padding: 15px 22px; font-size: .86rem; font-weight: 650; min-height: 50px; }
+.tuna-site .tuna-button:hover { text-decoration: none; filter: brightness(1.08); }
+.tuna-site .tuna-close .tuna-button { margin-top: 30px; }
+.tuna-site .tuna-close .tuna-text-link { display: flex; width: fit-content; margin: 17px auto 0; font-size: .76rem; }
+.tuna-site .tuna-footer { border-top: 1px solid var(--tuna-line); padding-block: 38px; background: var(--tuna-field); }
+.tuna-site .tuna-footer > div { display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+.tuna-site .tuna-footer .tuna-wordmark { font-size: 1.6rem; }
+.tuna-site .tuna-footer p { font-size: var(--tuna-label-size); color: var(--tuna-muted); margin-top: 16px; }
+.tuna-site .tuna-footer nav { display: flex; align-items: center; gap: 25px; font-size: .76rem; }
+.tuna-site .tuna-footer nav a { display: inline-flex; align-items: center; gap: 5px; }
+@media (max-width: 1050px) {
+	.tuna-site .tuna-container { width: calc(100% - 64px); }
+	.tuna-site .tuna-hero-bottom { gap: 45px; grid-template-columns: 1fr 1.1fr; }
+	.tuna-site .tuna-hero-install .tuna-command button { min-width: 34px; }
+	.tuna-site .tuna-hero-install .tuna-command button span { display: none; }
+	.tuna-site .tuna-story-flow { display: block; }
+	.tuna-site .tuna-story-flow > li + li { border-left: 0; border-top: 1px solid var(--tuna-line); }
+	.tuna-site .tuna-story-flow > li { padding: 28px; }
+	.tuna-site .tuna-story-flow select { max-width: 320px; }
+	.tuna-site .tuna-story-bottom { gap: 35px; }
+	.tuna-site .tuna-install, .tuna-site .tuna-wide-heading, .tuna-site .tuna-controls-layout, .tuna-site .tuna-underneath-layout, .tuna-site .tuna-origin { gap: 50px; }
+	.tuna-site .tuna-remember { padding: 25px; }
+}
+@media (max-width: 760px) {
+	.tuna-site .tuna-container { width: calc(100% - 40px); }
+	.tuna-site .tuna-header { min-height: 82px; flex-wrap: wrap; gap: 0; padding-top: 18px; }
+	.tuna-site .tuna-wordmark { font-size: 1.8rem; }
+	.tuna-site .tuna-header > nav { order: 3; width: 100%; justify-content: space-between; gap: 16px; padding-top: 10px; font-size: var(--tuna-label-size); }
+	.tuna-site .tuna-header-actions { gap: 15px; }
+	.tuna-site .tuna-header-actions > a { font-size: .75rem; }
+	.tuna-site .tuna-theme { width: 38px; height: 38px; }
+	.tuna-site .tuna-hero { padding-block: 43px 35px; }
+	.tuna-site h1 { font-size: clamp(2.9rem, 10.6vw, 3.325rem); }
+	.tuna-site .tuna-hero-bottom { display: flex; flex-direction: column; align-items: stretch; gap: 24px; margin-top: 27px; }
+	.tuna-site .tuna-hero-bottom > p { font-size: 1rem; max-width: 50ch; }
+	.tuna-site .tuna-hero-install > a { justify-content: flex-start; font-size: var(--tuna-label-size); }
+	.tuna-site .tuna-command { gap: 4px; }
+	.tuna-site .tuna-command pre { padding: 15px 0 15px 13px; font-size: var(--tuna-label-size); }
+	.tuna-site .tuna-command button { min-width: 34px; margin: 4px; padding: 7px; }
+	.tuna-site .tuna-command button span { display: none; }
+	.tuna-site .tuna-hero-harnesses { margin-top: 22px; gap: 6px 10px; font-size: var(--tuna-label-size); }
+	.tuna-site .tuna-hero-harnesses > span { display: none; }
+	.tuna-site .tuna-hero-harnesses strong { white-space: nowrap; }
+	.tuna-site .tuna-lifecycle { padding-bottom: 37px; }
+	.tuna-site .tuna-demo-heading { display: block; margin-bottom: 15px; }
+	.tuna-site .tuna-demo-heading h2 { font-size: 1.35rem; }
+	.tuna-site .tuna-demo-heading p { margin-top: 9px; }
+	.tuna-site .tuna-story-flow > li { padding: 22px; }
+	.tuna-site .tuna-story-flow h3 { margin-bottom: 20px; }
+	.tuna-site .tuna-story-bottom { display: block; }
+	.tuna-site .tuna-story-evidence { margin-top: 22px; }
+	.tuna-site .tuna-section { padding-block: 65px; }
+	.tuna-site .tuna-install, .tuna-site .tuna-wide-heading, .tuna-site .tuna-controls-layout, .tuna-site .tuna-underneath-layout, .tuna-site .tuna-origin { display: block; }
+	.tuna-site .tuna-origin { padding-block: 55px; }
+	.tuna-site .tuna-origin > div + div { margin-top: 30px; }
+	.tuna-site .tuna-section-intro > p, .tuna-site .tuna-wide-heading > p, .tuna-site .tuna-underneath-layout > div > p { font-size: .9rem; margin-top: 21px; max-width: 50ch; }
+	.tuna-site .tuna-section-intro .tuna-text-link { margin-top: 18px; }
+	.tuna-site .tuna-install-steps { margin-top: 37px; }
+	.tuna-site .tuna-install-steps > li { gap: 12px; grid-template-columns: 25px minmax(0, 1fr); }
+	.tuna-site .tuna-install-number { width: 25px; height: 25px; font-size: var(--tuna-label-size); }
+	.tuna-site .tuna-install-steps h3 { font-size: 1.1rem; }
+	.tuna-site .tuna-install-steps .tuna-command { margin-left: -37px; }
+	.tuna-site .tuna-harness-section, .tuna-site .tuna-underneath { padding-block: 60px; }
+	.tuna-site .tuna-wide-heading { margin-bottom: 30px; }
+	.tuna-site .tuna-integration-table table { min-width: 700px; table-layout: fixed; border-collapse: separate; border-spacing: 0; }
+	.tuna-site .tuna-integration-table tr > th:first-child { position: sticky; left: 0; z-index: 1; background: var(--tuna-surface); width: 130px; }
+	.tuna-site .tuna-integration-table thead th:last-child { width: min(220px, calc(100vw - 170px)); }
+	.tuna-site .tuna-integration-table td:last-child code { overflow-wrap: anywhere; }
+	.tuna-site .tuna-table-hint { display: flex; align-items: center; gap: 8px; font-size: var(--tuna-label-size); color: var(--tuna-muted); margin-block: 12px 17px; }
+	.tuna-site .tuna-integration-table tbody :is(th, td) { padding-block: 18px; }
+	.tuna-site .tuna-integration-notes { display: block; }
+	.tuna-site .tuna-integration-notes p + p { margin-top: 15px; }
+	.tuna-site .tuna-remember { margin-top: 37px; padding: 27px; }
+	.tuna-site .tuna-remember h3 { font-size: 1.6rem; }
+	.tuna-site .tuna-faq { margin-top: 38px; }
+	.tuna-site .tuna-faq summary { font-size: .86rem; }
+	.tuna-site .tuna-close { padding-block: 70px; }
+	.tuna-site .tuna-close h2 { font-size: 1.95rem; }
+	.tuna-site .tuna-footer > div { display: block; }
+	.tuna-site .tuna-footer nav { margin-top: 26px; gap: 18px; font-size: var(--tuna-label-size); }
+}
+@media (prefers-reduced-motion: reduce) { .tuna-site *, .tuna-site *::before, .tuna-site *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

@@ -11,6 +11,8 @@ const productPages = {
 	kato: lazy(() => import('@/products/kato/Page')),
 	jsql: lazy(() => import('@/products/jsql/Page')),
 	binzo: lazy(() => import('@/products/binzo/Page')),
+	groundwork: lazy(() => import('@/products/groundwork/Page')),
+	tuna: lazy(() => import('@/products/tuna/Page')),
 };
 
 const getHomeData = createServerFn({ method: 'GET' }).handler(async () => {

@@ -1,5 +1,10 @@
 {
   "checks": {
+    "groundwork-example": {
+      "command": "python3 .groundwork/scripts/groundwork-example.py --check",
+      "expect": "Groundwork's downloadable example and recorded input hashes match the displayed canonical files",
+      "paths": ["src/products/groundwork/examples/**", "src/products/groundwork/recording/**", ".groundwork/scripts/groundwork-example.py"]
+    },
     "binzo-examples": {
       "command": "bun test src/products/binzo/demo.test.ts",
       "expect": "Recorded releases and command plans follow Binzo's actual asset matcher",
@@ -67,6 +72,20 @@
       "paths": ["src/products/binzo/**"],
       "entry": "https://binzo.darylcecile.net/",
       "guide": ".groundwork/VERIFY.md#binzo-website",
+      "dependsOn": ["product-hosts"]
+    },
+    "groundwork-website": {
+      "description": "Delegate with Groundwork's guardrails and return to a verification report with inspectable proof",
+      "paths": ["src/products/groundwork/**"],
+      "entry": "https://groundwork.darylcecile.net/",
+      "guide": ".groundwork/VERIFY.md#groundwork-website",
+      "dependsOn": ["product-hosts"]
+    },
+    "tuna-website": {
+      "description": "Understand Tuna's automatic instruction upkeep, background learning and timely agent preference lookup",
+      "paths": ["src/products/tuna/**"],
+      "entry": "https://tuna.darylcecile.net/",
+      "guide": ".groundwork/VERIFY.md#tuna-website",
       "dependsOn": ["product-hosts"]
     },
     "portless-development": {

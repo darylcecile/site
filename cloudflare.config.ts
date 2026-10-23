@@ -17,6 +17,8 @@ export default defineConfig({
 			'kato.darylcecile.net',
 			'jsql.darylcecile.net',
 			'binzo.darylcecile.net',
+			'groundwork.darylcecile.net',
+			'tuna.darylcecile.net',
 		],
 		assets: { notFoundHandling: 'none' },
 		env: {

@@ -1,0 +1,179 @@
+{
+  "cliRevision": "b5c89c4d34421f2442ce176000f86b63c0e5bced",
+  "recordedAt": "2026-10-23T21:01:13.270951+00:00",
+  "bun": "1.3.14",
+  "exampleFiles": {
+    "preferences.mjs": "8e9f2ae75d0c97155ed4afaa3e6027647bd28de0c2964c3823ad78444bdf833f",
+    "theme-check.mjs": "b506fe3ff823ecfaff784cd9e9a8b473d1cb895fdc3f57327874310c4fcb3433",
+    "verify.json": "365d2dd66077fd328bc91212f8914077e07e49af877ca08838002fa5924585fe",
+    "task.json": "0fe02920746268f2e8616da4d8338c805ea5671ff105b11ba7280bfaee465098",
+    "README.md": "f15cf4bd5f0de5ecf5a80c79c27a3c3bc8b2e55f0bb1a7a8211a19eb12bea6f9"
+  },
+  "records": [
+    {
+      "id": "failure",
+      "command": "groundwork verify theme-persists --plan .groundwork/plans/task.json",
+      "exitCode": 1,
+      "runId": "2026-10-23T21-01-11-963Z_0c54ec0b",
+      "output": "Check 1/1: theme-persists\n\n[theme-persists] candidate, trial 1/1: Dark theme survives a fresh application process\nTheme after restart: light\nFAILED theme-persists (candidate, trial 1)\n\nFAILED — checks from 2026-10-23T21:01:11.965Z\nSource: no commit yet + local changes · d8100a8008f0\n  FAILED theme-persists: Dark theme survives a fresh application process\n    Command exited 1; inspect theme-persists/output.log.\n    Log: .groundwork/runs/2026-10-23T21-01-11-963Z_0c54ec0b/theme-persists/output.log\n    Evidence: .groundwork/runs/2026-10-23T21-01-11-963Z_0c54ec0b/theme-persists/artifacts/observation.json\n    Evidence: .groundwork/runs/2026-10-23T21-01-11-963Z_0c54ec0b/theme-persists/artifacts/after-restart.json\nGoal: Keep the selected theme after restarting the application\n  FAILED persist-theme: A fresh application process reads the selected dark theme\nContext: {\"fixture\":\"website-theme-example\",\"storage\":\"local-file\",\"runnerPlatform\":\"darwin\",\"runnerArchitecture\":\"arm64\"}\nReport: .groundwork/runs/2026-10-23T21-01-11-963Z_0c54ec0b/result.json",
+      "evidencePath": "theme-persists/artifacts/after-restart.json",
+      "evidence": "{\n  \"expected\": \"dark\",\n  \"actual\": \"light\"\n}",
+      "log": "$ bun .groundwork/scripts/theme-check.mjs\n\nTheme after restart: light\n\nCommand exited 1; inspect theme-persists/output.log.",
+      "source": {
+        "revision": null,
+        "fingerprint": "d8100a8008f0f38a2f7d94309747bbdb52b036b00e38ebfc552505708a982691",
+        "dirty": true
+      },
+      "coverage": [
+        {
+          "id": "persist-theme",
+          "expect": "A fresh application process reads the selected dark theme",
+          "status": "failed",
+          "checks": [
+            "theme-persists"
+          ],
+          "observations": [],
+          "evidence": [
+            "theme-persists/output.log",
+            "theme-persists/artifacts/observation.json",
+            "theme-persists/artifacts/after-restart.json"
+          ],
+          "reason": null
+        }
+      ],
+      "observation": "A fresh application process read theme=light",
+      "context": {
+        "fixture": "website-theme-example",
+        "storage": "local-file",
+        "runnerPlatform": "darwin",
+        "runnerArchitecture": "arm64"
+      }
+    },
+    {
+      "id": "fixed",
+      "command": "groundwork verify theme-persists --plan .groundwork/plans/task.json",
+      "exitCode": 0,
+      "runId": "2026-10-23T21-01-12-364Z_e610325f",
+      "output": "Check 1/1: theme-persists\n\n[theme-persists] candidate, trial 1/1: Dark theme survives a fresh application process\nTheme after restart: dark\nPASSED theme-persists (candidate, trial 1)\n\nPASSED — checks from 2026-10-23T21:01:12.364Z\nSource: no commit yet + local changes · 61cc01ddd418\n  PASSED theme-persists: Dark theme survives a fresh application process\n    Log: .groundwork/runs/2026-10-23T21-01-12-364Z_e610325f/theme-persists/output.log\n    Evidence: .groundwork/runs/2026-10-23T21-01-12-364Z_e610325f/theme-persists/artifacts/observation.json\n    Evidence: .groundwork/runs/2026-10-23T21-01-12-364Z_e610325f/theme-persists/artifacts/after-restart.json\nGoal: Keep the selected theme after restarting the application\n  VERIFIED persist-theme: A fresh application process reads the selected dark theme\nContext: {\"fixture\":\"website-theme-example\",\"storage\":\"local-file\",\"runnerPlatform\":\"darwin\",\"runnerArchitecture\":\"arm64\"}\nReport: .groundwork/runs/2026-10-23T21-01-12-364Z_e610325f/result.json",
+      "evidencePath": "theme-persists/artifacts/after-restart.json",
+      "evidence": "{\n  \"expected\": \"dark\",\n  \"actual\": \"dark\"\n}",
+      "log": "$ bun .groundwork/scripts/theme-check.mjs\n\nTheme after restart: dark",
+      "source": {
+        "revision": null,
+        "fingerprint": "61cc01ddd418534ea29d8ac47f6829fb24ac77f1146922e5f73ca464370d8a82",
+        "dirty": true
+      },
+      "coverage": [
+        {
+          "id": "persist-theme",
+          "expect": "A fresh application process reads the selected dark theme",
+          "status": "verified",
+          "checks": [
+            "theme-persists"
+          ],
+          "observations": [],
+          "evidence": [
+            "theme-persists/output.log",
+            "theme-persists/artifacts/observation.json",
+            "theme-persists/artifacts/after-restart.json"
+          ],
+          "reason": null
+        }
+      ],
+      "observation": "A fresh application process read theme=dark",
+      "context": {
+        "fixture": "website-theme-example",
+        "storage": "local-file",
+        "runnerPlatform": "darwin",
+        "runnerArchitecture": "arm64"
+      }
+    },
+    {
+      "id": "stale",
+      "command": "groundwork view report",
+      "exitCode": 2,
+      "runId": "2026-10-23T21-01-12-364Z_e610325f",
+      "output": "INCONCLUSIVE — checks from 2026-10-23T21:01:12.364Z\nSource: no commit yet + local changes · 61cc01ddd418\n  PASSED theme-persists: Dark theme survives a fresh application process\n    Log: .groundwork/runs/2026-10-23T21-01-12-364Z_e610325f/theme-persists/output.log\n    Evidence: .groundwork/runs/2026-10-23T21-01-12-364Z_e610325f/theme-persists/artifacts/observation.json\n    Evidence: .groundwork/runs/2026-10-23T21-01-12-364Z_e610325f/theme-persists/artifacts/after-restart.json\nGoal: Keep the selected theme after restarting the application\n  VERIFIED persist-theme: A fresh application process reads the selected dark theme\nContext: {\"fixture\":\"website-theme-example\",\"storage\":\"local-file\",\"runnerPlatform\":\"darwin\",\"runnerArchitecture\":\"arm64\"}\n  Source changed since this run; verify the affected behaviour again.\nReport: .groundwork/runs/2026-10-23T21-01-12-364Z_e610325f/result.json",
+      "evidencePath": "theme-persists/artifacts/after-restart.json",
+      "evidence": "{\n  \"expected\": \"dark\",\n  \"actual\": \"dark\"\n}",
+      "log": "$ bun .groundwork/scripts/theme-check.mjs\n\nTheme after restart: dark",
+      "source": {
+        "revision": null,
+        "fingerprint": "61cc01ddd418534ea29d8ac47f6829fb24ac77f1146922e5f73ca464370d8a82",
+        "dirty": true
+      },
+      "coverage": [
+        {
+          "id": "persist-theme",
+          "expect": "A fresh application process reads the selected dark theme",
+          "status": "verified",
+          "checks": [
+            "theme-persists"
+          ],
+          "observations": [],
+          "evidence": [
+            "theme-persists/output.log",
+            "theme-persists/artifacts/observation.json",
+            "theme-persists/artifacts/after-restart.json"
+          ],
+          "reason": null
+        }
+      ],
+      "observation": "A fresh application process read theme=dark",
+      "context": {
+        "fixture": "website-theme-example",
+        "storage": "local-file",
+        "runnerPlatform": "darwin",
+        "runnerArchitecture": "arm64"
+      }
+    },
+    {
+      "id": "coverage",
+      "command": "groundwork verify theme-persists --plan .groundwork/plans/task.json",
+      "exitCode": 2,
+      "runId": "2026-10-23T21-01-12-835Z_24d9ec64",
+      "output": "Check 1/1: theme-persists\n\n[theme-persists] candidate, trial 1/1: Dark theme survives a fresh application process\nTheme after restart: dark\nPASSED theme-persists (candidate, trial 1)\n\nINCONCLUSIVE — checks from 2026-10-23T21:01:12.835Z\nSource: no commit yet + local changes · 61cc01ddd418\n  PASSED theme-persists: Dark theme survives a fresh application process\n    Log: .groundwork/runs/2026-10-23T21-01-12-835Z_24d9ec64/theme-persists/output.log\n    Evidence: .groundwork/runs/2026-10-23T21-01-12-835Z_24d9ec64/theme-persists/artifacts/observation.json\n    Evidence: .groundwork/runs/2026-10-23T21-01-12-835Z_24d9ec64/theme-persists/artifacts/after-restart.json\nGoal: Keep the selected theme after restarting the application\n  VERIFIED persist-theme: A fresh application process reads the selected dark theme\n  UNVERIFIED render-theme: The restarted screen visibly uses the selected dark theme — No executed check or evidence-backed observation covers this requirement.\nContext: {\"fixture\":\"website-theme-example\",\"storage\":\"local-file\",\"runnerPlatform\":\"darwin\",\"runnerArchitecture\":\"arm64\"}\nReport: .groundwork/runs/2026-10-23T21-01-12-835Z_24d9ec64/result.json",
+      "evidencePath": "theme-persists/artifacts/after-restart.json",
+      "evidence": "{\n  \"expected\": \"dark\",\n  \"actual\": \"dark\"\n}",
+      "log": "$ bun .groundwork/scripts/theme-check.mjs\n\nTheme after restart: dark",
+      "source": {
+        "revision": null,
+        "fingerprint": "61cc01ddd418534ea29d8ac47f6829fb24ac77f1146922e5f73ca464370d8a82",
+        "dirty": true
+      },
+      "coverage": [
+        {
+          "id": "persist-theme",
+          "expect": "A fresh application process reads the selected dark theme",
+          "status": "verified",
+          "checks": [
+            "theme-persists"
+          ],
+          "observations": [],
+          "evidence": [
+            "theme-persists/output.log",
+            "theme-persists/artifacts/observation.json",
+            "theme-persists/artifacts/after-restart.json"
+          ],
+          "reason": null
+        },
+        {
+          "id": "render-theme",
+          "expect": "The restarted screen visibly uses the selected dark theme",
+          "status": "unverified",
+          "checks": [],
+          "observations": [],
+          "evidence": [],
+          "reason": "No executed check or evidence-backed observation covers this requirement."
+        }
+      ],
+      "observation": "A fresh application process read theme=dark",
+      "context": {
+        "fixture": "website-theme-example",
+        "storage": "local-file",
+        "runnerPlatform": "darwin",
+        "runnerArchitecture": "arm64"
+      }
+    }
+  ]
+}

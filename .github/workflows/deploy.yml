@@ -40,7 +40,9 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Check demo examples
-        run: bun test src/products
+        run: |
+          bun test src/products
+          python3 .groundwork/scripts/groundwork-example.py --check
 
       - name: Build
         run: bun run build

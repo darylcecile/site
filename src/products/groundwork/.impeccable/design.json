@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2,
+  "title": "Design System: Groundwork",
+  "extensions": {
+    "shadows": [
+      { "name": "return-report", "value": "0 12px 32px -24px #22263033", "purpose": "A low lift for the report the user returns to." }
+    ],
+    "motion": [
+      { "name": "control-hover", "value": "background-color 160ms ease-out", "purpose": "Action feedback; disabled for reduced motion." }
+    ],
+    "breakpoints": [
+      { "name": "compact-desktop", "value": "1100px" },
+      { "name": "intermediate", "value": "900px" },
+      { "name": "mobile", "value": "640px" }
+    ]
+  },
+  "components": [],
+  "narrative": {
+    "northStar": "The return brief",
+    "overview": "Reclaim attention through a process of defined outcomes, delegated work and inspectable proof. Cool neutrals carry the page; restrained blue identifies action and selection.",
+    "keyCharacteristics": ["Benefit-first opening", "Visible handoff sequence", "Real return report", "Attributed maker’s principle", "Optional technical depth"],
+    "rules": [
+      { "name": "Reading first", "body": "Keep large fields neutral and reserve color for interaction and meaningful states.", "section": "colors" }
+    ],
+    "dos": ["Connect maps, tasks, checks and reports to the relief of stepping away."],
+    "donts": ["Do not present a saved recording as live agent or host execution."]
+  }
+}

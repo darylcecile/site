@@ -1,4 +1,4 @@
-export const productIds = ['jsvm', 'sakoa', 'kato', 'jsql', 'binzo'] as const;
+export const productIds = ['jsvm', 'sakoa', 'kato', 'jsql', 'binzo', 'groundwork', 'tuna'] as const;
 export type ProductId = typeof productIds[number];
 
 export function productForHostname(hostname: string): ProductId | null {
