@@ -5,19 +5,32 @@ type UADataNavigator = Navigator & {
 		mobile?: boolean;
 		platform?: string;
 	};
+	connection?: {
+		saveData?: boolean;
+	};
 };
 
+/** Devices with this many logical cores or fewer are treated as low-power. */
+const LOW_CORE_THRESHOLD = 2;
+
 /**
- * Detects a non-Apple mobile phone (e.g. Android), where heavy full-screen GPU
- * effects such as the animated, blurred background gradient cause jank.
+ * Detects a non-Apple mobile phone (e.g. Android) or another low-power/constrained
+ * environment (low CPU core count, data-saver mode enabled), where heavy
+ * full-screen GPU effects such as the animated, blurred background gradient
+ * cause jank.
  *
  * iPhones (and other Apple devices) handle these effects smoothly via their GPU,
- * so they are intentionally excluded and keep the animation.
+ * so they are intentionally excluded and keep the animation regardless of the
+ * other signals.
  *
  * Detection order:
  *  1. User-Agent Client Hints (`navigator.userAgentData`) on Chromium/Android.
  *  2. Fallback to userAgent + `maxTouchPoints` for Safari/iOS/iPadOS, which
  *     don't expose UA-CH.
+ *  3. `navigator.hardwareConcurrency` below `LOW_CORE_THRESHOLD`, which flags
+ *     older/weaker desktops and laptops regardless of form factor.
+ *  4. `navigator.connection.saveData`, which signals the user has explicitly
+ *     opted into a reduced-resource-usage mode.
  *
  * Returns `false` during SSR and the first client render to avoid hydration
  * mismatches, then resolves after mount.
@@ -49,7 +62,14 @@ export default function useIsNonAppleMobile() {
 			isMobile = hasMobileToken;
 		}
 
-		setIsNonAppleMobile(isMobile && !isApple);
+		const hasLowCoreCount =
+			typeof nav.hardwareConcurrency === "number" &&
+			nav.hardwareConcurrency > 0 &&
+			nav.hardwareConcurrency <= LOW_CORE_THRESHOLD;
+		const hasSaveDataEnabled = nav.connection?.saveData === true;
+		const isLowPower = hasLowCoreCount || hasSaveDataEnabled;
+
+		setIsNonAppleMobile((isMobile || isLowPower) && !isApple);
 	}, []);
 
 	return isNonAppleMobile;

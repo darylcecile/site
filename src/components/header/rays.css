@@ -1,9 +1,9 @@
 @keyframes jumbo {
     from {
-        background-position: 50% 50%, 50% 50%;
+        transform: translate3d(0, 0, 0);
     }
     to {
-        background-position: 350% 50%, 350% 50%;
+        transform: translate3d(-50%, 0, 0);
     }
 }
 
@@ -41,16 +41,20 @@
     mask-image: radial-gradient(ellipse at 100% 0%, black 40%, transparent 70%);
 
     pointer-events: none;
+    overflow: hidden;
 }
 
 .jumbo::after {
     content: "";
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: -50%;
+    width: 200%;
+    height: 100%;
     background-image: var(--stripes), var(--rainbow);
-    background-size: 200%, 100%;
+    background-size: 100%, 50%;
     animation: jumbo 60s linear infinite;
-    background-attachment: fixed;
+    will-change: transform;
     mix-blend-mode: difference;
 }
 
@@ -65,6 +69,13 @@
 /* Disable the animated background gradient on non-Apple mobiles (perf). */
 .reduce-bg-motion .jumbo::after {
     animation: none;
+}
+
+/* Honor the OS-level reduced-motion preference regardless of device class. */
+@media (prefers-reduced-motion: reduce) {
+    .jumbo::after {
+        animation: none;
+    }
 }
 
 /* Remove the god rays entirely on mobile (perf). */
